@@ -111,12 +111,12 @@ export default function ConsultaPage() {
               transition={{ delay: 0.3, duration: 0.6 }}
               className="relative lg:hidden mt-8 max-w-[280px] mx-auto"
             >
-              <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden">
+              <div className="relative w-full aspect-[3/4] rounded-2xl overflow-visible">
                 <Image
                   src="/images/hero/seyune-gradient.png"
                   alt="Seyune - Nutricionista Comportamental"
                   fill
-                  className="object-cover object-top"
+                  className="object-contain object-top"
                   priority
                 />
               </div>
@@ -353,7 +353,7 @@ export default function ConsultaPage() {
             className="text-center mb-6"
           >
             <h2 className="font-heading text-4xl lg:text-5xl font-bold text-foreground mb-4">
-              Imagine se você pudesse...
+              Imagine se você pudesse ter...
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               A nutrição comportamental não é mais uma dieta restritiva. É uma
