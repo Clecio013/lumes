@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
   Accordion,
@@ -9,6 +8,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { HeaderScroll } from "@/components/custom/header-scroll";
+import { AnalyticsButton, ScrollTracker } from "@/components/analytics";
+import { useTracking } from "@/hooks/useTracking";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
@@ -29,12 +30,15 @@ import {
 import { siteConfig } from "@/config/site";
 
 export default function ConsultaPage() {
+  const { trackFAQInteraction, trackSocialClick } = useTracking();
+
   return (
     <>
       <HeaderScroll />
+      <ScrollTracker />
       <main className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 py-20 bg-gradient-to-b from-background to-card">
+      <section data-section="hero" className="relative min-h-screen flex items-center justify-center px-6 py-20 bg-gradient-to-b from-background to-card">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
           <motion.div
@@ -75,14 +79,17 @@ export default function ConsultaPage() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.6 }}
             >
-              <Button
+              <AnalyticsButton
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
+                trackingLocation="hero"
+                trackingLabel="Agende sua consulta"
+                trackingType="schedule"
                 onClick={() => window.open(siteConfig.whatsapp.url, "_blank")}
               >
                 Agende sua consulta
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
+              </AnalyticsButton>
             </motion.div>
 
             {/* Social Proof Micro */}
@@ -254,7 +261,7 @@ export default function ConsultaPage() {
       </section>
 
       {/* Seção de Dores */}
-      <section className="py-24 px-6 bg-card">
+      <section data-section="dores" className="py-24 px-6 bg-card">
         <div className="max-w-5xl mx-auto">
           {/* Título */}
           <motion.div
@@ -334,7 +341,7 @@ export default function ConsultaPage() {
       </section>
 
       {/* Seção de Benefícios */}
-      <section className="py-24 px-6 bg-gradient-to-b from-card to-background">
+      <section data-section="beneficios" className="py-24 px-6 bg-gradient-to-b from-card to-background">
         <div className="max-w-6xl mx-auto">
           {/* Título */}
           <motion.div
@@ -434,7 +441,7 @@ export default function ConsultaPage() {
       </section>
 
       {/* Seção Como Funciona */}
-      <section className="py-24 px-6 bg-card">
+      <section data-section="como_funciona" className="py-24 px-6 bg-card">
         <div className="max-w-5xl mx-auto">
           {/* Título */}
           <motion.div
@@ -522,21 +529,24 @@ export default function ConsultaPage() {
             transition={{ duration: 0.6 }}
             className="text-center mt-16"
           >
-            <Button
+            <AnalyticsButton
               size="lg"
               className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
+              trackingLocation="how_it_works"
+              trackingLabel="Comece sua transformação hoje"
+              trackingType="transformation"
               onClick={() => window.open(siteConfig.whatsapp.url, "_blank")}
             >
               <Sparkles className="mr-2 h-5 w-5" />
               Comece sua transformação hoje
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
+            </AnalyticsButton>
           </motion.div>
         </div>
       </section>
 
       {/* Seção Transformação Seyune */}
-      <section className="py-24 px-6 bg-gradient-to-b from-background to-card overflow-hidden">
+      <section data-section="transformacao" className="py-24 px-6 bg-gradient-to-b from-background to-card overflow-hidden">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Imagem/Visual */}
@@ -661,7 +671,7 @@ export default function ConsultaPage() {
       </section>
 
       {/* Seção Depoimentos Simulados */}
-      <section className="py-24 px-6 bg-card">
+      <section data-section="depoimentos" className="py-24 px-6 bg-card">
         <div className="max-w-6xl mx-auto">
           {/* Título */}
           <motion.div
@@ -735,21 +745,24 @@ export default function ConsultaPage() {
             <p className="text-2xl font-heading font-semibold text-foreground mb-6">
               Essa história pode mudar. Vamos conversar?
             </p>
-            <Button
+            <AnalyticsButton
               size="lg"
               className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
+              trackingLocation="testimonials"
+              trackingLabel="Fale comigo no WhatsApp"
+              trackingType="whatsapp"
               onClick={() => window.open(siteConfig.whatsapp.url, "_blank")}
             >
               <MessageCircle className="mr-2 h-5 w-5" />
               Fale comigo no WhatsApp
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
+            </AnalyticsButton>
           </motion.div>
         </div>
       </section>
 
       {/* Seção Quem é Seyune */}
-      <section className="py-24 px-6 bg-gradient-to-b from-background to-card">
+      <section data-section="quem_e_seyune" className="py-24 px-6 bg-gradient-to-b from-background to-card">
         <div className="max-w-5xl mx-auto">
           <div className="grid lg:grid-cols-5 gap-12 items-stretch">
             {/* Foto */}
@@ -842,15 +855,18 @@ export default function ConsultaPage() {
                   enquanto constrói uma relação saudável e livre com a comida.
                 </p>
 
-                <Button
+                <AnalyticsButton
                   size="lg"
                   className="bg-accent hover:bg-accent/90 text-accent-foreground text-base px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
+                  trackingLocation="about"
+                  trackingLabel="Quero essa transformação"
+                  trackingType="transformation"
                   onClick={() => window.open(siteConfig.whatsapp.url, "_blank")}
                 >
                   <MessageCircle className="mr-2 h-5 w-5" />
                   Quero essa transformação
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                </AnalyticsButton>
               </div>
             </motion.div>
           </div>
@@ -858,7 +874,7 @@ export default function ConsultaPage() {
       </section>
 
       {/* Seção FAQ */}
-      <section className="py-24 px-6 bg-card">
+      <section data-section="faq" className="py-24 px-6 bg-card">
         <div className="max-w-4xl mx-auto">
           {/* Título */}
           <motion.div
@@ -883,7 +899,27 @@ export default function ConsultaPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <Accordion type="single" collapsible className="space-y-4">
+            <Accordion
+              type="single"
+              collapsible
+              className="space-y-4"
+              onValueChange={(value) => {
+                if (value) {
+                  const questions = [
+                    "Quanto custa a consulta?",
+                    "Quanto tempo leva para ver resultados?",
+                    "É mais uma dieta restritiva?",
+                    "Eu já tentei tudo e nada funcionou...",
+                    "Como funciona o acompanhamento?",
+                    "As consultas são presenciais ou online?"
+                  ];
+                  const index = parseInt(value.replace("item-", "")) - 1;
+                  if (questions[index]) {
+                    trackFAQInteraction(questions[index], "open");
+                  }
+                }
+              }}
+            >
               <AccordionItem
                 value="item-1"
                 className="border border-border rounded-2xl px-6 bg-background"
@@ -974,7 +1010,7 @@ export default function ConsultaPage() {
       </section>
 
       {/* CTA Final */}
-      <section className="py-32 px-6 bg-gradient-to-br from-accent/10 via-background to-primary/10 relative overflow-hidden">
+      <section data-section="cta_final" className="py-32 px-6 bg-gradient-to-br from-accent/10 via-background to-primary/10 relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute inset-0 bg-grid-pattern opacity-5" />
 
@@ -1014,14 +1050,17 @@ export default function ConsultaPage() {
             </div>
 
             <div className="pt-8 space-y-4">
-              <Button
+              <AnalyticsButton
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-primary-foreground text-xl px-12 py-8 rounded-full shadow-2xl hover:shadow-primary/20 transition-all duration-300 group scale-105 cursor-pointer"
+                trackingLocation="cta_final"
+                trackingLabel="Agende sua consulta agora"
+                trackingType="schedule"
                 onClick={() => window.open(siteConfig.whatsapp.url, "_blank")}
               >
                 Agende sua consulta agora
                 <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform" />
-              </Button>
+              </AnalyticsButton>
 
               <p className="text-sm text-muted-foreground">
                 Vagas limitadas. Agenda sujeita a disponibilidade.
@@ -1061,6 +1100,7 @@ export default function ConsultaPage() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm text-background/70 hover:text-background transition-colors"
+              onClick={() => trackSocialClick("instagram", "footer")}
             >
               <Instagram className="w-5 h-5" />
               @seyune
