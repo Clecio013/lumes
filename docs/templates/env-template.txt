@@ -1,0 +1,188 @@
+# ========================================
+# TEMPLATE: Variáveis de Ambiente (.env.local)
+# ========================================
+#
+# INSTRUÇÕES:
+# 1. Copie este arquivo para a raiz do projeto como ".env.local"
+# 2. Preencha TODAS as variáveis obrigatórias com dados reais do cliente
+# 3. Variáveis de Analytics podem ser preenchidas depois (após criar contas)
+# 4. NUNCA commite este arquivo no git (.env.local já está no .gitignore)
+#
+# ========================================
+
+# ========================================
+# 1. INFORMAÇÕES DO SITE (OBRIGATÓRIO)
+# ========================================
+
+# Nome do site/marca (usado em meta tags, títulos, etc.)
+NEXT_PUBLIC_SITE_NAME="Nome do Cliente"
+
+# Descrição curta do site (máximo 160 caracteres - para SEO)
+NEXT_PUBLIC_SITE_DESCRIPTION="Descrição concisa do serviço oferecido pelo cliente"
+
+# ========================================
+# 2. WHATSAPP (OBRIGATÓRIO)
+# ========================================
+
+# Número do WhatsApp Business (formato: DDI+DDD+número, sem espaços ou caracteres especiais)
+# Exemplo: 5511999887766 (55 = Brasil, 11 = São Paulo, 999887766 = número)
+NEXT_PUBLIC_WHATSAPP_NUMBER="5511999999999"
+
+# Mensagem pré-preenchida que aparece quando o visitante clica no botão de WhatsApp
+# Personalize para o contexto do cliente
+NEXT_PUBLIC_WHATSAPP_MESSAGE="Olá! Vi seu site e gostaria de saber mais sobre seus serviços."
+
+# ========================================
+# 3. REDES SOCIAIS (OPCIONAL)
+# ========================================
+
+# URL completa do perfil do Instagram (com https://)
+NEXT_PUBLIC_INSTAGRAM_URL="https://instagram.com/usuario"
+
+# URL completa do perfil do Facebook (opcional)
+# NEXT_PUBLIC_FACEBOOK_URL="https://facebook.com/pagina"
+
+# URL completa do perfil do LinkedIn (opcional)
+# NEXT_PUBLIC_LINKEDIN_URL="https://linkedin.com/in/usuario"
+
+# URL completa do canal do YouTube (opcional)
+# NEXT_PUBLIC_YOUTUBE_URL="https://youtube.com/@canal"
+
+# URL completa do perfil do TikTok (opcional)
+# NEXT_PUBLIC_TIKTOK_URL="https://tiktok.com/@usuario"
+
+# ========================================
+# 4. GOOGLE TAG MANAGER (RECOMENDADO)
+# ========================================
+
+# ID do container do Google Tag Manager
+# Formato: GTM-XXXXXXX
+# Obtenha em: https://tagmanager.google.com
+# Deixe vazio se não for usar GTM ainda (pode adicionar depois)
+NEXT_PUBLIC_GTM_ID="GTM-XXXXXXX"
+
+# ========================================
+# 5. GOOGLE ANALYTICS 4 (RECOMENDADO)
+# ========================================
+
+# ID da propriedade do Google Analytics 4
+# Formato: G-XXXXXXXXXX
+# Obtenha em: https://analytics.google.com
+# Deixe vazio se não for usar GA4 ainda (pode adicionar depois)
+NEXT_PUBLIC_GA4_ID="G-XXXXXXXXXX"
+
+# ========================================
+# 6. META PIXEL (Facebook/Instagram Ads)
+# ========================================
+
+# ID do Meta Pixel (Facebook Pixel)
+# Formato: número de 15 dígitos
+# Obtenha em: https://business.facebook.com/events_manager
+# Deixe vazio se não for fazer anúncios no Meta ainda
+NEXT_PUBLIC_META_PIXEL_ID="123456789012345"
+
+# ========================================
+# 7. INFORMAÇÕES DE CONTATO ADICIONAIS (OPCIONAL)
+# ========================================
+
+# Email de contato (se aplicável)
+# NEXT_PUBLIC_CONTACT_EMAIL="contato@cliente.com"
+
+# Telefone fixo (formato: +55 11 1234-5678)
+# NEXT_PUBLIC_PHONE="5511123456789"
+
+# Endereço completo (se atendimento for presencial)
+# NEXT_PUBLIC_ADDRESS="Rua Exemplo, 123 - Bairro - Cidade/UF - CEP 12345-678"
+
+# ========================================
+# 8. INTEGRAÇÕES (AVANÇADO - OPCIONAL)
+# ========================================
+
+# Calendly (para agendamento online)
+# Se o cliente usar Calendly, cole o link do evento aqui
+# NEXT_PUBLIC_CALENDLY_URL="https://calendly.com/usuario/consulta"
+
+# RD Station (Marketing Automation)
+# NEXT_PUBLIC_RD_STATION_TOKEN="seu-token-aqui"
+
+# Mailchimp (Email Marketing)
+# NEXT_PUBLIC_MAILCHIMP_API_KEY="sua-api-key"
+# NEXT_PUBLIC_MAILCHIMP_AUDIENCE_ID="seu-audience-id"
+
+# Hotjar (Heatmaps e gravação de sessão)
+# NEXT_PUBLIC_HOTJAR_ID="1234567"
+# NEXT_PUBLIC_HOTJAR_SV="6"
+
+# Google Maps Embed (se tiver endereço físico)
+# NEXT_PUBLIC_GOOGLE_MAPS_EMBED_URL="https://www.google.com/maps/embed?pb=..."
+
+# ========================================
+# 9. CONFIGURAÇÕES DE AMBIENTE (NÃO EDITAR)
+# ========================================
+
+# URL base do site (usado para canonical URLs e meta tags)
+# Em desenvolvimento, deixe vazio ou use http://localhost:3000
+# Em produção, a Vercel preenche automaticamente
+# NEXT_PUBLIC_SITE_URL="https://seudominio.com.br"
+
+# ========================================
+# NOTAS IMPORTANTES:
+# ========================================
+#
+# 1. SEGURANÇA:
+#    - NUNCA commite este arquivo no git
+#    - NUNCA compartilhe publicamente
+#    - Variáveis com NEXT_PUBLIC_ são expostas no browser (seguras para IDs públicos)
+#    - Variáveis SEM NEXT_PUBLIC_ são apenas do servidor (use para secrets)
+#
+# 2. VALIDAÇÃO:
+#    - WhatsApp: Teste o link manualmente após configurar
+#    - Analytics: Use extensões do Chrome (Tag Assistant, Meta Pixel Helper) para validar
+#    - Instagram: Verifique se o @ está correto (sem espaços)
+#
+# 3. DEPLOY (Vercel):
+#    - Após fazer deploy, adicione estas variáveis no dashboard:
+#      https://vercel.com/[seu-projeto]/settings/environment-variables
+#    - Copie e cole TODAS as variáveis deste arquivo lá
+#    - Redeploy após adicionar variáveis
+#
+# 4. QUANDO CRIAR NOVAS VARIÁVEIS:
+#    - Use prefixo NEXT_PUBLIC_ se o valor precisa estar disponível no cliente/browser
+#    - NÃO use NEXT_PUBLIC_ para API keys secretas ou tokens privados
+#    - Documente aqui o propósito da variável
+#
+# 5. CHECKLIST ANTES DE DEPLOY:
+#    ✓ NEXT_PUBLIC_SITE_NAME preenchido
+#    ✓ NEXT_PUBLIC_WHATSAPP_NUMBER preenchido e testado
+#    ✓ NEXT_PUBLIC_WHATSAPP_MESSAGE personalizado
+#    ✓ NEXT_PUBLIC_INSTAGRAM_URL (se cliente tiver Instagram)
+#    ✓ NEXT_PUBLIC_GTM_ID, GA4_ID, META_PIXEL_ID (se já tiver contas criadas)
+#    ✓ Todas as variáveis copiadas para Vercel Dashboard
+#
+# ========================================
+
+# ========================================
+# EXEMPLOS DE USO POR TIPO DE CLIENTE
+# ========================================
+
+# EXEMPLO 1: Nutricionista
+# NEXT_PUBLIC_SITE_NAME="Dra. Maria Silva - Nutrição Comportamental"
+# NEXT_PUBLIC_WHATSAPP_MESSAGE="Olá! Gostaria de agendar uma consulta de nutrição."
+
+# EXEMPLO 2: Professora de Inglês
+# NEXT_PUBLIC_SITE_NAME="Teacher Jane - English Classes Online"
+# NEXT_PUBLIC_WHATSAPP_MESSAGE="Hi! I'd like to know more about your English classes."
+
+# EXEMPLO 3: Personal Trainer
+# NEXT_PUBLIC_SITE_NAME="João Costa - Personal Trainer"
+# NEXT_PUBLIC_WHATSAPP_MESSAGE="Olá! Quero saber mais sobre treinos personalizados."
+
+# EXEMPLO 4: Psicóloga
+# NEXT_PUBLIC_SITE_NAME="Dra. Ana Paula - Psicologia Clínica"
+# NEXT_PUBLIC_WHATSAPP_MESSAGE="Olá! Gostaria de agendar uma sessão de terapia."
+
+# EXEMPLO 5: Coach de Carreira
+# NEXT_PUBLIC_SITE_NAME="Pedro Lima - Career Coaching"
+# NEXT_PUBLIC_WHATSAPP_MESSAGE="Olá! Quero saber mais sobre mentoria de carreira."
+
+# ========================================
