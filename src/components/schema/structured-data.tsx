@@ -62,58 +62,45 @@ export function StructuredData({ type, data }: StructuredDataProps) {
     },
     service: {
       "@context": "https://schema.org",
-      "@type": "ProfessionalService",
+      "@type": "Service",
       "name": "Consultoria de Nutrição Comportamental",
+      "description": "Consultoria personalizada em nutrição comportamental. Transforme sua relação com a comida através de planos personalizados, sem restrições severas e com acompanhamento contínuo.",
+      "url": `${process.env.NEXT_PUBLIC_SITE_URL}/consulta`,
       "provider": {
         "@type": "Person",
-        "name": "Seyune"
+        "name": "Seyune",
+        "jobTitle": "Nutricionista Comportamental"
       },
-      "serviceType": "Nutrição Comportamental",
+      "serviceType": "Consultoria Nutricional",
+      "category": "Nutrição Comportamental",
       "areaServed": {
         "@type": "Country",
         "name": "Brasil"
       },
-      "availableChannel": {
-        "@type": "ServiceChannel",
-        "serviceType": "Online",
-        "availableLanguage": "Portuguese"
-      },
-      "description": "Consultoria personalizada em nutrição comportamental. Transforme sua relação com a comida através de planos personalizados, sem restrições severas e com acompanhamento contínuo.",
-      "offers": {
-        "@type": "Offer",
-        "availability": "https://schema.org/InStock",
-        "availableDeliveryMethod": "https://schema.org/OnlineOnly"
-      },
-      "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "Serviços de Nutrição",
-        "itemListElement": [
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Consulta Individual",
-              "description": "Consulta inicial personalizada para entender suas necessidades e objetivos"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Plano Alimentar Personalizado",
-              "description": "Plano alimentar feito especialmente para você, respeitando sua rotina e preferências"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Acompanhamento Contínuo",
-              "description": "Suporte e ajustes regulares durante todo o processo de transformação"
-            }
-          }
-        ]
-      }
+      "availableLanguage": "Portuguese",
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Consulta Individual",
+          "description": "Consulta inicial personalizada para entender suas necessidades e objetivos",
+          "availability": "https://schema.org/InStock",
+          "availableDeliveryMethod": "https://schema.org/OnlineOnly"
+        },
+        {
+          "@type": "Offer",
+          "name": "Plano Alimentar Personalizado",
+          "description": "Plano alimentar feito especialmente para você, respeitando sua rotina e preferências",
+          "availability": "https://schema.org/InStock",
+          "availableDeliveryMethod": "https://schema.org/OnlineOnly"
+        },
+        {
+          "@type": "Offer",
+          "name": "Acompanhamento Contínuo",
+          "description": "Suporte e ajustes regulares durante todo o processo de transformação",
+          "availability": "https://schema.org/InStock",
+          "availableDeliveryMethod": "https://schema.org/OnlineOnly"
+        }
+      ]
     },
     faq: {
       "@context": "https://schema.org",
