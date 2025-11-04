@@ -36,10 +36,6 @@ const HeaderScroll = dynamic(() =>
   import("@/app/consulta/components/header-scroll").then(mod => ({ default: mod.HeaderScroll }))
 );
 
-const ScrollTracker = dynamic(() =>
-  import("@/components/analytics").then(mod => ({ default: mod.ScrollTracker }))
-);
-
 export default function ConsultaPage() {
   return (
     <>
@@ -49,7 +45,6 @@ export default function ConsultaPage() {
       <StructuredData type="webpage" />
 
       <HeaderScroll />
-      <ScrollTracker />
 
       <main className="min-h-screen">
         <HeroSection />

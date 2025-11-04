@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Manrope, Caveat } from "next/font/google";
 import "./globals.css";
-import { GoogleAnalytics, MetaPixel } from "@/components/analytics";
+import { AnalyticsProvider } from "@/lib/analytics";
 
 // Títulos - Cormorant Garamond (otimizado: 5 → 3 weights)
 const cormorantGaramond = Cormorant_Garamond({
@@ -113,13 +113,8 @@ export default function RootLayout({
         className={`${cormorantGaramond.variable} ${manrope.variable} ${caveat.variable} font-body antialiased`}
         suppressHydrationWarning
       >
-        {/* Analytics - GA4 e Meta Pixel (apenas em produção) */}
-        {process.env.NODE_ENV === 'production' && (
-          <>
-            <GoogleAnalytics />
-            <MetaPixel />
-          </>
-        )}
+        {/* Analytics - GA4, Meta Pixel, Scroll Tracking */}
+        <AnalyticsProvider />
         {children}
       </body>
     </html>

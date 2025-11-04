@@ -2,7 +2,7 @@
 
 // Client Component - CTA Final Section com Scroll Reveal
 import { CheckCircle2, ArrowRight } from "lucide-react";
-import { AnalyticsButton } from "@/components/analytics";
+import { AnalyticsButton } from "@/lib/analytics";
 import { siteConfig } from "@/config/site";
 import { ScrollReveal } from "@/components/animations";
 

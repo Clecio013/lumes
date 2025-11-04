@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
-import { AnalyticsButton } from "@/components/analytics";
+import { AnalyticsButton } from "@/lib/analytics";
 import { useTracking } from "@/hooks/useTracking";
 import Image from "next/image";
 import { MessageCircle } from "lucide-react";

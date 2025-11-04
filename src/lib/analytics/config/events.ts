@@ -1,7 +1,25 @@
 /**
- * Event Configuration
+ * Event Configuration - Projeto Seyune (Landing Page)
  *
- * Define como cada evento deve ser tratado em cada plataforma
+ * ⚠️ ARQUIVO PROJETO-ESPECÍFICO ⚠️
+ * Este arquivo precisa ser adaptado para cada projeto.
+ *
+ * Define:
+ * 1. Quais eventos existem no projeto (EventName type)
+ * 2. Para quais plataformas cada evento é enviado (EVENT_CONFIG)
+ * 3. Parâmetros padrão de cada evento (opcional)
+ *
+ * 📘 Veja exemplos de outros tipos de projeto em: events.examples.ts
+ *    - Landing Page (este arquivo)
+ *    - E-commerce
+ *    - SaaS
+ *    - Blog/Conteúdo
+ *
+ * 🔧 Como adaptar para novo projeto:
+ * 1. Defina seus eventos no type EventName (em core/types.ts)
+ * 2. Configure cada evento abaixo no EVENT_CONFIG
+ * 3. Decida para quais plataformas enviar (ga4: análise, meta: ads)
+ * 4. Rode os testes: pnpm test
  */
 
 import type { EventName, EventConfig } from "../core/types";

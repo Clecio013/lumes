@@ -12,3 +12,6 @@ export * from "./config/events";
 
 // Adapters (caso precise usar diretamente)
 export * from "./adapters";
+
+// Components (React)
+export * from "./components";

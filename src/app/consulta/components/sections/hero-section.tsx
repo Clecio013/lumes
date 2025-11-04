@@ -4,7 +4,7 @@
 import Image from "next/image";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { AnalyticsButton } from "@/components/analytics";
+import { AnalyticsButton } from "@/lib/analytics";
 import { siteConfig } from "@/config/site";
 
 export function HeroSection() {
