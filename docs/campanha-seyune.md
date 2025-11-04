@@ -30,4 +30,4 @@ A ideia é iniciar com 500 reais no todo. A ideia é usar esses 500, conseguir m
 
 # Contas
 Instagram: https://www.instagram.com/seyune
-Site: https://seyune.vercel.app (temporario até comprar o oficial)
+Site: https://seyune.com.br (temporario até comprar o oficial)
