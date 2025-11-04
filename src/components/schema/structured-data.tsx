@@ -77,7 +77,6 @@ export function StructuredData({ type, data }: StructuredDataProps) {
         "@type": "Country",
         "name": "Brasil"
       },
-      "availableLanguage": "Portuguese",
       "offers": [
         {
           "@type": "Offer",
