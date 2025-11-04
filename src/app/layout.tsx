@@ -28,8 +28,32 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "Seyune - Nutrição Comportamental",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://seyune.com.br'),
+  title: {
+    default: "Seyune - Nutrição Comportamental",
+    template: "%s | Seyune"
+  },
   description: "Transforme sua relação com a comida através da nutrição comportamental. Resultados sustentáveis sem restrições severas.",
+  keywords: [
+    "nutrição comportamental",
+    "nutricionista comportamental",
+    "emagrecimento saudável",
+    "dieta sem restrição",
+    "psicologia alimentar",
+    "consultoria nutricional",
+    "ganho de massa magra",
+    "relação com comida",
+    "nutrição online",
+    "nutricionista online"
+  ],
+  authors: [{ name: "Seyune" }],
+  creator: "Seyune",
+  publisher: "Seyune",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   robots: {
     index: true,
     follow: true,
@@ -48,11 +72,29 @@ export const metadata: Metadata = {
     siteName: 'Seyune',
     title: 'Seyune - Nutrição Comportamental',
     description: 'Transforme sua relação com a comida através da nutrição comportamental. Resultados sustentáveis sem restrições severas.',
+    images: [
+      {
+        url: '/images/hero/seyune-gradient.png',
+        width: 1200,
+        height: 630,
+        alt: 'Seyune - Nutricionista Comportamental',
+      }
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Seyune - Nutrição Comportamental',
     description: 'Transforme sua relação com a comida através da nutrição comportamental. Resultados sustentáveis sem restrições severas.',
+    images: ['/images/hero/seyune-gradient.png'],
+  },
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_SITE_URL,
+  },
+  verification: {
+    // Adicionar após criar no Google Search Console
+    // google: 'seu-codigo-de-verificacao-aqui',
+    // Adicionar após criar no Bing Webmaster Tools
+    // yandex: 'seu-codigo-bing-aqui',
   },
 };
 

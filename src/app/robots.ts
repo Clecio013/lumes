@@ -15,6 +15,37 @@ export default function robots(): MetadataRoute.Robots {
           '/private/',
         ],
       },
+      // Permitir AI Crawlers (AEO - Answer Engine Optimization)
+      {
+        userAgent: 'GPTBot',  // ChatGPT
+        allow: ['/consulta', '/consulta/'],
+        disallow: ['/', '/api/', '/_next/', '/private/'],
+      },
+      {
+        userAgent: 'ChatGPT-User',  // ChatGPT Web
+        allow: ['/consulta', '/consulta/'],
+        disallow: ['/', '/api/', '/_next/', '/private/'],
+      },
+      {
+        userAgent: 'Google-Extended',  // Bard/Gemini
+        allow: ['/consulta', '/consulta/'],
+        disallow: ['/', '/api/', '/_next/', '/private/'],
+      },
+      {
+        userAgent: 'anthropic-ai',  // Claude
+        allow: ['/consulta', '/consulta/'],
+        disallow: ['/', '/api/', '/_next/', '/private/'],
+      },
+      {
+        userAgent: 'PerplexityBot',  // Perplexity AI
+        allow: ['/consulta', '/consulta/'],
+        disallow: ['/', '/api/', '/_next/', '/private/'],
+      },
+      {
+        userAgent: 'CCBot',  // Common Crawl (usado por várias IAs)
+        allow: ['/consulta', '/consulta/'],
+        disallow: ['/', '/api/', '/_next/', '/private/'],
+      },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,
   }

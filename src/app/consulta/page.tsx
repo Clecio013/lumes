@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/accordion";
 import { HeaderScroll } from "@/components/custom/header-scroll";
 import { AnalyticsButton, ScrollTracker } from "@/components/analytics";
+import { StructuredData } from "@/components/schema/structured-data";
 import { useTracking } from "@/hooks/useTracking";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -34,6 +35,14 @@ export default function ConsultaPage() {
 
   return (
     <>
+      {/* Schema.org Structured Data para SEO */}
+      <StructuredData type="organization" />
+      <StructuredData type="person" />
+      <StructuredData type="service" />
+      <StructuredData type="howto" />
+      <StructuredData type="faq" />
+      <StructuredData type="webpage" />
+
       <HeaderScroll />
       <ScrollTracker />
       <main className="min-h-screen">
