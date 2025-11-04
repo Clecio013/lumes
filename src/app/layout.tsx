@@ -87,9 +87,6 @@ export const metadata: Metadata = {
     description: 'Transforme sua relação com a comida através da nutrição comportamental. Resultados sustentáveis sem restrições severas.',
     images: ['/images/hero/seyune-gradient.png'],
   },
-  alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL,
-  },
   verification: {
     // Adicionar após criar no Google Search Console
     // google: 'seu-codigo-de-verificacao-aqui',
