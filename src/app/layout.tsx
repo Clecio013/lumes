@@ -30,6 +30,30 @@ const caveat = Caveat({
 export const metadata: Metadata = {
   title: "Seyune - Nutrição Comportamental",
   description: "Transforme sua relação com a comida através da nutrição comportamental. Resultados sustentáveis sem restrições severas.",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'pt_BR',
+    url: process.env.NEXT_PUBLIC_SITE_URL,
+    siteName: 'Seyune',
+    title: 'Seyune - Nutrição Comportamental',
+    description: 'Transforme sua relação com a comida através da nutrição comportamental. Resultados sustentáveis sem restrições severas.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Seyune - Nutrição Comportamental',
+    description: 'Transforme sua relação com a comida através da nutrição comportamental. Resultados sustentáveis sem restrições severas.',
+  },
 };
 
 export default function RootLayout({
