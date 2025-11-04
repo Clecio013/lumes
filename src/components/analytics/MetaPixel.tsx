@@ -1,7 +1,6 @@
 "use client";
 
 import Script from "next/script";
-import { useEffect } from "react";
 
 declare global {
   interface Window {
@@ -12,13 +11,6 @@ declare global {
 
 export function MetaPixel() {
   const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
-
-  useEffect(() => {
-    if (!pixelId || !window.fbq) return;
-
-    // Track page view on mount
-    window.fbq("track", "PageView");
-  }, [pixelId]);
 
   if (!pixelId) {
     return null;

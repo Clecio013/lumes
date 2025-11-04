@@ -51,7 +51,7 @@ export function ScrollTracker() {
         });
       },
       {
-        threshold: 0.5, // Section is considered "viewed" when 50% is visible
+        threshold: 0.2, // Section is considered "viewed" when 20% is visible
         rootMargin: "0px",
       }
     );
