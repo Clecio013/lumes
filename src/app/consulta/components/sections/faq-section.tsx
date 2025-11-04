@@ -8,6 +8,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useTracking } from "@/hooks/useTracking";
+import { StructuredData } from "@/components/schema/structured-data";
 
 export function FAQSection() {
   const { trackFAQInteraction } = useTracking();
@@ -46,7 +47,11 @@ export function FAQSection() {
   ];
 
   return (
-    <section data-section="faq" className="py-24 px-6 bg-card">
+    <>
+      {/* Schema.org Structured Data para SEO */}
+      <StructuredData type="faq" />
+
+      <section data-section="faq" className="py-24 px-6 bg-card">
       <div className="max-w-4xl mx-auto">
         {/* Título */}
         <div className="text-center mb-16">
@@ -89,5 +94,6 @@ export function FAQSection() {
         </Accordion>
       </div>
     </section>
+    </>
   );
 }

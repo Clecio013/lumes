@@ -4,6 +4,7 @@ import {
   FileText,
   Users,
 } from "lucide-react";
+import { StructuredData } from "@/components/schema/structured-data";
 
 export function HowItWorksSection() {
   const steps = [
@@ -31,7 +32,12 @@ export function HowItWorksSection() {
   ];
 
   return (
-    <section data-section="como_funciona" className="py-24 px-6 bg-card">
+    <>
+      {/* Schema.org Structured Data para SEO */}
+      <StructuredData type="service" />
+      <StructuredData type="howto" />
+
+      <section data-section="como_funciona" className="py-24 px-6 bg-card">
       <div className="max-w-5xl mx-auto">
         {/* Título */}
         <div className="text-center mb-6">
@@ -77,5 +83,6 @@ export function HowItWorksSection() {
         </div>
       </div>
     </section>
+    </>
   );
 }
