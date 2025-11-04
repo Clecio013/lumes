@@ -1,29 +1,29 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Manrope, Caveat } from "next/font/google";
 import "./globals.css";
-import { GoogleTagManager, GoogleTagManagerNoScript, GoogleAnalytics, MetaPixel } from "@/components/analytics";
+import { GoogleTagManager, GoogleTagManagerNoScript } from "@/components/analytics";
 
-// Títulos - Cormorant Garamond (elegante, editorial, alta legibilidade)
+// Títulos - Cormorant Garamond (otimizado: 5 → 3 weights)
 const cormorantGaramond = Cormorant_Garamond({
   variable: "--font-heading",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "600", "700"], // Removido 300, 500
   display: "swap",
 });
 
-// Corpo - Manrope (moderna, limpa, geométrica)
+// Corpo - Manrope (otimizado: 6 → 3 weights)
 const manrope = Manrope({
   variable: "--font-body",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
+  weight: ["400", "500", "700"], // Removido 300, 600, 800
   display: "swap",
 });
 
-// Citações - Caveat (manuscrita, pessoal)
+// Citações - Caveat (otimizado: 4 → 2 weights)
 const caveat = Caveat({
   variable: "--font-quote",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600"], // Removido 500, 700 (pouco usado)
   display: "swap",
 });
 
@@ -103,9 +103,8 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <head>
+        {/* GTM gerencia GA4 e Meta Pixel - configure no painel do GTM */}
         <GoogleTagManager />
-        <GoogleAnalytics />
-        <MetaPixel />
       </head>
       <body
         className={`${cormorantGaramond.variable} ${manrope.variable} ${caveat.variable} font-body antialiased`}

@@ -7,6 +7,7 @@ export function ScrollTracker() {
   const { trackScrollDepth, trackSectionView } = useTracking();
   const scrollDepthTracked = useRef<Set<number>>(new Set());
   const sectionsTracked = useRef<Set<string>>(new Set());
+  const throttleTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     // Scroll depth tracking
@@ -24,6 +25,16 @@ export function ScrollTracker() {
           trackScrollDepth(milestone);
         }
       });
+    };
+
+    // Throttled scroll handler - executa no máximo a cada 200ms
+    const throttledHandleScroll = () => {
+      if (throttleTimeout.current) return;
+
+      throttleTimeout.current = setTimeout(() => {
+        handleScroll();
+        throttleTimeout.current = null;
+      }, 200);
     };
 
     // Section view tracking using Intersection Observer
@@ -49,13 +60,16 @@ export function ScrollTracker() {
     const sections = document.querySelectorAll("[data-section]");
     sections.forEach((section) => sectionObserver.observe(section));
 
-    // Add scroll listener
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    // Add throttled scroll listener
+    window.addEventListener("scroll", throttledHandleScroll, { passive: true });
 
     // Cleanup
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", throttledHandleScroll);
       sectionObserver.disconnect();
+      if (throttleTimeout.current) {
+        clearTimeout(throttleTimeout.current);
+      }
     };
   }, [trackScrollDepth, trackSectionView]);
 

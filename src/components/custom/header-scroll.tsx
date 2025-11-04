@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
 import { AnalyticsButton } from "@/components/analytics";
 import { useTracking } from "@/hooks/useTracking";
 import Image from "next/image";
@@ -39,15 +39,16 @@ export function HeaderScroll({ whatsappUrl }: HeaderScrollProps) {
   }, [isVisible, trackHeaderVisible]);
 
   return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.header
-          initial={{ y: -100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -100, opacity: 0 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-          className="fixed top-0 left-0 right-0 z-50 bg-card/20 backdrop-blur-xl border-b border-border shadow-lg"
-        >
+    <LazyMotion features={domAnimation}>
+      <AnimatePresence>
+        {isVisible && (
+          <m.header
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -100, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="fixed top-0 left-0 right-0 z-50 bg-card/20 backdrop-blur-xl border-b border-border shadow-lg"
+          >
           <div className="max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-2 sm:gap-4 md:gap-8">
             {/* Logo */}
             <div className="flex-shrink-0">
@@ -81,8 +82,9 @@ export function HeaderScroll({ whatsappUrl }: HeaderScrollProps) {
               <span className="whitespace-nowrap">Agende sua consulta</span>
             </AnalyticsButton>
           </div>
-        </motion.header>
-      )}
-    </AnimatePresence>
+          </m.header>
+        )}
+      </AnimatePresence>
+    </LazyMotion>
   );
 }
