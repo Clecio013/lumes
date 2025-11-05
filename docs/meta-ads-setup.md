@@ -7,9 +7,10 @@
 
 1. [Configuração do Meta Pixel](#1-configuração-do-meta-pixel)
 2. [Testes do Pixel](#2-testes-do-pixel)
-3. [Copies dos Anúncios](#3-copies-dos-anúncios)
-4. [Configuração no Gerenciador de Anúncios](#4-configuração-no-gerenciador-de-anúncios)
-5. [Benchmarks e Monitoramento](#5-benchmarks-e-monitoramento)
+3. [Estratégia de 4 Criativos](#3-estratégia-de-4-criativos)
+4. [Copies dos Anúncios](#4-copies-dos-anúncios)
+5. [Configuração no Gerenciador de Anúncios](#5-configuração-no-gerenciador-de-anúncios)
+6. [Benchmarks e Monitoramento](#6-benchmarks-e-monitoramento)
 
 ---
 
@@ -135,9 +136,44 @@ https://chrome.google.com/webstore/detail/meta-pixel-helper/fdgfkebogiimcoedlicj
 
 ---
 
-## 3. COPIES DOS ANÚNCIOS
+## 3. ESTRATÉGIA DE 4 CRIATIVOS
 
-### 🎬 ANÚNCIO 1: VÍDEO
+### 📊 Visão Geral
+
+**Total de criativos:** 4 (2 vídeos + 2 imagens)
+
+**Estratégia de Budget:**
+```
+Semana 1-2 (Teste):
+├─ Vídeo 1:   R$ 5/dia
+├─ Vídeo 2:   R$ 5/dia
+├─ Imagem 1:  R$ 5/dia
+└─ Imagem 2:  R$ 5/dia
+   TOTAL:     R$ 20/dia × 12 dias = R$ 240
+
+↓ ANÁLISE E OTIMIZAÇÃO (Dia 13)
+
+Semana 3-4 (Otimização):
+├─ Melhor criativo #1:  R$ 10/dia ✅
+├─ Melhor criativo #2:  R$ 10/dia ✅
+├─ Pior criativo #3:    PAUSADO ⏸️
+└─ Pior criativo #4:    PAUSADO ⏸️
+   TOTAL:              R$ 20/dia × 13 dias = R$ 260
+
+TOTAL FASE 1: R$ 500
+```
+
+**Por que 4 criativos?**
+- ✅ Testa mais variações (aumenta chance de encontrar vencedor)
+- ✅ Identifica o que a audiência prefere (vídeo vs. imagem)
+- ✅ Budget se mantém (R$ 20/dia sempre)
+- ✅ Otimização baseada em dados reais (2 semanas de teste)
+
+---
+
+## 4. COPIES DOS ANÚNCIOS
+
+### 🎬 ANÚNCIO 1: VÍDEO 1
 
 #### Texto Principal (125 caracteres ideal)
 ```
@@ -236,12 +272,20 @@ Nutrição que transforma (corpo e mente)
 
 ---
 
-## 4. CONFIGURAÇÃO NO GERENCIADOR DE ANÚNCIOS
+## 5. CONFIGURAÇÃO NO GERENCIADOR DE ANÚNCIOS
 
-### FASE 1: TESTE E CONVERSÃO (Dias 1-20)
+### FASE 1: TESTE E CONVERSÃO (Dias 1-25)
+
+**Estratégia de 4 Criativos:**
+- **Semana 1-2 (Teste):** R$5/dia cada criativo = R$20/dia total (12 dias)
+- **Semana 3-4 (Otimização):** R$10/dia para os 2 melhores = R$20/dia total (13 dias)
+- **Total Fase 1:** R$500 (25 dias × R$20/dia)
+- **Remarketing:** Reinvestir ganhos das consultas quando disponível
 
 #### 📍 Localização da Seyune
-**Atendimento:** São Paulo - Vila Mariana (presencial)
+**Atendimento:**
+- Presencial: São Paulo - Vila Mariana
+- Online: Toda São Paulo (e potencialmente outros estados)
 
 ---
 
@@ -264,12 +308,13 @@ Nutrição que transforma (corpo e mente)
 
 ---
 
-#### Nível 2: CONJUNTO DE ANÚNCIOS 1 - Vídeo
+#### Nível 2: CONJUNTO DE ANÚNCIOS 1 - Vídeo 1
 
-**Nome:** `SP - Mulheres 24-38 - Nutrição Comportamental - Vídeo`
+**Nome:** `SP - Mulheres 24-38 - Nutrição - Vídeo 1`
 
 ##### Orçamento e Programação
-- **Orçamento diário:** R$ 10,00
+- **Orçamento diário:** R$ 5,00 (Semana 1-2)
+  - Aumentar para R$ 10,00 SE for um dos 2 melhores (Semana 3-4)
 - **Data de início:** [Data de lançamento]
 - **Data de término:** Nenhuma (evergreen)
 - **Horário:** O dia todo (deixar Meta otimizar)
@@ -285,9 +330,10 @@ Nutrição que transforma (corpo e mente)
 
 **Localização:**
 - Tipo: **"Pessoas que moram ou que estiveram recentemente neste local"**
-- Local: São Paulo, SP, Brasil
-  - Raio: 25 km do centro (cobre Vila Mariana + principais bairros)
-  - Alternativa: Selecionar bairros específicos (Zona Sul: Vila Mariana, Moema, Itaim, Pinheiros, etc.)
+- Local: **São Paulo, SP, Brasil** (cidade inteira)
+  - ✅ Atende presencial (qualquer bairro pode ir até Vila Mariana)
+  - ✅ Atende online (toda cidade de SP)
+  - Tamanho esperado: 1-3 milhões de pessoas
 
 **Idade:** 24 - 38 anos
 
@@ -316,9 +362,9 @@ Clique em **"Segmentação detalhada"** > **"Procurar"**
 - Usuárias ativas do Instagram
 
 **Tamanho do público:**
-- Ideal: 500.000 - 2.000.000 pessoas
-- Se < 300.000: Remova 1-2 interesses específicos
-- Se > 3.000.000: Adicione mais interesses ou reduza raio
+- Ideal: 1.000.000 - 3.000.000 pessoas
+- Se < 800.000: Remova 1-2 interesses muito específicos
+- Se > 4.000.000: Adicione mais interesses para refinar
 
 ##### Posicionamentos
 - **Manual** (recomendado para controle)
@@ -338,9 +384,9 @@ Clique em **"Segmentação detalhada"** > **"Procurar"**
 
 ---
 
-#### Nível 3: ANÚNCIO 1 - Vídeo
+#### Nível 3: ANÚNCIO 1 - Vídeo 1
 
-**Nome:** `Vídeo - Ciclo de Dietas`
+**Nome:** `Vídeo 1 - Ciclo de Dietas`
 
 ##### Identidade
 - **Conta do Instagram:** @seyune
@@ -380,14 +426,15 @@ Clique em **"Segmentação detalhada"** > **"Procurar"**
 
 ---
 
-#### Nível 2: CONJUNTO DE ANÚNCIOS 2 - Imagem
+#### Nível 2: CONJUNTO DE ANÚNCIOS 2 - Vídeo 2
 
-**Nome:** `SP - Mulheres 24-38 - Nutrição Comportamental - Imagem`
+**Nome:** `SP - Mulheres 24-38 - Nutrição - Vídeo 2`
 
 **⚠️ IMPORTANTE:** Use **EXATAMENTE** as mesmas configurações do Conjunto 1
 
 ##### Orçamento
-- **Orçamento diário:** R$ 10,00
+- **Orçamento diário:** R$ 5,00 (Semana 1-2)
+  - Aumentar para R$ 10,00 SE for um dos 2 melhores (Semana 3-4)
 
 ##### Público
 - **IDÊNTICO ao Conjunto 1** (copie todas as configurações)
@@ -398,9 +445,60 @@ Clique em **"Segmentação detalhada"** > **"Procurar"**
 
 ---
 
-#### Nível 3: ANÚNCIO 2 - Imagem
+#### Nível 3: ANÚNCIO 2 - Vídeo 2
 
-**Nome:** `Imagem - Crença Persona`
+**Nome:** `Vídeo 2 - [Título do roteiro fornecido pela estrategista]`
+
+##### Configuração do Anúncio
+
+**Formato:** Vídeo único
+
+**Mídia:**
+- Upload do **segundo vídeo** fornecido pela equipe de marketing
+- **Proporção recomendada:**
+  - Stories/Reels: 9:16 (vertical)
+  - Feed: 1:1 (quadrado) ou 4:5 (vertical)
+- **Duração ideal:** 15-60 segundos
+- **Legenda:** Sempre adicione legendas
+
+**Texto principal:** [Usar copy do roteiro fornecido pela estrategista]
+
+**Título:** [Definir com base no roteiro]
+
+**Descrição:** `Resultados reais e sustentáveis`
+
+**Call to Action:**
+- Botão: **"Enviar mensagem"**
+- URL do site:
+  ```
+  https://seyune.com.br/consulta?utm_source=instagram&utm_medium=paid&utm_campaign=conversao&utm_content=video2
+  ```
+
+**Clique em "Publicar"**
+
+---
+
+#### Nível 2: CONJUNTO DE ANÚNCIOS 3 - Imagem 1
+
+**Nome:** `SP - Mulheres 24-38 - Nutrição - Imagem 1`
+
+**⚠️ IMPORTANTE:** Use **EXATAMENTE** as mesmas configurações do Conjunto 1
+
+##### Orçamento
+- **Orçamento diário:** R$ 5,00 (Semana 1-2)
+  - Aumentar para R$ 10,00 SE for um dos 2 melhores (Semana 3-4)
+
+##### Público
+- **IDÊNTICO ao Conjunto 1** (copie todas as configurações)
+
+##### Posicionamentos
+- **IDÊNTICO ao Conjunto 1** (Instagram apenas)
+
+---
+
+#### Nível 3: ANÚNCIO 3 - Imagem 1
+
+**Nome:** `Imagem 1 - Crença Persona`
 
 ##### Configuração do Anúncio
 
@@ -424,10 +522,61 @@ Clique em **"Segmentação detalhada"** > **"Procurar"**
 
 **Call to Action:**
 - Botão: **"Saiba mais"**
-- URL do site: `https://seyune.com.br/consulta`
-- Parâmetros UTM:
+- URL do site:
   ```
-  https://seyune.com.br/consulta?utm_source=instagram&utm_medium=paid&utm_campaign=conversao&utm_content=imagem
+  https://seyune.com.br/consulta?utm_source=instagram&utm_medium=paid&utm_campaign=conversao&utm_content=imagem1
+  ```
+
+**Clique em "Publicar"**
+
+---
+
+#### Nível 2: CONJUNTO DE ANÚNCIOS 4 - Imagem 2
+
+**Nome:** `SP - Mulheres 24-38 - Nutrição - Imagem 2`
+
+**⚠️ IMPORTANTE:** Use **EXATAMENTE** as mesmas configurações do Conjunto 1
+
+##### Orçamento
+- **Orçamento diário:** R$ 5,00 (Semana 1-2)
+  - Aumentar para R$ 10,00 SE for um dos 2 melhores (Semana 3-4)
+
+##### Público
+- **IDÊNTICO ao Conjunto 1** (copie todas as configurações)
+
+##### Posicionamentos
+- **IDÊNTICO ao Conjunto 1** (Instagram apenas)
+
+---
+
+#### Nível 3: ANÚNCIO 4 - Imagem 2
+
+**Nome:** `Imagem 2 - [Título fornecido pela estrategista]`
+
+##### Configuração do Anúncio
+
+**Formato:** Imagem única
+
+**Mídia:**
+- Upload da **segunda imagem** fornecida pela equipe
+- **Proporção recomendada:**
+  - 1:1 (quadrado - 1080x1080px)
+  - ou 4:5 (vertical - 1080x1350px)
+- **Requisitos:**
+  - Texto na imagem: Máximo 20% da área
+  - Resolução mínima: 1080x1080px
+
+**Texto principal:** [Usar copy fornecido pela estrategista]
+
+**Título:** [Definir com base no criativo]
+
+**Descrição:** `Nutrição que transforma (corpo e mente)`
+
+**Call to Action:**
+- Botão: **"Saiba mais"**
+- URL do site:
+  ```
+  https://seyune.com.br/consulta?utm_source=instagram&utm_medium=paid&utm_campaign=conversao&utm_content=imagem2
   ```
 
 **Clique em "Publicar"**
@@ -441,35 +590,96 @@ Clique em **"Segmentação detalhada"** > **"Procurar"**
 - [ ] Objetivo: Tráfego ou Conversões
 - [ ] Budget campaign: DESATIVADO
 
-**Conjunto 1 (Vídeo):**
-- [ ] Budget: R$ 10/dia
-- [ ] Localização: São Paulo, 25km
+**4 Conjuntos de Anúncios (TODOS com R$ 5/dia inicialmente):**
+- [ ] Conjunto 1 - Vídeo 1: R$ 5/dia
+- [ ] Conjunto 2 - Vídeo 2: R$ 5/dia
+- [ ] Conjunto 3 - Imagem 1: R$ 5/dia
+- [ ] Conjunto 4 - Imagem 2: R$ 5/dia
+- [ ] **TOTAL:** R$ 20/dia
+
+**Configurações (IDÊNTICAS para todos):**
+- [ ] Localização: São Paulo (cidade inteira)
 - [ ] Idade: 24-38
 - [ ] Gênero: Mulheres
 - [ ] Interesses: 5-8 relacionados
+- [ ] Público: 1M-3M pessoas
 - [ ] Posicionamento: Só Instagram
 - [ ] Pixel configurado
 
-**Conjunto 2 (Imagem):**
-- [ ] Budget: R$ 10/dia
-- [ ] MESMO público do Conjunto 1
-- [ ] MESMO posicionamento
-- [ ] Pixel configurado
-
-**Anúncios:**
+**4 Anúncios:**
 - [ ] Copy revisado (sem erros)
 - [ ] CTAs configurados
-- [ ] URLs com UTM
+- [ ] URLs com UTM únicos (video1, video2, imagem1, imagem2)
 - [ ] Mídia em alta qualidade
 
 ---
 
-### FASE 2: REMARKETING (Após 15-20 dias)
+### 🔄 OTIMIZAÇÃO APÓS SEMANA 2 (Dia 13)
 
-#### Pré-requisitos
-- Mínimo 100-500 visitantes na landing page
-- Pixel com dados de 15-20 dias
-- Performance da Fase 1 analisada
+**Importante**: Após 12 dias de teste, você precisa analisar e otimizar.
+
+#### Passo 1: Análise de Performance
+
+Acesse o Gerenciador de Anúncios e analise cada conjunto:
+
+| Conjunto | CPL (custo/lead) | CTR | Leads gerados |
+|----------|------------------|-----|---------------|
+| Vídeo 1  | ?                | ?   | ?             |
+| Vídeo 2  | ?                | ?   | ?             |
+| Imagem 1 | ?                | ?   | ?             |
+| Imagem 2 | ?                | ?   | ?             |
+
+#### Passo 2: Identificar os 2 Melhores
+
+**Critérios (por ordem de prioridade):**
+1. **CPL mais baixo** (custo por lead)
+2. **Maior número de leads** (volume)
+3. **CTR mais alto** (taxa de cliques)
+
+**Exemplo:**
+- Vídeo 1: CPL R$12, 8 leads → **MANTER**
+- Vídeo 2: CPL R$25, 3 leads → **PAUSAR**
+- Imagem 1: CPL R$15, 6 leads → **MANTER**
+- Imagem 2: CPL R$30, 2 leads → **PAUSAR**
+
+#### Passo 3: Otimizar Budget
+
+**No Gerenciador de Anúncios:**
+
+1. **Aumentar budget dos 2 melhores:**
+   - Clique no conjunto vencedor
+   - Editar orçamento: R$ 5/dia → **R$ 10/dia**
+   - Salvar
+
+2. **Pausar os 2 piores:**
+   - Clique no conjunto
+   - Toggle: Ativo → **Pausado**
+
+**Resultado:**
+- 2 conjuntos ativos × R$ 10/dia = R$ 20/dia total ✅
+- Budget se mantém
+
+#### Passo 4: Deixar Rodar (Semana 3-4)
+
+- Monitorar diariamente
+- NÃO fazer mais mudanças drásticas
+- Deixar Meta otimizar os vencedores
+
+---
+
+### FASE 2: REMARKETING (Opcional - Após Fase 1)
+
+**⚠️ Esta fase é OPCIONAL e depende dos resultados da Fase 1**
+
+#### Quando ativar:
+- ✅ ROI da Fase 1 foi positivo (consultas > investimento)
+- ✅ Há budget disponível dos ganhos para reinvestir
+- ✅ Acumulou 400+ visitantes na landing page
+- ✅ Pixel com dados de 25+ dias
+
+#### Budget sugerido:
+- R$ 200-300 (dos ganhos das consultas)
+- OU parte do reinvestimento
 
 #### 🎯 CAMPANHA 2: "Seyune - Remarketing"
 
@@ -630,7 +840,7 @@ Acessa Landing Page
 
 ---
 
-## 5. BENCHMARKS E MONITORAMENTO
+## 6. BENCHMARKS E MONITORAMENTO
 
 ### KPIs Principais
 
@@ -644,18 +854,29 @@ Acessa Landing Page
 
 ### Estimativas Conservadoras (R$ 500 total)
 
-**Fase 1 - Conversão (R$ 400):**
-- Impressões: ~20.000-30.000
-- Cliques na landing page: ~200-400 (CTR 1-2%)
-- Cliques no WhatsApp: ~20-30 leads (CPL R$ 15-20)
+**Fase 1 - Teste (Semana 1-2, R$ 240):**
+- 4 conjuntos × R$ 5/dia × 12 dias = R$ 240
+- Impressões: ~12.000-18.000
+- Cliques na landing page: ~130-220
+- Cliques no WhatsApp: ~10-18 leads (CPL R$ 13-24)
 
-**Fase 2 - Remarketing (R$ 100):**
-- Leads adicionais: ~5-10 (CPL mais baixo R$ 10-15)
+**Fase 1 - Otimização (Semana 3-4, R$ 260):**
+- 2 conjuntos melhores × R$ 10/dia × 13 dias = R$ 260
+- Impressões: ~13.000-18.000
+- Cliques na landing page: ~170-280 (melhor performance)
+- Cliques no WhatsApp: ~16-22 leads (CPL R$ 12-16)
 
-**TOTAL ESPERADO:** 25-40 contatos no WhatsApp
+**TOTAL FASE 1:** 26-40 leads
 
 **Se conversão WhatsApp → Consulta = 30-50%:**
 - **Consultas agendadas: 8-20**
+- **Receita estimada:** R$ 2.400 - R$ 6.000 (se consulta = R$ 300)
+- **ROI:** 4x - 12x (lucro líquido após deduzir R$ 500 de ads)
+
+**Remarketing (Fase 2 - Opcional):**
+- Reinvestir parte dos ganhos quando ROI comprovado
+- Budget sugerido: R$ 200-300 (dos ganhos das consultas)
+- Pode gerar +10-15 leads adicionais
 
 ### Como Monitorar
 
@@ -666,21 +887,24 @@ Acessa Landing Page
    - CPM e CPC estão nos benchmarks?
    - Algum anúncio foi rejeitado?
 
-#### Semanalmente
-1. Compare performance: Vídeo vs. Imagem
-2. Analise qual criativo tem:
-   - Menor CPL
-   - Maior CTR
-   - Melhor engajamento
-3. Ações:
-   - **Se vídeo ganha:** Aumente budget do vídeo (R$ 15/dia), reduza imagem (R$ 5/dia)
-   - **Se imagem ganha:** Faça o inverso
-   - **Se empate:** Mantenha 50/50
+#### Após 12 dias (FIM DA SEMANA 2) - PONTO DE DECISÃO CRÍTICO
+1. **PARE e analise os 4 conjuntos**
+2. Compare CPL, CTR, número de leads
+3. **Identifique os 2 melhores**
+4. **Pause os 2 piores**
+5. **Aumente budget dos 2 melhores para R$ 10/dia**
+6. Siga as instruções da seção "🔄 OTIMIZAÇÃO APÓS SEMANA 2"
 
-#### Após 15-20 dias
-1. Decisão: Ativar ou não remarketing?
-   - Se acumulou 300+ visitantes: ✅ Ativar
-   - Se < 300: ⏳ Aguardar mais 5-10 dias
+#### Semana 3-4 (Otimização - Dias 13-25)
+1. Monitorar diariamente os 2 conjuntos vencedores
+2. ❌ NÃO fazer mudanças drásticas (deixar Meta aprender)
+3. ✅ Só ajustar se CPL disparar (> R$ 40)
+
+#### Após 25 dias (Fim da Fase 1)
+1. **Análise completa:** Calcular ROI das consultas agendadas
+2. **Decisão de remarketing:**
+   - Se ROI positivo: ✅ Reinvestir ganhos em remarketing
+   - Se precisa mais dados: ⏳ Continuar com 2 melhores criativos
 
 ### Otimizações Contínuas
 
@@ -773,8 +997,9 @@ Acessa Landing Page
 
 **Budget:**
 - [ ] Total disponível: R$ 500
-- [ ] Fase 1: R$ 400 (20 dias × R$ 20/dia)
-- [ ] Fase 2: R$ 100 (reservado para remarketing)
+- [ ] Fase 1 - Teste: R$ 240 (12 dias × R$ 20/dia com 4 conjuntos)
+- [ ] Fase 1 - Otimização: R$ 260 (13 dias × R$ 20/dia com 2 melhores)
+- [ ] Fase 2 - Remarketing: Reinvestir ganhos das consultas quando disponível
 
 ---
 
