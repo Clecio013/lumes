@@ -55,7 +55,7 @@ export const HeroSection: React.FC = () => {
           >
             {/* Logo */}
             <motion.div variants={fadeInUp} className="mb-8">
-              <BrandLogo size="md" />
+              <BrandLogo size="sm" />
             </motion.div>
 
             {/* Headline */}

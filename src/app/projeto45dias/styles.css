@@ -34,6 +34,8 @@
   color: var(--text-light);
   min-height: 100vh;
   position: relative;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Reset para garantir isolamento */
@@ -129,6 +131,7 @@
   padding: var(--spacing-xl) var(--spacing-md);
   max-width: 1280px;
   margin: 0 auto;
+  overflow-x: hidden;
 }
 
 .projeto45-section-alt {

@@ -6,24 +6,31 @@ interface BrandLogoProps {
 }
 
 const SIZES = {
-  sm: { width: 120, height: 80, fontSize: '48px', subFontSize: '16px' },
-  md: { width: 180, height: 120, fontSize: '72px', subFontSize: '24px' },
-  lg: { width: 240, height: 160, fontSize: '96px', subFontSize: '32px' },
-  xl: { width: 300, height: 200, fontSize: '120px', subFontSize: '40px' },
+  sm: { scale: 1.26 },   // ~120px width (equivalente ao sm anterior)
+  md: { scale: 1.89 },   // ~180px width (equivalente ao md anterior)
+  lg: { scale: 2.53 },   // ~240px width (equivalente ao lg anterior)
+  xl: { scale: 3.16 },   // ~300px width (equivalente ao xl anterior)
 } as const;
 
 export const BrandLogo: React.FC<BrandLogoProps> = ({
   className = '',
   size = 'md'
 }) => {
-  const { width, height, fontSize, subFontSize } = SIZES[size];
+  const { scale } = SIZES[size];
   const uniqueId = React.useId();
+
+  // Dimensões base do SVG
+  const baseWidth = 80;
+  const baseHeight = 103;
+
+  const width = baseWidth * scale;
+  const height = baseHeight * scale;
 
   return (
     <svg
       width={width}
       height={height}
-      viewBox={`0 0 ${width} ${height}`}
+      viewBox="0 0 99 103"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
@@ -31,105 +38,44 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
       aria-label="Logo Projeto 45 Graus"
     >
       <defs>
-        <linearGradient
-          id={`goldGradient-${uniqueId}`}
-          x1="0%"
-          y1="0%"
-          x2="100%"
-          y2="100%"
-        >
-          <stop offset="0%" stopColor="#d4af37" />
-          <stop offset="100%" stopColor="#f4d03f" />
-        </linearGradient>
-
-        <filter id={`goldGlow-${uniqueId}`}>
-          <feGaussianBlur stdDeviation="4" result="coloredBlur" />
-          <feMerge>
-            <feMergeNode in="coloredBlur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
+        <filter id={`filter0_df_${uniqueId}`} x="0" y="4.87891" width="98.1211" height="71.8398" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+          <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+          <feOffset dy="4"/>
+          <feGaussianBlur stdDeviation="3.5"/>
+          <feComposite in2="hardAlpha" operator="out"/>
+          <feColorMatrix type="matrix" values="0 0 0 0 0.956863 0 0 0 0 0.815686 0 0 0 0 0.247059 0 0 0 0.25 0"/>
+          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_162_114"/>
+          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_162_114" result="shape"/>
+          <feGaussianBlur stdDeviation="4.5" result="effect2_foregroundBlur_162_114"/>
         </filter>
-
-        <linearGradient
-          id={`metallicGold-${uniqueId}`}
-          x1="0%"
-          y1="0%"
-          x2="0%"
-          y2="100%"
-        >
-          <stop offset="0%" stopColor="#f4d03f" stopOpacity="1" />
-          <stop offset="50%" stopColor="#d4af37" stopOpacity="1" />
-          <stop offset="100%" stopColor="#aa8a2e" stopOpacity="1" />
+        <linearGradient id={`paint0_linear_${uniqueId}`} x1="40.6641" y1="67" x2="37.6641" y2="15.5" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#D4AF37"/>
+          <stop offset="1" stopColor="#F4D03F"/>
+        </linearGradient>
+        <linearGradient id={`paint1_linear_${uniqueId}`} x1="40.6641" y1="67" x2="37.6641" y2="15.5" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#D4AF37"/>
+          <stop offset="1" stopColor="#F4D03F"/>
+        </linearGradient>
+        <linearGradient id={`paint2_linear_${uniqueId}`} x1="50.6641" y1="72" x2="50.6641" y2="101" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#D4AF37"/>
+          <stop offset="1" stopColor="#F4D03F"/>
+        </linearGradient>
+        <linearGradient id={`paint3_linear_${uniqueId}`} x1="14.6641" y1="102" x2="86.6641" y2="102" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#D4AF37"/>
+          <stop offset="1" stopColor="#F4D03F"/>
         </linearGradient>
       </defs>
 
-      <g transform={`translate(${width * 0.15}, ${height * 0.3})`}>
-        <line
-          x1="0"
-          y1="0"
-          x2={width * 0.25}
-          y2="0"
-          stroke={`url(#goldGradient-${uniqueId})`}
-          strokeWidth="3"
-          strokeLinecap="round"
-          filter={`url(#goldGlow-${uniqueId})`}
-        />
-        <line
-          x1={width * 0.25}
-          y1="0"
-          x2={width * 0.25}
-          y2={-width * 0.25}
-          stroke={`url(#goldGradient-${uniqueId})`}
-          strokeWidth="3"
-          strokeLinecap="round"
-          filter={`url(#goldGlow-${uniqueId})`}
-        />
-        <path
-          d={`M ${width * 0.2} 0 A ${width * 0.05} ${width * 0.05} 0 0 1 ${width * 0.25} ${-width * 0.05}`}
-          stroke={`url(#goldGradient-${uniqueId})`}
-          strokeWidth="1.5"
-          fill="none"
-          opacity="0.6"
-        />
+      <g filter={`url(#filter0_df_${uniqueId})`}>
+        <path d="M24.1219 55.856H9.00188V48.656L23.4019 14.6H32.0419V48.656H35.7859V55.856H32.0419V65H24.1219V55.856ZM24.1219 48.656V29H23.9779L16.2019 48.656H24.1219ZM51.294 65.72C47.454 65.72 44.526 64.64 42.51 62.48C40.494 60.272 39.486 57.128 39.486 53.048V49.088H46.974V53.624C46.974 56.888 48.342 58.52 51.078 58.52C53.814 58.52 55.182 56.888 55.182 53.624V42.32C55.182 39.008 53.814 37.352 51.078 37.352C48.342 37.352 46.974 39.008 46.974 42.32V42.752H39.486L40.926 14.6H61.806V21.8H47.982L47.334 33.824H47.478C48.966 31.376 51.246 30.152 54.318 30.152C57.198 30.152 59.382 31.136 60.87 33.104C62.358 35.072 63.102 37.928 63.102 41.672V53.048C63.102 57.128 62.094 60.272 60.078 62.48C58.062 64.64 55.134 65.72 51.294 65.72ZM79.9781 32.168C77.4341 32.168 75.2741 31.28 73.4981 29.504C71.7221 27.728 70.8341 25.568 70.8341 23.024C70.8341 20.48 71.7221 18.32 73.4981 16.544C75.2741 14.768 77.4341 13.88 79.9781 13.88C82.5221 13.88 84.6821 14.768 86.4581 16.544C88.2341 18.32 89.1221 20.48 89.1221 23.024C89.1221 25.568 88.2341 27.728 86.4581 29.504C84.6821 31.28 82.5221 32.168 79.9781 32.168ZM79.9781 26.768C81.0341 26.768 81.9221 26.408 82.6421 25.688C83.4101 24.968 83.7941 24.08 83.7941 23.024C83.7941 21.968 83.4101 21.08 82.6421 20.36C81.9221 19.592 81.0341 19.208 79.9781 19.208C78.9221 19.208 78.0341 19.592 77.3141 20.36C76.5941 21.08 76.2341 21.968 76.2341 23.024C76.2341 24.08 76.5941 24.968 77.3141 25.688C78.0341 26.408 78.9221 26.768 79.9781 26.768Z" fill={`url(#paint0_linear_${uniqueId})`}/>
       </g>
 
-      <text
-        x={width / 2}
-        y={height * 0.5}
-        textAnchor="middle"
-        fill={`url(#metallicGold-${uniqueId})`}
-        fontFamily="'Bebas Neue', sans-serif"
-        fontSize={fontSize}
-        fontWeight="700"
-        letterSpacing="0.05em"
-        filter={`url(#goldGlow-${uniqueId})`}
-      >
-        45°
-      </text>
+      <path d="M24.1219 55.856H9.00188V48.656L23.4019 14.6H32.0419V48.656H35.7859V55.856H32.0419V65H24.1219V55.856ZM24.1219 48.656V29H23.9779L16.2019 48.656H24.1219ZM51.294 65.72C47.454 65.72 44.526 64.64 42.51 62.48C40.494 60.272 39.486 57.128 39.486 53.048V49.088H46.974V53.624C46.974 56.888 48.342 58.52 51.078 58.52C53.814 58.52 55.182 56.888 55.182 53.624V42.32C55.182 39.008 53.814 37.352 51.078 37.352C48.342 37.352 46.974 39.008 46.974 42.32V42.752H39.486L40.926 14.6H61.806V21.8H47.982L47.334 33.824H47.478C48.966 31.376 51.246 30.152 54.318 30.152C57.198 30.152 59.382 31.136 60.87 33.104C62.358 35.072 63.102 37.928 63.102 41.672V53.048C63.102 57.128 62.094 60.272 60.078 62.48C58.062 64.64 55.134 65.72 51.294 65.72ZM79.9781 32.168C77.4341 32.168 75.2741 31.28 73.4981 29.504C71.7221 27.728 70.8341 25.568 70.8341 23.024C70.8341 20.48 71.7221 18.32 73.4981 16.544C75.2741 14.768 77.4341 13.88 79.9781 13.88C82.5221 13.88 84.6821 14.768 86.4581 16.544C88.2341 18.32 89.1221 20.48 89.1221 23.024C89.1221 25.568 88.2341 27.728 86.4581 29.504C84.6821 31.28 82.5221 32.168 79.9781 32.168ZM79.9781 26.768C81.0341 26.768 81.9221 26.408 82.6421 25.688C83.4101 24.968 83.7941 24.08 83.7941 23.024C83.7941 21.968 83.4101 21.08 82.6421 20.36C81.9221 19.592 81.0341 19.208 79.9781 19.208C78.9221 19.208 78.0341 19.592 77.3141 20.36C76.5941 21.08 76.2341 21.968 76.2341 23.024C76.2341 24.08 76.5941 24.968 77.3141 25.688C78.0341 26.408 78.9221 26.768 79.9781 26.768Z" fill={`url(#paint1_linear_${uniqueId})`}/>
 
-      <text
-        x={width / 2}
-        y={height * 0.8}
-        textAnchor="middle"
-        fill={`url(#goldGradient-${uniqueId})`}
-        fontFamily="'Bebas Neue', sans-serif"
-        fontSize={subFontSize}
-        fontWeight="400"
-        letterSpacing="0.3em"
-        opacity="0.9"
-      >
-        GRAUS
-      </text>
+      <path d="M19.7788 94.24C18.4988 94.24 17.5228 93.88 16.8508 93.16C16.1788 92.424 15.8428 91.376 15.8428 90.016V81.184C15.8428 79.824 16.1788 78.784 16.8508 78.064C17.5228 77.328 18.4988 76.96 19.7788 76.96C21.0588 76.96 22.0348 77.328 22.7068 78.064C23.3788 78.784 23.7148 79.824 23.7148 81.184V82.624H21.2188V81.016C21.2188 79.912 20.7628 79.36 19.8508 79.36C18.9388 79.36 18.4828 79.912 18.4828 81.016V90.208C18.4828 91.296 18.9388 91.84 19.8508 91.84C20.7628 91.84 21.2188 91.296 21.2188 90.208V86.92H19.8988V84.52H23.7148V90.016C23.7148 91.376 23.3788 92.424 22.7068 93.16C22.0348 93.88 21.0588 94.24 19.7788 94.24ZM31.4098 77.2H35.3218C36.6818 77.2 37.6738 77.52 38.2978 78.16C38.9218 78.784 39.2338 79.752 39.2338 81.064V82.096C39.2338 83.84 38.6578 84.944 37.5058 85.408V85.456C38.1458 85.648 38.5938 86.04 38.8498 86.632C39.1218 87.224 39.2578 88.016 39.2578 89.008V91.96C39.2578 92.44 39.2738 92.832 39.3058 93.136C39.3378 93.424 39.4178 93.712 39.5458 94H36.8578C36.7618 93.728 36.6978 93.472 36.6658 93.232C36.6338 92.992 36.6178 92.56 36.6178 91.936V88.864C36.6178 88.096 36.4898 87.56 36.2338 87.256C35.9938 86.952 35.5698 86.8 34.9618 86.8H34.0498V94H31.4098V77.2ZM35.0098 84.4C35.5378 84.4 35.9298 84.264 36.1858 83.992C36.4578 83.72 36.5938 83.264 36.5938 82.624V81.328C36.5938 80.72 36.4818 80.28 36.2578 80.008C36.0498 79.736 35.7138 79.6 35.2498 79.6H34.0498V84.4H35.0098ZM49.1295 77.2H52.7055L55.4415 94H52.8015L52.3215 90.664V90.712H49.3215L48.8415 94H46.3935L49.1295 77.2ZM52.0095 88.432L50.8335 80.128H50.7855L49.6335 88.432H52.0095ZM66.5154 94.24C65.2354 94.24 64.2594 93.88 63.5874 93.16C62.9154 92.424 62.5794 91.376 62.5794 90.016V77.2H65.2194V90.208C65.2194 90.784 65.3314 91.2 65.5554 91.456C65.7954 91.712 66.1314 91.84 66.5634 91.84C66.9954 91.84 67.3234 91.712 67.5474 91.456C67.7874 91.2 67.9074 90.784 67.9074 90.208V77.2H70.4514V90.016C70.4514 91.376 70.1154 92.424 69.4434 93.16C68.7714 93.88 67.7954 94.24 66.5154 94.24ZM81.7637 94.24C80.4837 94.24 79.5157 93.88 78.8597 93.16C78.2037 92.424 77.8757 91.376 77.8757 90.016V89.056H80.3717V90.208C80.3717 91.296 80.8277 91.84 81.7397 91.84C82.1877 91.84 82.5237 91.712 82.7477 91.456C82.9877 91.184 83.1077 90.752 83.1077 90.16C83.1077 89.456 82.9477 88.84 82.6277 88.312C82.3077 87.768 81.7157 87.12 80.8517 86.368C79.7637 85.408 79.0037 84.544 78.5717 83.776C78.1397 82.992 77.9237 82.112 77.9237 81.136C77.9237 79.808 78.2597 78.784 78.9317 78.064C79.6037 77.328 80.5797 76.96 81.8597 76.96C83.1237 76.96 84.0757 77.328 84.7157 78.064C85.3717 78.784 85.6997 79.824 85.6997 81.184V81.88H83.2037V81.016C83.2037 80.44 83.0917 80.024 82.8677 79.768C82.6437 79.496 82.3157 79.36 81.8837 79.36C81.0037 79.36 80.5637 79.896 80.5637 80.968C80.5637 81.576 80.7237 82.144 81.0437 82.672C81.3797 83.2 81.9797 83.84 82.8437 84.592C83.9477 85.552 84.7077 86.424 85.1237 87.208C85.5397 87.992 85.7477 88.912 85.7477 89.968C85.7477 91.344 85.4037 92.4 84.7157 93.136C84.0437 93.872 83.0597 94.24 81.7637 94.24Z" fill={`url(#paint2_linear_${uniqueId})`}/>
 
-      <line
-        x1={width * 0.3}
-        y1={height * 0.85}
-        x2={width * 0.7}
-        y2={height * 0.85}
-        stroke={`url(#goldGradient-${uniqueId})`}
-        strokeWidth="1"
-        opacity="0.6"
-      />
+      <path opacity="0.6" d="M12.6641 102H84.6641" stroke={`url(#paint3_linear_${uniqueId})`}/>
     </svg>
   );
 };
