@@ -80,6 +80,7 @@ export async function POST(req: Request) {
       .withFailureUrl(`${process.env.NEXT_PUBLIC_URL}/projeto45dias/erro`)
       .withPendingUrl(`${process.env.NEXT_PUBLIC_URL}/projeto45dias/obrigado`)
       .withStatementDescriptor('PROJETO45')
+      .withExternalReference(email) // Identificador único do lead para rastreamento
       .build();
 
     console.log('[Checkout API] Checkout criado:', {

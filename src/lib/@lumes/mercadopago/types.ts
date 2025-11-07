@@ -48,6 +48,9 @@ export interface Payment {
 
   /** Tipo de pagamento */
   payment_type_id?: string;
+
+  /** Referência externa (ID do seu sistema) */
+  external_reference?: string;
 }
 
 /**

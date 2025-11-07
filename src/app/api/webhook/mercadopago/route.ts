@@ -47,8 +47,8 @@ export async function POST(req: Request) {
             sheetName: process.env.GOOGLE_SHEETS_SHEET_NAME || 'Sheet1',
           });
 
-          // Usar dados do metadata (coletados antes do pagamento)
-          const userEmail = payment.metadata.user_email || payment.payer?.email || '';
+          // Usar external_reference (email) como identificador principal
+          const userEmail = payment.external_reference || payment.metadata.user_email || payment.payer?.email || '';
 
           console.log('[Webhook MP] Atualizando linha existente para email:', userEmail);
 
