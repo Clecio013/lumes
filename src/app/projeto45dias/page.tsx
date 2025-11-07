@@ -33,11 +33,11 @@ export default function Projeto45DiasPage() {
       {/* About Section */}
       <AboutSection />
 
-      {/* FAQ Section */}
-      <FAQSection />
-
       {/* Oferta Section - CTA Final */}
       <OfertaSection />
+
+      {/* FAQ Section */}
+      <FAQSection />
 
       {/* Footer */}
       <Footer />
