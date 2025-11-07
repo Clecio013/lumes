@@ -427,6 +427,287 @@ npx shadcn@latest add button
 
 ---
 
+## Arquitetura de Libs Reutilizáveis
+
+### Quando Criar Libs Exportáveis
+
+Sempre que implementar **integrações com serviços externos** (pagamento, email, storage, CRM, analytics, etc.) que serão reutilizadas em múltiplos projetos Lumes:
+
+#### 1. Estrutura de Diretórios
+
+Criar em `/src/lib/@lumes/{nome}` (não `/src/lib` direto):
+
+```
+/src/lib/@lumes/{nome}/
+├── client.ts          # Factory principal (ponto de entrada)
+├── config.ts          # Validação de config com Zod
+├── types.ts           # Types/interfaces públicas
+├── errors.ts          # Custom errors (opcional)
+├── adapters/          # Adapters de providers (se aplicável)
+│   ├── base.ts        # Interface comum
+│   └── {provider}.ts  # Implementação específica
+├── {feature}/         # Features específicas organizadas por pasta
+│   ├── feature.ts
+│   └── types.ts
+└── index.ts           # Public API (re-exports explícitos)
+```
+
+#### 2. Design Patterns a Aplicar
+
+**Factory Pattern** (criação de instâncias configuradas):
+```typescript
+const client = ServiceClient.create({
+  apiKey: process.env.API_KEY,
+  environment: 'production'
+});
+```
+
+**Builder Pattern** (configuração fluente de objetos complexos):
+```typescript
+const resource = client.resource()
+  .withName('foo')
+  .withMetadata({ bar: 'baz' })
+  .withOptions({ timeout: 5000 })
+  .build();
+```
+
+**Adapter Pattern** (abstrair providers externos para trocar facilmente):
+```typescript
+// Interface comum
+export interface EmailProvider {
+  send(params: EmailParams): Promise<EmailResult>;
+}
+
+// Implementações específicas
+class ResendAdapter implements EmailProvider { ... }
+class SendGridAdapter implements EmailProvider { ... }
+
+// Factory que escolhe provider
+EmailClient.create({ provider: 'resend' | 'sendgrid' });
+```
+
+**Strategy Pattern** (comportamentos intercambiáveis):
+```typescript
+const handler = WebhookHandler.create({
+  onSuccess: async (data) => { /* lógica */ },
+  onFailure: async (data) => { /* lógica */ },
+  onPending: async (data) => { /* lógica */ }
+});
+```
+
+**Dependency Injection** (inversão de controle para testabilidade):
+```typescript
+// Business logic recebe dependências injetadas
+class CheckoutService {
+  constructor(
+    private paymentClient: IPaymentClient,
+    private emailClient: IEmailClient,
+    private storage: IStorage
+  ) {}
+
+  async process() {
+    // Usa interfaces, não implementações concretas
+  }
+}
+```
+
+#### 3. Princípios SOLID
+
+- **S** (Single Responsibility): Cada módulo uma responsabilidade clara e bem definida
+- **O** (Open/Closed): Extensível via adapters/estratégias sem modificar código existente
+- **L** (Liskov): Adapters implementam interfaces de forma consistente e substituível
+- **I** (Interface Segregation): Interfaces pequenas, focadas e específicas
+- **D** (Dependency Inversion): Depender de abstrações (interfaces), não implementações concretas
+
+#### 4. Boas Práticas Obrigatórias
+
+**Validação de Config:**
+- Usar **Zod** (sempre) para validar configurações
+- Falhar rápido (fail-fast) com mensagens de erro claras
+```typescript
+import { z } from 'zod';
+
+export const ConfigSchema = z.object({
+  apiKey: z.string().min(1, 'API key é obrigatória'),
+  timeout: z.number().positive().default(30000),
+});
+
+export type Config = z.infer<typeof ConfigSchema>;
+```
+
+**TypeScript Strict:**
+- Sempre `strict: true` no tsconfig
+- Nunca usar `any` (usar `unknown` quando tipo é realmente desconhecido)
+- Prefer `interface` para APIs públicas, `type` para unions/intersections
+- Usar `readonly` para imutabilidade
+
+**Imutabilidade:**
+```typescript
+// Config é readonly após criação
+getConfig(): Readonly<Config> {
+  return Object.freeze({ ...this.config });
+}
+
+// Arrays e objetos imutáveis
+private readonly items: ReadonlyArray<Item> = [];
+```
+
+**Error Handling Consistente:**
+```typescript
+// Custom errors com contexto
+export class ServiceError extends Error {
+  constructor(
+    message: string,
+    public readonly code: string,
+    public readonly originalError?: unknown
+  ) {
+    super(message);
+    this.name = 'ServiceError';
+  }
+}
+
+// Uso
+throw new ServiceError(
+  'Falha ao processar pagamento',
+  'PAYMENT_FAILED',
+  error
+);
+```
+
+**JSDoc em Funções Públicas:**
+```typescript
+/**
+ * Cria um novo checkout de pagamento
+ *
+ * @param amount - Valor em centavos (ex: 34700 = R$ 347,00)
+ * @param description - Descrição do produto/serviço
+ * @returns Promise com URL de checkout e ID da preferência
+ * @throws {ServiceError} Se configuração inválida ou API falhar
+ *
+ * @example
+ * ```typescript
+ * const checkout = await client.createCheckout(34700, 'Produto X');
+ * console.log(checkout.url); // https://checkout.provider.com/abc123
+ * ```
+ */
+async createCheckout(amount: number, description: string): Promise<Checkout> {
+  // implementação
+}
+```
+
+**Export apenas API necessária:**
+```typescript
+// index.ts - Public API
+export { ServiceClient } from './client';
+export type { Config } from './config';
+export type { Resource, ResourceOptions } from './types';
+// NÃO exportar: internals, helpers privados, implementações de adapters
+```
+
+#### 5. Testing (Após Validação Manual)
+
+**Estratégia:**
+1. Implementar funcionalidade
+2. Validar manualmente (testes manuais reais)
+3. Após confirmar que funciona: adicionar testes automatizados
+4. Usar **Jest** (não Vitest) com mocks de APIs externas
+
+**Estrutura de testes:**
+```typescript
+// {feature}.test.ts
+import { describe, it, expect, jest } from '@jest/globals';
+import { ServiceClient } from '../client';
+
+describe('ServiceClient', () => {
+  it('deve criar instância com config válida', () => {
+    const client = ServiceClient.create({ apiKey: 'test' });
+    expect(client).toBeDefined();
+  });
+
+  it('deve falhar com config inválida', () => {
+    expect(() => ServiceClient.create({ apiKey: '' }))
+      .toThrow('API key é obrigatória');
+  });
+
+  // Mais testes: happy path + error cases
+});
+```
+
+**Cobertura mínima:**
+- Happy path (caso de sucesso)
+- Error cases (falhas esperadas)
+- Validação de config
+- Edge cases críticos
+
+#### 6. Exemplo Completo: @lumes/mercadopago
+
+```
+/src/lib/@lumes/mercadopago/
+├── client.ts              # MercadoPagoClient (Factory)
+├── config.ts              # MercadoPagoConfigSchema (Zod)
+├── types.ts               # Payment, Checkout, etc.
+├── errors.ts              # MercadoPagoError
+├── checkout/
+│   ├── checkout-builder.ts  # Builder pattern
+│   └── types.ts
+├── webhook/
+│   ├── webhook-handler.ts   # Strategy pattern
+│   └── signature-validator.ts
+└── index.ts               # Exports públicos
+```
+
+**Uso:**
+```typescript
+import { MercadoPagoClient } from '@/lib/@lumes/mercadopago';
+
+const mpClient = MercadoPagoClient.create({
+  accessToken: process.env.MP_TOKEN!,
+  sandbox: true
+});
+
+const checkout = await mpClient.checkout()
+  .withAmount(34700)
+  .withDescription('Projeto 45 Graus')
+  .withMetadata({ lote: 1 })
+  .build();
+
+await mpClient.webhook().handle(body, {
+  onApproved: async (payment) => { /* lógica */ }
+});
+```
+
+#### 7. Migração Futura para GitHub Packages
+
+Quando libs estiverem estáveis e testadas:
+
+1. **Criar repositório GitHub privado:** `@lumes/{nome}`
+2. **Adicionar arquivos:**
+   - `package.json` (name, version, exports, dependencies)
+   - `README.md` (documentação completa com exemplos)
+   - `LICENSE` (MIT ou proprietária)
+   - `tsconfig.json` (configurações de build)
+   - `.npmignore` (excluir testes, docs internas)
+
+3. **Publicar no npm/GitHub Packages:**
+   ```bash
+   npm publish --access private
+   ```
+
+4. **Instalar no projeto:**
+   ```bash
+   npm install @lumes/mercadopago @lumes/email @lumes/sheets
+   ```
+
+5. **Atualizar imports:**
+   ```diff
+   - import { MercadoPagoClient } from '@/lib/@lumes/mercadopago';
+   + import { MercadoPagoClient } from '@lumes/mercadopago';
+   ```
+
+**Estrutura já permite extração sem refatoração**: Basta copiar `/src/lib/@lumes/{nome}` para novo repo, adicionar `package.json` e publicar.
+
+---
+
 ## Notas Importantes
 
 - ⚠️ Copy é criada de forma **livre e natural**, `/docs/copy.md` é apenas **direcionamento estratégico**
@@ -435,8 +716,9 @@ npx shadcn@latest add button
 - ⚠️ Budget limitado (R$500), otimizar conversão é crítico
 - ⚠️ Persona-first approach (falar da cliente antes de falar da Seyune)
 - ⚠️ Mobile-first sempre (maioria do tráfego virá de Meta Ads mobile)
+- ⚠️ **Libs reutilizáveis**: Sempre criar integrações externas em `/src/lib/@lumes/` com arquitetura exportável
 
 ---
 
-**Última atualização:** 2025-11-02
-**Versão:** 1.0
+**Última atualização:** 2025-11-06
+**Versão:** 1.1

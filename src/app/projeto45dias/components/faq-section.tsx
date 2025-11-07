@@ -71,6 +71,11 @@ export const FAQSection: React.FC = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  const scrollToOferta = () => {
+    const ofertaSection = document.getElementById('oferta-section');
+    ofertaSection?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section className="projeto45-section projeto45-section-alt">
       <div className="max-w-4xl mx-auto">
@@ -169,6 +174,7 @@ export const FAQSection: React.FC = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.button
+                onClick={scrollToOferta}
                 className="projeto45-cta"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}

@@ -26,6 +26,11 @@ export const VSLSection: React.FC<VSLSectionProps> = ({ pandaVideoId }) => {
     setShowVideo(true);
   };
 
+  const scrollToOferta = () => {
+    const ofertaSection = document.getElementById('oferta-section');
+    ofertaSection?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section id="vsl-section" className="projeto45-section projeto45-section-alt">
       <div className="max-w-5xl mx-auto">
@@ -120,6 +125,7 @@ export const VSLSection: React.FC<VSLSectionProps> = ({ pandaVideoId }) => {
           className="text-center mt-12"
         >
           <motion.button
+            onClick={scrollToOferta}
             className="projeto45-cta"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}

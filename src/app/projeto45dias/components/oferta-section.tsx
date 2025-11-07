@@ -1,11 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Check, Zap, TrendingUp } from 'lucide-react';
 import { Countdown } from './countdown';
 import { getCurrentBatch, getNextBatch, calculateSavings, isCampaignEnded, formatPrice } from '../lib/batches-config';
+import { CompleteDataBeforeCheckout } from './complete-data-before-checkout';
 
 export const OfertaSection: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const currentBatch = getCurrentBatch();
   const nextBatch = getNextBatch();
   const savings = calculateSavings();
@@ -44,7 +46,7 @@ export const OfertaSection: React.FC = () => {
   const discountPercentage = Math.round((discount / currentBatch.originalPrice) * 100);
 
   return (
-    <section className="projeto45-section">
+    <section id="oferta-section" className="projeto45-section">
       <div className="max-w-6xl mx-auto">
         {/* Título */}
         <div className="text-center mb-12">
@@ -144,7 +146,7 @@ export const OfertaSection: React.FC = () => {
 
           {/* CTA */}
           <div className="px-8 pb-8">
-            <button className="projeto45-cta w-full">
+            <button onClick={() => setIsModalOpen(true)} className="projeto45-cta w-full">
               GARANTIR MINHA VAGA AGORA
             </button>
 
@@ -162,6 +164,15 @@ export const OfertaSection: React.FC = () => {
           </p>
         </div>
       </div>
+
+      {/* Complete Data Modal - Collects all data before checkout */}
+      {currentBatch && (
+        <CompleteDataBeforeCheckout
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          loteId={currentBatch.id}
+        />
+      )}
     </section>
   );
 };

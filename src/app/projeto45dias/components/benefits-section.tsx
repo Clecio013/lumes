@@ -61,6 +61,11 @@ const benefits = [
 ];
 
 export const BenefitsSection: React.FC = () => {
+  const scrollToOferta = () => {
+    const ofertaSection = document.getElementById('oferta-section');
+    ofertaSection?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section className="projeto45-section">
       <div className="max-w-7xl mx-auto">
@@ -122,6 +127,7 @@ export const BenefitsSection: React.FC = () => {
           className="text-center mt-16"
         >
           <motion.button
+            onClick={scrollToOferta}
             className="projeto45-cta"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}

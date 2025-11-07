@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
 import { BrandLogo } from './brand-logo';
@@ -33,6 +33,11 @@ const staggerContainer = {
 };
 
 export const HeroSection: React.FC = () => {
+  const scrollToOferta = () => {
+    const ofertaSection = document.getElementById('oferta-section');
+    ofertaSection?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const scrollToVSL = () => {
     const vslSection = document.getElementById('vsl-section');
     vslSection?.scrollIntoView({ behavior: 'smooth' });
@@ -88,27 +93,38 @@ export const HeroSection: React.FC = () => {
               para resultados que duram
             </motion.p>
 
-            {/* CTA */}
-            <motion.button
-              variants={fadeInLeft}
-              onClick={scrollToVSL}
-              className="projeto45-cta flex items-center gap-3 mb-8"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              aria-label="Ver como funciona"
-            >
-              VER COMO FUNCIONA
-              <motion.div
-                animate={{ y: [0, 5, 0] }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
+            {/* CTAs */}
+            <motion.div variants={fadeInLeft} className="flex flex-col sm:flex-row gap-4 mb-8">
+              <motion.button
+                onClick={scrollToOferta}
+                className="projeto45-cta"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                aria-label="Garantir minha vaga"
               >
-                <ArrowDown className="w-6 h-6" />
-              </motion.div>
-            </motion.button>
+                GARANTIR MINHA VAGA
+              </motion.button>
+
+              <motion.button
+                onClick={scrollToVSL}
+                className="px-8 py-4 rounded-lg border-2 border-[var(--gold-primary)] text-[var(--gold-primary)] font-bold hover:bg-[var(--gold-primary)] hover:text-black transition-all duration-300 flex items-center gap-2 justify-center"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                aria-label="Ver como funciona"
+              >
+                VER COMO FUNCIONA
+                <motion.div
+                  animate={{ y: [0, 3, 0] }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  <ArrowDown className="w-5 h-5" />
+                </motion.div>
+              </motion.button>
+            </motion.div>
 
             {/* Badge de urgência */}
             <motion.div variants={fadeInLeft}>
