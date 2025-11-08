@@ -40,7 +40,7 @@ export const VSLSection: React.FC<VSLSectionProps> = ({ pandaVideoId }) => {
             Assista e descubra como funciona
           </h2>
           <p className="text-lg md:text-xl text-[var(--text-muted)]">
-            3 minutos que podem mudar sua vida
+            5 minutos que podem mudar sua vida
           </p>
         </motion.div>
 
@@ -130,7 +130,7 @@ export const VSLSection: React.FC<VSLSectionProps> = ({ pandaVideoId }) => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            QUERO GARANTIR MINHA VAGA
+            Quero meu projeto de 45 dias
           </motion.button>
 
           <motion.p

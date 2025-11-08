@@ -146,8 +146,8 @@ export const OfertaSection: React.FC = () => {
 
           {/* CTA */}
           <div className="px-8 pb-8">
-            <button onClick={() => setIsModalOpen(true)} className="projeto45-cta w-full">
-              GARANTIR MINHA VAGA AGORA
+            <button onClick={() => setIsModalOpen(true)} className="projeto45-cta-green w-full">
+              ✅ GARANTIR MINHA VAGA AGORA
             </button>
 
             {/* Vagas limitadas */}

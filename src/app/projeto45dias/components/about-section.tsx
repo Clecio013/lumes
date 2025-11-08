@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Award, Heart, Target } from 'lucide-react';
+import { scrollToOferta } from '../utils/scrollToOferta';
 
 const fadeIn = {
   initial: { opacity: 0, y: 40 },
@@ -206,6 +207,7 @@ export const AboutSection: React.FC = () => {
               className="projeto45-cta"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              onClick={scrollToOferta}
             >
               QUERO MINHA CONSULTORIA
             </motion.button>

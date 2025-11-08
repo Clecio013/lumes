@@ -1,72 +1,127 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Heart, Sparkles, Shield, Smile, TrendingUp, Zap } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight, TrendingUp, Lightbulb } from 'lucide-react';
+import { useState } from 'react';
+import Image from 'next/image';
 
 const transformations = [
   {
     id: 1,
+    name: 'GABRIELA MARTINS',
+    age: 28,
+    mainResult: '+5kg de massa magra',
     before: {
-      title: 'Inseguros',
-      description: 'Sentindo-se perdidos e sem direção em relação à alimentação e treino',
-      icon: Shield,
-      color: 'text-red-400',
+      image: '/projeto45dias/transformacao/enzo/antes.png',
+      alt: 'Mulher insegura e desmotivada',
     },
     after: {
-      title: 'Confiantes',
-      description: 'Com clareza sobre o caminho e segurança nas escolhas diárias',
-      icon: Shield,
-      color: 'text-green-400',
+      image: '/projeto45dias/transformacao/enzo/depois.png',
+      alt: 'Mulher confiante e energizada',
     },
+    achievements: [
+      'Eliminou compulsão alimentar',
+      'Melhorou autoestima',
+      'Criou rotina sustentável',
+    ],
   },
   {
     id: 2,
+    name: 'RODRIGO SILVA',
+    age: 35,
+    mainResult: 'Ganho de energia e disposição',
     before: {
-      title: 'Sem autoestima',
-      description: 'Frustrados com tentativas anteriores e resultados inconsistentes',
-      icon: Heart,
-      color: 'text-red-400',
+      image: '/projeto45dias/transformacao/enzo/antes.png',
+      alt: 'Homem cansado e sem energia',
     },
     after: {
-      title: 'Realizados',
-      description: 'Orgulhosos da transformação e dos resultados alcançados',
-      icon: Sparkles,
-      color: 'text-green-400',
+      image: '/projeto45dias/transformacao/enzo/depois.png',
+      alt: 'Homem energizado e motivado',
     },
+    achievements: [
+      'Triplicou disposição diária',
+      'Aderiu ao treino regularmente',
+      'Melhorou qualidade do sono',
+    ],
   },
   {
     id: 3,
+    name: 'AMANDA COSTA',
+    age: 31,
+    mainResult: 'Relação saudável com comida',
     before: {
-      title: 'Desmotivados',
-      description: 'Cansados de dietas restritivas e treinos que não funcionam',
-      icon: TrendingUp,
-      color: 'text-red-400',
+      image: '/projeto45dias/transformacoes/mulher-estressada-antes.jpg',
+      alt: 'Mulher estressada com a alimentação',
     },
     after: {
-      title: 'Energizados',
-      description: 'Com energia renovada e disposição para conquistar objetivos',
-      icon: Zap,
-      color: 'text-green-400',
+      image: '/projeto45dias/transformacoes/mulher-feliz-depois.jpg',
+      alt: 'Mulher feliz e em paz',
     },
+    achievements: [
+      'Deixou de contar calorias obsessivamente',
+      'Voltou a ter vida social',
+      'Estabeleceu relação equilibrada com comida',
+    ],
   },
   {
     id: 4,
+    name: 'LUCAS OLIVEIRA',
+    age: 29,
+    mainResult: 'Autoconfiança e foco',
     before: {
-      title: 'Frustrados',
-      description: 'Tentando sozinhos sem apoio profissional qualificado',
-      icon: Smile,
-      color: 'text-red-400',
+      image: '/projeto45dias/transformacao/enzo/antes.png',
+      alt: 'Homem inseguro e sem direção',
     },
     after: {
-      title: 'Acompanhados',
-      description: 'Com suporte profissional individualizado em cada etapa',
-      icon: Smile,
-      color: 'text-green-400',
+      image: '/projeto45dias/transformacao/enzo/depois.png',
+      alt: 'Homem confiante e determinado',
     },
+    achievements: [
+      'Ganhou clareza sobre objetivos',
+      'Desenvolveu disciplina consistente',
+      'Aumentou autoconfiança',
+    ],
   },
 ];
 
 export function EmotionalTransformationSection() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+  };
+
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity;
+  };
+
+  const paginate = (newDirection: number) => {
+    setDirection(newDirection);
+    setCurrentIndex((prevIndex) => {
+      const nextIndex = prevIndex + newDirection;
+      if (nextIndex < 0) return transformations.length - 1;
+      if (nextIndex >= transformations.length) return 0;
+      return nextIndex;
+    });
+  };
+
+  const current = transformations[currentIndex];
+
   return (
     <section className="projeto45-section py-20 bg-dark">
       <div className="container mx-auto px-4">
@@ -78,90 +133,164 @@ export function EmotionalTransformationSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            A Transformação Que Você Vai Sentir
+          <h2 className="text-4xl md:text-6xl font-bold projeto45-title mb-6">
+            TRANSFORMAÇÕES REAIS EM 45 DIAS
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Muito além dos números na balança, o Projeto 45 Graus transforma
-            como você se sente e se relaciona com seu corpo
-          </p>
-        </motion.div>
-
-        {/* Grid de Transformações */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {transformations.map((item, index) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="projeto45-card bg-dark-lighter p-8 rounded-xl border border-gold/20"
-            >
-              {/* Before */}
-              <div className="mb-6 pb-6 border-b border-gold/10">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className={`${item.before.color}`}>
-                    <item.before.icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-bold text-red-400">
-                    Antes: {item.before.title}
-                  </h3>
-                </div>
-                <p className="text-gray-400">{item.before.description}</p>
-              </div>
-
-              {/* Arrow */}
-              <div className="flex justify-center my-4">
-                <div className="text-gold">
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              {/* After */}
-              <div className="pt-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className={`${item.after.color}`}>
-                    <item.after.icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-bold text-green-400">
-                    Depois: {item.after.title}
-                  </h3>
-                </div>
-                <p className="text-gray-300">{item.after.description}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Footer */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-center mt-16"
-        >
-          <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
-            Essas são as transformações reais que nossos clientes experimentam.
-            <br />
+          <p className="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto">
+            Não é mágica.{' '}
             <span className="text-gold font-semibold">
-              Resultados sustentáveis começam de dentro para fora.
+              É estratégia, disciplina e acompanhamento profissional.
             </span>
           </p>
         </motion.div>
+
+        {/* Carousel */}
+        <div className="relative max-w-7xl mx-auto px-4">
+          <div className="relative min-h-[600px] md:min-h-[500px] lg:min-h-[400px]">
+            <AnimatePresence initial={false} custom={direction} mode="wait">
+              <motion.div
+                key={currentIndex}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: 'spring', stiffness: 300, damping: 30 },
+                  opacity: { duration: 0.2 },
+                }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={1}
+                onDragEnd={(e, { offset, velocity }) => {
+                  const swipe = swipePower(offset.x, velocity.x);
+
+                  if (swipe < -swipeConfidenceThreshold) {
+                    paginate(1);
+                  } else if (swipe > swipeConfidenceThreshold) {
+                    paginate(-1);
+                  }
+                }}
+                className="w-full absolute top-0 left-0 right-0"
+              >
+                <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-center justify-center max-w-6xl mx-auto px-4">
+                  {/* Cards ANTES/DEPOIS - Lado Esquerdo */}
+                  <div className="flex gap-4 flex-shrink-0">
+                    {/* Card ANTES */}
+                    <div className="relative w-[140px] sm:w-[180px] md:w-[220px] lg:w-[250px] aspect-[3/4] rounded-xl overflow-hidden border-3 border-red-500">
+                      <Image
+                        src={current.before.image}
+                        alt={current.before.alt}
+                        fill
+                        className="object-cover"
+                        sizes="250px"
+                      />
+                      <div className="absolute top-3 left-3">
+                        <span className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase">
+                          Antes
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Card DEPOIS */}
+                    <div className="relative w-[140px] sm:w-[180px] md:w-[220px] lg:w-[250px] aspect-[3/4] rounded-xl overflow-hidden border-3 border-gold">
+                      <Image
+                        src={current.after.image}
+                        alt={current.after.alt}
+                        fill
+                        className="object-cover"
+                        sizes="250px"
+                      />
+                      <div className="absolute top-3 left-3">
+                        <span className="bg-gold text-dark text-xs font-bold px-3 py-1 rounded-full uppercase">
+                          Depois
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Info Card - Lado Direito */}
+                  <div className="bg-dark-lighter/90 rounded-2xl border-2 border-gold/20 p-6 sm:p-8 w-full lg:max-w-lg shadow-[0_0_30px_rgba(212,175,55,0.25)]">
+                    {/* Nome e Idade */}
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="bg-gold p-2.5 rounded-full">
+                        <TrendingUp className="w-5 h-5 text-dark" />
+                      </div>
+                      <div>
+                        <p className="text-white font-bold text-base sm:text-lg tracking-wide">
+                          {current.name}
+                        </p>
+                        <p className="text-gray-400 text-sm">{current.age} anos</p>
+                      </div>
+                    </div>
+
+                    {/* Resultado Principal - DESTAQUE */}
+                    <div className="border-2 border-gold rounded-lg px-4 py-5 mb-6 bg-black/20">
+                      <p className="text-gold font-bold text-xl sm:text-2xl text-center">
+                        {current.mainResult}
+                      </p>
+                    </div>
+
+                    {/* Conquistas */}
+                    <div>
+                      <p className="text-gray-400 text-xs uppercase tracking-wider mb-3 font-semibold">
+                        CONQUISTAS:
+                      </p>
+                      <ul className="space-y-2.5">
+                        {current.achievements.map((achievement, idx) => (
+                          <li key={idx} className="flex items-start gap-2.5 bg-black/30 p-3 rounded-lg">
+                            <div className="bg-gold rounded-full w-1.5 h-1.5 flex-shrink-0 mt-1.5" />
+                            <span className="text-gray-200 text-sm leading-relaxed">
+                              {achievement}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Navigation Arrows */}
+          <div className="flex justify-center items-center gap-4 mt-18">
+            <button
+              onClick={() => paginate(-1)}
+              className="cursor-pointer bg-dark-lighter hover:bg-dark border-2 border-gold/50 hover:border-gold text-gold rounded-full p-3 transition-all duration-300 hover:scale-110"
+              aria-label="Transformação anterior"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+
+            {/* Indicators */}
+            <div className="flex items-center gap-2">
+              {transformations.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setDirection(index > currentIndex ? 1 : -1);
+                    setCurrentIndex(index);
+                  }}
+                  className={`cursor-pointer rounded-full transition-all duration-300 ${
+                    index === currentIndex
+                      ? 'w-8 h-2 bg-gold'
+                      : 'w-2 h-2 bg-gold/40 hover:bg-gold/70'
+                  }`}
+                  aria-label={`Ir para transformação ${index + 1}`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={() => paginate(1)}
+              className="cursor-pointer bg-dark-lighter hover:bg-dark border-2 border-gold/50 hover:border-gold text-gold rounded-full p-3 transition-all duration-300 hover:scale-110"
+              aria-label="Próxima transformação"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   );

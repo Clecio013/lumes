@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Quote, Star } from 'lucide-react';
+import { scrollToOferta } from '../utils/scrollToOferta';
 
 const fadeIn = {
   initial: { opacity: 0, y: 40 },
@@ -168,6 +169,7 @@ export const TestimonialsSection: React.FC = () => {
             className="projeto45-cta"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            onClick={scrollToOferta}
           >
             COMEÇAR MINHA TRANSFORMAÇÃO
           </motion.button>
