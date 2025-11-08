@@ -1,6 +1,13 @@
 /* Estilos isolados para Projeto 45 Graus */
 /* Não afeta outros estilos do site */
 
+/* Definição de cores customizadas para Tailwind CSS 4 */
+@theme {
+  --color-gold: #d4af37;
+  --color-dark: #0d0d0d;
+  --color-dark-lighter: #151515;
+}
+
 .projeto45-container {
   /* Paleta de Cores */
   --bg-dark: #0d0d0d;
@@ -109,6 +116,47 @@
 
 .projeto45-cta:active {
   transform: translateY(0);
+}
+
+/* Botão CTA Verde - Para seção de oferta final */
+.projeto45-cta-green {
+  background: linear-gradient(135deg, #36965A 0%, #1f5c3a 100%);
+  color: #ffffff;
+  font-family: var(--font-bebas-neue), sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 1.25rem 3rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: 0 4px 20px rgba(54, 150, 90, 0.5),
+              0 0 35px rgba(31, 92, 58, 0.3);
+  animation: projeto45-pulse-green 2s ease-in-out infinite;
+}
+
+.projeto45-cta-green:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px rgba(54, 150, 90, 0.7),
+              0 0 50px rgba(31, 92, 58, 0.4);
+  background: linear-gradient(135deg, #42b068 0%, #267a4a 100%);
+}
+
+.projeto45-cta-green:active {
+  transform: translateY(0);
+}
+
+@keyframes projeto45-pulse-green {
+  0%, 100% {
+    box-shadow: 0 4px 20px rgba(54, 150, 90, 0.5),
+                0 0 35px rgba(31, 92, 58, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 25px rgba(54, 150, 90, 0.6),
+                0 0 45px rgba(31, 92, 58, 0.35);
+  }
 }
 
 /* Cards */
@@ -293,6 +341,94 @@
   z-index: 1;
 }
 
+/* Classes utilitárias para cores */
+.text-gold {
+  color: var(--gold-primary) !important;
+}
+
+.bg-gold {
+  background-color: var(--gold-primary) !important;
+}
+
+.border-gold {
+  border-color: var(--gold-primary) !important;
+}
+
+.text-dark {
+  color: var(--bg-dark) !important;
+}
+
+.bg-dark {
+  background-color: var(--bg-dark) !important;
+}
+
+.bg-dark-lighter {
+  background-color: var(--bg-dark-secondary) !important;
+}
+
+/* Variantes com opacidade */
+.text-gold\/70 {
+  color: rgba(212, 175, 55, 0.7) !important;
+}
+
+.bg-gold\/10 {
+  background-color: rgba(212, 175, 55, 0.1) !important;
+}
+
+.bg-gold\/20 {
+  background-color: rgba(212, 175, 55, 0.2) !important;
+}
+
+.bg-gold\/5 {
+  background-color: rgba(212, 175, 55, 0.05) !important;
+}
+
+.border-gold\/20 {
+  border-color: rgba(212, 175, 55, 0.2) !important;
+}
+
+.border-gold\/30 {
+  border-color: rgba(212, 175, 55, 0.3) !important;
+}
+
+.border-gold\/50 {
+  border-color: rgba(212, 175, 55, 0.5) !important;
+}
+
+.bg-gold\/40 {
+  background-color: rgba(212, 175, 55, 0.4) !important;
+}
+
+.bg-gold\/60 {
+  background-color: rgba(212, 175, 55, 0.6) !important;
+}
+
+.bg-gold\/70 {
+  background-color: rgba(212, 175, 55, 0.7) !important;
+}
+
+.bg-dark-lighter\/90 {
+  background-color: rgba(21, 21, 21, 0.9) !important;
+}
+
+/* Gradientes */
+.from-gold {
+  --tw-gradient-from: var(--gold-primary);
+  --tw-gradient-to: transparent;
+}
+
+.to-gold\/70 {
+  --tw-gradient-to: rgba(212, 175, 55, 0.7);
+}
+
+.from-gold\/20 {
+  --tw-gradient-from: rgba(212, 175, 55, 0.2);
+}
+
+.to-gold\/5 {
+  --tw-gradient-to: rgba(212, 175, 55, 0.05);
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
   .projeto45-section {
@@ -300,6 +436,12 @@
   }
 
   .projeto45-cta {
+    font-size: 1.25rem;
+    padding: 1rem 2rem;
+    width: 100%;
+  }
+
+  .projeto45-cta-green {
     font-size: 1.25rem;
     padding: 1rem 2rem;
     width: 100%;

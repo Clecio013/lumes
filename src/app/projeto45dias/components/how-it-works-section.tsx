@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { UserCheck, FileText, Rocket, ArrowRight } from 'lucide-react';
+import { scrollToOferta } from '@/app/projeto45dias/utils/scrollToOferta';
 
 const fadeIn = {
   initial: { opacity: 0, y: 40 },
@@ -198,6 +199,7 @@ export const HowItWorksSection: React.FC = () => {
               className="projeto45-cta"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              onClick={scrollToOferta}
             >
               GARANTIR MINHA VAGA AGORA
             </motion.button>

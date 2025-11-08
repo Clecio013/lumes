@@ -72,9 +72,7 @@ export const HeroSection: React.FC = () => {
               <br />
               PARA TRANSFORMAR
               <br />
-              <span className="text-3xl md:text-4xl lg:text-5xl">
-                CORPO E MENTE
-              </span>
+              CORPO E MENTE
             </motion.h1>
 
             {/* Subheadline */}
