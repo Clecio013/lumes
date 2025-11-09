@@ -8,59 +8,56 @@ import Image from 'next/image';
 const transformations = [
   {
     id: 1,
-    name: 'GABRIELA MARTINS',
-    age: 28,
-    mainResult: '+5kg de massa magra',
+    title: 'EMAGRECER E GANHAR MASSA MAGRA',
+    mainResult: 'Construir um corpo forte e saudável',
     before: {
       image: '/projeto45dias/transformacao/gabriela/antes.png',
-      alt: 'Mulher insegura e desmotivada',
+      alt: 'Antes da transformação',
     },
     after: {
       image: '/projeto45dias/transformacao/gabriela/depois.png',
-      alt: 'Mulher confiante e energizada',
+      alt: 'Depois da transformação',
     },
     achievements: [
-      'Eliminou compulsão alimentar',
-      'Melhorou autoestima',
-      'Criou rotina sustentável',
+      'Eliminar compulsão alimentar',
+      'Melhorar autoestima e confiança',
+      'Criar rotina sustentável',
     ],
   },
   {
     id: 2,
-    name: 'RODRIGO SILVA',
-    age: 35,
-    mainResult: 'Ganho de energia e disposição',
+    title: 'RECUPERAR ENERGIA',
+    mainResult: 'Sentir disposição e vitalidade todos os dias',
     before: {
       image: '/projeto45dias/transformacao/rodrigo/antes.png',
-      alt: 'Homem cansado e sem energia',
+      alt: 'Antes da transformação',
     },
     after: {
       image: '/projeto45dias/transformacao/rodrigo/depois.png',
-      alt: 'Homem energizado e motivado',
+      alt: 'Depois da transformação',
     },
     achievements: [
-      'Triplicou disposição diária',
-      'Aderiu ao treino regularmente',
-      'Melhorou qualidade do sono',
+      'Triplicar disposição diária',
+      'Aderir ao treino regularmente',
+      'Melhorar qualidade do sono',
     ],
   },
   {
     id: 3,
-    name: 'LUCAS OLIVEIRA',
-    age: 29,
-    mainResult: 'Autoconfiança e foco',
+    title: 'DESENVOLVER AUTOCONFIANÇA',
+    mainResult: 'Conquistar clareza e foco nos objetivos',
     before: {
       image: '/projeto45dias/transformacao/lucas/antes.png',
-      alt: 'Homem inseguro e sem direção',
+      alt: 'Antes da transformação',
     },
     after: {
       image: '/projeto45dias/transformacao/lucas/depois.png',
-      alt: 'Homem confiante e determinado',
+      alt: 'Depois da transformação',
     },
     achievements: [
-      'Ganhou clareza sobre objetivos',
-      'Desenvolveu disciplina consistente',
-      'Aumentou autoconfiança',
+      'Ganhar clareza sobre objetivos',
+      'Desenvolver disciplina consistente',
+      'Aumentar autoconfiança',
     ],
   },
 ];
@@ -192,16 +189,15 @@ export function EmotionalTransformationSection() {
 
                   {/* Info Card - Lado Direito */}
                   <div className="bg-dark-lighter/90 rounded-2xl border-2 border-gold/20 p-6 sm:p-8 w-full lg:max-w-lg shadow-[0_0_30px_rgba(212,175,55,0.25)]">
-                    {/* Nome e Idade */}
+                    {/* Título da Transformação */}
                     <div className="flex items-center gap-3 mb-6">
                       <div className="bg-gold p-2.5 rounded-full">
                         <TrendingUp className="w-5 h-5 text-dark" />
                       </div>
                       <div>
                         <p className="text-white font-bold text-base sm:text-lg tracking-wide">
-                          {current.name}
+                          {current.title}
                         </p>
-                        <p className="text-gray-400 text-sm">{current.age} anos</p>
                       </div>
                     </div>
 
@@ -212,10 +208,10 @@ export function EmotionalTransformationSection() {
                       </p>
                     </div>
 
-                    {/* Conquistas */}
+                    {/* O que você vai conseguir */}
                     <div>
                       <p className="text-gray-400 text-xs uppercase tracking-wider mb-3 font-semibold">
-                        CONQUISTAS:
+                        O QUE VOCÊ VAI CONSEGUIR:
                       </p>
                       <ul className="space-y-2.5">
                         {current.achievements.map((achievement, idx) => (

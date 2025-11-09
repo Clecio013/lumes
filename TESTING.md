@@ -24,6 +24,56 @@
 
 ---
 
+## 🎯 Teste 0: Testar Página de Erro (Nova!)
+
+### **Cenário A: Cancelamento - Voltou sem pagar**
+
+Simula quando o usuário clica "Voltar à loja" no Mercado Pago sem tentar pagar:
+
+```
+http://localhost:3000/projeto45dias/erro?collection_id=null&collection_status=null&payment_id=null&status=null&external_reference=abc123&payment_type=null
+```
+
+**✅ Verificações:**
+- [ ] Ícone **amarelo** (AlertCircle) aparece
+- [ ] Título: "Você não finalizou seu pagamento"
+- [ ] Mensagem: "Notamos que você voltou sem completar a compra..."
+- [ ] **NÃO mostra** seção "Possíveis causas"
+- [ ] Botão: "FINALIZAR MINHA COMPRA"
+- [ ] Badge dourado: "⏰ Suas vagas ainda estão disponíveis!"
+
+### **Cenário B: Erro real de pagamento**
+
+Simula quando pagamento realmente falhou:
+
+```
+http://localhost:3000/projeto45dias/erro?payment_id=12345678&status=rejected&collection_status=rejected
+```
+
+**✅ Verificações:**
+- [ ] Ícone **vermelho** (XCircle) aparece
+- [ ] Título: "Ops! Algo deu errado com seu pagamento"
+- [ ] Mensagem: "Não se preocupe, isso acontece..."
+- [ ] **MOSTRA** seção "Possíveis causas" (cartão incorreto, etc.)
+- [ ] Botão: "TENTAR NOVAMENTE"
+- [ ] Badge vermelho: "⚠️ Atenção: As vagas são limitadas!"
+
+### **Cenário C: Teste via Mercado Pago real**
+
+1. Inicie o servidor: `npm run dev`
+2. Acesse: `http://localhost:3000/projeto45dias`
+3. Clique em "GARANTIR MINHA VAGA"
+4. Aguarde redirecionamento para Mercado Pago
+5. **No Mercado Pago, clique em "Voltar à loja"** (NÃO preencha nada)
+6. Você será redirecionado para `/erro` com parâmetros `null`
+
+**✅ Verificações:**
+- [ ] Página de erro mostra versão de **cancelamento** (ícone amarelo)
+- [ ] Copy é encorajadora, não assustadora
+- [ ] Botão leva de volta para `/projeto45dias`
+
+---
+
 ## 🎯 Teste 1: Simular Pagamento Completo
 
 ### **Passo 1: Criar pagamento fictício**
