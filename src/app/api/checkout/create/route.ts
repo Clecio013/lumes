@@ -1,28 +1,16 @@
 import { NextResponse } from 'next/server';
+import { randomUUID } from 'crypto';
 import { MercadoPagoClient } from '@/lib/@lumes/mercadopago';
 import { getCurrentBatch } from '@/app/projeto45dias/lib/batches-config';
-import { SheetsClient } from '@/lib/@lumes/sheets';
 
 /**
  * POST /api/checkout/create
  *
  * Cria checkout do Mercado Pago para Projeto 45 Graus
- * Agora recebe TODOS os dados do usuário (coletados antes do pagamento)
+ * Versão simplificada: não coleta dados antes, MP coleta tudo
  */
-export async function POST(req: Request) {
+export async function POST() {
   try {
-    // Parse body
-    const body = await req.json();
-    const { nome, email, telefone, nascimento } = body;
-
-    // Validação básica
-    if (!nome || !email || !telefone || !nascimento) {
-      return NextResponse.json(
-        { error: 'Dados incompletos' },
-        { status: 400 }
-      );
-    }
-
     // Validar lote atual
     const batch = getCurrentBatch();
 
@@ -45,66 +33,36 @@ export async function POST(req: Request) {
     const splitAmauri = batch.promotionalPrice * 0.4;
     const splitSeyune = batch.promotionalPrice * 0.4;
 
-    // Criar checkout com TODOS os dados do usuário no metadata
+    // Gerar identificador único para este checkout
+    const uniqueRef = randomUUID();
+
+    // Criar checkout (metadata simplificado - sem user data, sem lote)
     const checkout = await mpClient
       .checkout()
-      .withAmount(batch.promotionalPrice, `Projeto 45 Graus - ${batch.name}`)
-      .withPayer({ email })
+      .withAmount(batch.promotionalPrice, 'Projeto 45 Graus')
       .withMetadata({
-        // Dados do lote
-        lote_id: batch.id,
-        lote_name: batch.name,
         preco_total: batch.promotionalPrice,
         split_lumes: splitLumes,
         split_amauri: splitAmauri,
         split_seyune: splitSeyune,
         campanha: 'projeto45dias',
-        // Dados do usuário (garantir disponibilidade no webhook)
-        user_nome: nome,
-        user_email: email,
-        user_telefone: telefone,
-        user_nascimento: nascimento,
+        reference: uniqueRef,
       })
       .withSuccessUrl(`${process.env.NEXT_PUBLIC_URL}/projeto45dias/obrigado`)
       .withFailureUrl(`${process.env.NEXT_PUBLIC_URL}/projeto45dias/erro`)
       .withPendingUrl(`${process.env.NEXT_PUBLIC_URL}/projeto45dias/obrigado`)
       .withStatementDescriptor('PROJETO45')
-      .withExternalReference(email) // Identificador único do lead para rastreamento
+      .withExternalReference(uniqueRef)
       .build();
 
     console.log('[Checkout API] Checkout criado:', {
       preferenceId: checkout.id,
-      email,
+      reference: uniqueRef,
     });
-
-    // Atualizar Google Sheets com Preference ID e Status Lead
-    try {
-      const sheetsClient = SheetsClient.create({
-        privateKey: process.env.GOOGLE_SHEETS_PRIVATE_KEY!,
-        clientEmail: process.env.GOOGLE_SHEETS_CLIENT_EMAIL!,
-        sheetId: process.env.GOOGLE_SHEETS_SHEET_ID!,
-        sheetName: process.env.GOOGLE_SHEETS_SHEET_NAME || 'Sheet1',
-      });
-
-      await sheetsClient.updateRowByColumn({
-        searchColumn: 'Email',
-        searchValue: email,
-        updates: {
-          'Preference ID': checkout.id,
-          'Status Lead': 'Checkout criado',
-        },
-      });
-
-      console.log('[Checkout API] Google Sheets atualizado com Preference ID');
-    } catch (updateError) {
-      // Não falhar o checkout se atualização do Sheets falhar
-      console.error('[Checkout API] Erro ao atualizar Sheets (não crítico):', updateError);
-    }
 
     return NextResponse.json({
       checkoutUrl: checkout.init_point,
       preferenceId: checkout.id,
-      lote: batch.name,
       preco: batch.promotionalPrice,
     });
   } catch (error) {
@@ -122,7 +80,7 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json(
-      { error: 'Erro ao criar checkout. Tente novamente.', ...error as object },
+      { error: 'Erro ao criar checkout. Tente novamente.' },
       { status: 500 }
     );
   }

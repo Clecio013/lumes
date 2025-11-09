@@ -94,7 +94,7 @@ export const Footer: React.FC = () => {
             <p className="text-[var(--text-muted)] text-xs">
               Desenvolvido por{' '}
               <a
-                href="https://lumesdigital.com.br"
+                href="https://www.instagram.com/lumesdigital_/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[var(--gold-primary)] hover:text-[var(--gold-light)] transition-colors font-semibold"

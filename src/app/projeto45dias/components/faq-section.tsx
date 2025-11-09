@@ -183,7 +183,7 @@ export const FAQSection: React.FC = () => {
               </motion.button>
 
               <motion.a
-                href="https://wa.me/5511999999999?text=Oi! Tenho dúvidas sobre o Projeto 45 Graus"
+                href="https://wa.me/5511950822727?text=Ol%C3%A1%21%20Estou%20no%20site%20do%20Projeto%2045%20Graus%20e%20gostaria%20de%20tirar%20algumas%20d%C3%BAvidas%20antes%20de%20garantir%20minha%20vaga.%20Pode%20me%20ajudar%3F"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent border-2 border-[var(--gold-primary)] text-[var(--gold-primary)] font-bold rounded-lg hover:bg-[var(--gold-primary)] hover:text-black transition-all"

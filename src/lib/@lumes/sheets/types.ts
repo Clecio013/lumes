@@ -41,6 +41,20 @@ export interface UpdateRowByColumnParams {
 }
 
 /**
+ * Parâmetros para buscar linha por coluna
+ */
+export interface FindRowByColumnParams {
+  /** Nome da coluna para buscar */
+  searchColumn: string;
+
+  /** Valor a buscar na coluna */
+  searchValue: string | number;
+
+  /** Nome da aba (sobrescreve config padrão) */
+  sheetName?: string;
+}
+
+/**
  * Resultado da operação
  */
 export interface SheetOperationResult {

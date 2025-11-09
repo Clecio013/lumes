@@ -4,14 +4,36 @@ import React, { useState } from 'react';
 import { Check, Zap, TrendingUp } from 'lucide-react';
 import { UrgencyBadge } from './urgency-badge';
 import { getCurrentBatch, getNextBatch, calculateSavings, isCampaignEnded, formatPrice } from '../lib/batches-config';
-import { CompleteDataBeforeCheckout } from './complete-data-before-checkout';
 
 export const OfertaSection: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const currentBatch = getCurrentBatch();
   const nextBatch = getNextBatch();
   const savings = calculateSavings();
   const campaignEnded = isCampaignEnded();
+
+  const handleCheckout = async () => {
+    setIsLoading(true);
+
+    try {
+      const res = await fetch('/api/checkout/create', {
+        method: 'POST',
+      });
+
+      if (!res.ok) {
+        throw new Error('Erro ao criar checkout');
+      }
+
+      const data = await res.json();
+
+      // Redirecionar para checkout do Mercado Pago
+      window.location.href = data.checkoutUrl;
+    } catch (error) {
+      console.error('Erro ao criar checkout:', error);
+      alert('Erro ao processar sua solicitação. Tente novamente.');
+      setIsLoading(false);
+    }
+  };
 
   if (campaignEnded) {
     return (
@@ -141,8 +163,12 @@ export const OfertaSection: React.FC = () => {
 
           {/* CTA */}
           <div className="px-8 pb-8">
-            <button onClick={() => setIsModalOpen(true)} className="projeto45-cta-green w-full">
-              ✅ GARANTIR MINHA VAGA AGORA
+            <button
+              onClick={handleCheckout}
+              disabled={isLoading}
+              className="projeto45-cta-green w-full disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading ? 'PROCESSANDO...' : '✅ GARANTIR MINHA VAGA AGORA'}
             </button>
 
             {/* Urgência */}
@@ -159,15 +185,6 @@ export const OfertaSection: React.FC = () => {
           </p>
         </div>
       </div>
-
-      {/* Complete Data Modal - Collects all data before checkout */}
-      {currentBatch && (
-        <CompleteDataBeforeCheckout
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          loteId={currentBatch.id}
-        />
-      )}
     </section>
   );
 };

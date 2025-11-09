@@ -1,7 +1,7 @@
 import { google } from 'googleapis';
 import type { SheetsConfig } from './config';
 import { SheetsConfigSchema } from './config';
-import type { SheetRow, AddRowParams, UpdateRowByColumnParams, SheetOperationResult } from './types';
+import type { SheetRow, AddRowParams, UpdateRowByColumnParams, FindRowByColumnParams, SheetOperationResult } from './types';
 import { SheetsConfigError, SheetsAddRowError, SheetsUpdateRowError, SheetsReadError } from './errors';
 
 /**
@@ -218,6 +218,73 @@ export class SheetsClient {
       }
 
       throw new SheetsUpdateRowError('Falha ao atualizar linha no Google Sheets', error);
+    }
+  }
+
+  /**
+   * Busca linha por valor em coluna específica
+   *
+   * @param params - Parâmetros da busca
+   * @returns Promise com dados da linha encontrada (ou null)
+   * @throws {SheetsReadError} Se falhar ao buscar
+   *
+   * @example
+   * ```typescript
+   * const row = await client.findRowByColumn({
+   *   searchColumn: 'Payment ID',
+   *   searchValue: '123456789'
+   * });
+   *
+   * if (row) {
+   *   console.log(row['Nome'], row['Email']);
+   * }
+   * ```
+   */
+  async findRowByColumn(params: FindRowByColumnParams): Promise<SheetRow | null> {
+    try {
+      const targetSheet = params.sheetName || this.config.sheetName || 'Sheet1';
+
+      // Buscar todos os dados da planilha
+      const response = await this.sheets.spreadsheets.values.get({
+        spreadsheetId: this.config.sheetId,
+        range: `${targetSheet}!A:Z`,
+      });
+
+      const rows = response.data.values || [];
+
+      if (rows.length === 0) {
+        return null;
+      }
+
+      const headers = rows[0];
+      const searchColumnIndex = headers.indexOf(params.searchColumn);
+
+      if (searchColumnIndex === -1) {
+        throw new SheetsReadError(`Coluna "${params.searchColumn}" não encontrada`);
+      }
+
+      // Buscar linha que contém o valor
+      for (let i = 1; i < rows.length; i++) {
+        if (rows[i][searchColumnIndex] === String(params.searchValue)) {
+          // Montar objeto SheetRow mapeando headers -> valores
+          const rowData: SheetRow = {};
+
+          headers.forEach((header, index) => {
+            rowData[header] = rows[i][index] || '';
+          });
+
+          return rowData;
+        }
+      }
+
+      // Não encontrou
+      return null;
+    } catch (error) {
+      if (error instanceof SheetsReadError) {
+        throw error;
+      }
+
+      throw new SheetsReadError('Falha ao buscar linha no Google Sheets', error);
     }
   }
 

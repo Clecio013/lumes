@@ -22,7 +22,7 @@ export const BATCHES: Batch[] = [
     name: '1° Lote',
     slots: 25,
     originalPrice: 697,
-    promotionalPrice: 5,
+    promotionalPrice: 397,
     startDate: '2025-11-05',
     endDate: '2025-11-13',
     active: true,

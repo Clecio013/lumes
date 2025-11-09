@@ -149,7 +149,7 @@ export const HeroSection: React.FC = () => {
             variants={fadeInRight}
             initial="initial"
             animate="animate"
-            className="relative order-1 lg:order-2"
+            className="relative order-2"
           >
             <div className="relative aspect-[4/5] lg:aspect-[3/4] max-w-2xl lg:max-w-5xl mx-auto">
               {/* Imagem */}
