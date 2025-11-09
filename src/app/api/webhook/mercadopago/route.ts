@@ -52,21 +52,27 @@ export async function POST(req: Request) {
             return; // Não processar novamente
           }
 
-          // 1. Extrair dados do payer (Mercado Pago)
-          const payer = payment.payer as any; // Type assertion para acessar propriedades dinâmicas
-          const nome = payer?.first_name && payer?.last_name
-            ? `${payer.first_name} ${payer.last_name}`
-            : payer?.name || 'Nome não informado';
+          // 1. Extrair dados do metadata (enviados pela API de process-payment)
+          const metadata = payment.metadata || {};
 
-          const email = payer?.email || payment.external_reference || '';
+          // Dados pessoais completos vindos do metadata
+          const nome = metadata.full_name || payment.payer?.name || 'Nome não informado';
 
-          const telefone = payer?.phone?.number || '-';
+          const email = payment.payer?.email || payment.external_reference || '';
+
+          const telefone = metadata.phone || payment.payer?.phone?.number || '-';
+
+          // Nascimento formatado (YYYY-MM-DD → DD/MM/YYYY)
+          const nascimentoRaw = metadata.birthdate || '';
+          const nascimento = nascimentoRaw
+            ? new Date(nascimentoRaw).toLocaleDateString('pt-BR', { timeZone: 'UTC' })
+            : '-';
 
           // 2. Extrair splits do metadata
-          const precoTotal = payment.metadata?.preco_total || payment.transaction_amount || 0;
-          const splitLumes = payment.metadata?.split_lumes || (precoTotal * 0.2);
-          const splitAmauri = payment.metadata?.split_amauri || (precoTotal * 0.4);
-          const splitSeyune = payment.metadata?.split_seyune || (precoTotal * 0.4);
+          const precoTotal = metadata.preco_total || payment.transaction_amount || 0;
+          const splitLumes = metadata.split_lumes || (precoTotal * 0.2);
+          const splitAmauri = metadata.split_amauri || (precoTotal * 0.4);
+          const splitSeyune = metadata.split_seyune || (precoTotal * 0.4);
 
           // 3. Salvar na planilha Google Sheets (10 colunas)
           await sheetsClient.addRow({
@@ -74,7 +80,7 @@ export async function POST(req: Request) {
             Nome: nome,
             Email: email,
             Telefone: telefone,
-            Nascimento: '-', // Será preenchido depois na página de obrigado
+            Nascimento: nascimento, // Agora salva diretamente do metadata
             'Preço Total': `R$ ${precoTotal.toFixed(2)}`,
             'Lumes (20%)': `R$ ${splitLumes.toFixed(2)}`,
             'Amauri (40%)': `R$ ${splitAmauri.toFixed(2)}`,

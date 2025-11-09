@@ -53,3 +53,41 @@ export {
   MercadoPagoCheckoutError,
   MercadoPagoWebhookError,
 } from './errors';
+
+// Bricks (Checkout Transparente)
+export { PaymentBrickBuilder, createProjeto45DiasCheckout } from './brick/brick-builder';
+export { PaymentBrickController, createPaymentBrickController } from './brick/brick-controller';
+export type {
+  PaymentBrickFormData,
+  PaymentBrickSettings,
+  PaymentBrickInitialization,
+  PaymentBrickCustomization,
+  PaymentBrickCallbacks,
+  BrickController,
+  BrickError,
+} from './brick/types';
+
+// Core Methods (Checkout Transparente Customizado)
+export { CardFieldsManager, createCardFieldsManager } from './core-methods/card-fields';
+export { CardTokenizer, createCardTokenizer } from './core-methods/card-tokenizer';
+export { PixPaymentGenerator, createPixPaymentGenerator } from './core-methods/pix-payment';
+export { InstallmentsManager, createInstallmentsManager } from './core-methods/installments';
+export type {
+  CardFieldType,
+  CardFieldOptions,
+  CardField,
+  CardTokenData,
+  CardToken,
+  CardTokenError,
+  InstallmentOption,
+  InstallmentsResponse,
+  PayerData,
+  CardPaymentData,
+  PixPaymentData,
+  PaymentData,
+  PixQRCodeData,
+  PixPaymentResponse,
+  MPFields,
+  MercadoPagoSDK,
+} from './core-methods/types';
+export type { PixPaymentOptions } from './core-methods/pix-payment';

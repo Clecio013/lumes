@@ -12,27 +12,10 @@ export const OfertaSection: React.FC = () => {
   const savings = calculateSavings();
   const campaignEnded = isCampaignEnded();
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     setIsLoading(true);
-
-    try {
-      const res = await fetch('/api/checkout/create', {
-        method: 'POST',
-      });
-
-      if (!res.ok) {
-        throw new Error('Erro ao criar checkout');
-      }
-
-      const data = await res.json();
-
-      // Redirecionar para checkout do Mercado Pago
-      window.location.href = data.checkoutUrl;
-    } catch (error) {
-      console.error('Erro ao criar checkout:', error);
-      alert('Erro ao processar sua solicitação. Tente novamente.');
-      setIsLoading(false);
-    }
+    // Redirecionar para página de checkout com Payment Brick
+    window.location.href = '/projeto45dias/checkout';
   };
 
   if (campaignEnded) {

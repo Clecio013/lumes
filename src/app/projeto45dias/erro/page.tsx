@@ -21,30 +21,11 @@ function ErrorPageContent() {
   // Estado para loading do checkout
   const [isCreatingCheckout, setIsCreatingCheckout] = useState(false);
 
-  // Função para criar checkout e redirecionar
-  const handleRetryCheckout = async () => {
+  // Função para redirecionar ao checkout
+  const handleRetryCheckout = () => {
     setIsCreatingCheckout(true);
-
-    try {
-      const response = await fetch('/api/checkout/create', {
-        method: 'POST',
-      });
-
-      const data = await response.json();
-
-      if (data.checkoutUrl) {
-        // Redirecionar para Mercado Pago
-        window.location.href = data.checkoutUrl;
-      } else {
-        console.error('Erro ao criar checkout:', data.error);
-        alert('Erro ao criar checkout. Tente novamente.');
-        setIsCreatingCheckout(false);
-      }
-    } catch (error) {
-      console.error('Erro ao criar checkout:', error);
-      alert('Erro ao criar checkout. Tente novamente.');
-      setIsCreatingCheckout(false);
-    }
+    // Redirecionar para página de checkout com Payment Brick
+    window.location.href = '/projeto45dias/checkout';
   };
 
   return (

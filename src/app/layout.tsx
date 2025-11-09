@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Manrope, Caveat } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { AnalyticsProvider } from "@/lib/analytics";
 
@@ -116,6 +117,12 @@ export default function RootLayout({
         {/* Analytics - GA4, Meta Pixel, Scroll Tracking */}
         <AnalyticsProvider />
         {children}
+
+        {/* Mercado Pago SDK - Necessário para Payment Bricks */}
+        <Script
+          src="https://sdk.mercadopago.com/js/v2"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );
