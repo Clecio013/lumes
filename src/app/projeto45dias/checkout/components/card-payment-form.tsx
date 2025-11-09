@@ -37,10 +37,6 @@ export function CardPaymentForm({
 
   const showError = (field: keyof CardData) => touched[field] && errors[field];
 
-  // Debug: log installment options
-  console.log('[CardPaymentForm] installmentOptions:', installmentOptions);
-  console.log('[CardPaymentForm] isLoadingInstallments:', isLoadingInstallments);
-
   return (
     <div className="space-y-4">
       <h3 className="checkout-label mb-4">Dados do Cartão</h3>

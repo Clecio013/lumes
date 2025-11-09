@@ -129,8 +129,6 @@ export default function CheckoutPage() {
           }
         )
         .then(() => {
-          console.log('[Checkout] Card fields criados com sucesso');
-
           // Criar tokenizer com SDK já inicializado
           const sdk = manager.getSDK();
           const tokenizer = new CardTokenizer(sdk);
@@ -138,11 +136,9 @@ export default function CheckoutPage() {
 
           // Buscar o card number field para detectar BIN
           const cardNumberField = manager.getField('cardNumber');
-          console.log('[Checkout] Card number field:', cardNumberField);
 
           if (cardNumberField) {
             instManager.detectBinFromCardField(cardNumberField, async (bin, paymentMethodId) => {
-              console.log('[Checkout] BIN detectado:', bin, 'Payment Method:', paymentMethodId);
               setIsLoadingInstallments(true);
               try {
                 const options = await instManager.getInstallments({
@@ -150,14 +146,13 @@ export default function CheckoutPage() {
                   bin,
                   paymentMethodId: paymentMethodId || undefined,
                 });
-                console.log('[Checkout] Opções de parcelas recebidas:', options);
                 setInstallmentOptions(options);
                 // Definir primeira opção como padrão
                 if (options.length > 0) {
                   setCardData((prev) => ({ ...prev, installments: options[0].installments }));
                 }
               } catch (error) {
-                console.error('[Checkout] Erro ao buscar parcelas:', error);
+                console.error('Erro ao buscar parcelas:', error);
                 setInstallmentOptions([]);
               } finally {
                 setIsLoadingInstallments(false);
@@ -315,6 +310,7 @@ export default function CheckoutPage() {
       body: JSON.stringify({
         paymentMethod: 'card',
         token: token.id,
+        paymentMethodId: token.payment_method_id, // visa, master, elo, etc.
         installments: cardData.installments,
         amount,
         personalData: {

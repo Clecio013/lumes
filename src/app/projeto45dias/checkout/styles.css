@@ -48,9 +48,8 @@
    INPUT PADRONIZADO
    ============================================ */
 
-/* Classe base para TODOS os inputs (shadcn e iframes MP) */
-.checkout-input,
-.checkout-iframe {
+/* Classe base para inputs do shadcn */
+.checkout-input {
   /* Tamanho e espaçamento FIXOS */
   height: 48px !important;
   min-height: 48px !important;
@@ -69,6 +68,25 @@
 
   /* Transições */
   transition: all 0.2s ease !important;
+}
+
+/* Classe para iframes do Mercado Pago (SEM padding interno) */
+.checkout-iframe {
+  /* Tamanho FIXO */
+  height: 48px !important;
+  min-height: 48px !important;
+
+  /* Cores */
+  background-color: #151515 !important;
+  border: 2px solid #aa8a2e !important;
+  border-radius: 0.5rem !important; /* 8px */
+
+  /* Transições */
+  transition: all 0.2s ease !important;
+
+  /* Display */
+  display: block !important;
+  width: 100% !important;
 }
 
 /* Input com ícone à esquerda - adicionar padding-left */

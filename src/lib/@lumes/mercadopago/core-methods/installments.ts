@@ -81,58 +81,28 @@ export class InstallmentsManager {
     }
 
     try {
-      console.log('[InstallmentsManager] SDK disponível:', this.mp);
-      console.log('[InstallmentsManager] Método getInstallments disponível?', typeof this.mp.getInstallments);
+      if (typeof this.mp.getInstallments !== 'function') {
+        throw new Error('Método getInstallments não disponível no SDK do Mercado Pago');
+      }
 
-      console.log('[InstallmentsManager] Buscando parcelas com params:', {
+      const response = await this.mp.getInstallments({
         amount: params.amount.toString(),
         bin: params.bin,
         payment_method_id: params.paymentMethodId,
       });
 
-      if (typeof this.mp.getInstallments !== 'function') {
-        throw new Error('Método getInstallments não disponível no SDK do Mercado Pago');
-      }
-
-      let response;
-      try {
-        response = await this.mp.getInstallments({
-          amount: params.amount.toString(),
-          bin: params.bin,
-          payment_method_id: params.paymentMethodId,
-        });
-      } catch (apiError) {
-        console.error('[InstallmentsManager] Erro na chamada da API getInstallments:', apiError);
-        console.error('[InstallmentsManager] Tipo do erro:', typeof apiError);
-        console.error('[InstallmentsManager] Erro stringified:', JSON.stringify(apiError, null, 2));
-        throw apiError;
-      }
-
-      console.log('[InstallmentsManager] Resposta da API:', response);
-      console.log('[InstallmentsManager] Tipo da resposta:', typeof response);
-      console.log('[InstallmentsManager] É array?', Array.isArray(response));
-      console.log('[InstallmentsManager] Length:', response?.length);
-
       if (!response || response.length === 0) {
-        console.warn('[InstallmentsManager] Nenhuma opção de parcelamento retornada pela API');
         return [];
       }
 
       // A API retorna um array com um objeto contendo payer_costs
       const installmentsData = response[0];
-      console.log('[InstallmentsManager] Dados de parcelas:', installmentsData);
-      console.log('[InstallmentsManager] payer_costs:', installmentsData.payer_costs);
-
       const payerCosts = installmentsData.payer_costs || [];
-      console.log('[InstallmentsManager] Total de opções de parcelas:', payerCosts.length);
 
       return payerCosts;
     } catch (error) {
       console.error('[InstallmentsManager] Erro ao buscar parcelas:', error);
-
       // Retornar array vazio em vez de lançar erro
-      // para não quebrar a experiência do usuário
-      console.warn('[InstallmentsManager] Retornando array vazio devido ao erro');
       return [];
     }
   }
@@ -161,23 +131,14 @@ export class InstallmentsManager {
     cardField: any,
     onBinDetected: (bin: string, paymentMethodId: string) => void
   ): void {
-    console.log('[InstallmentsManager] Registrando listener binChange no field:', cardField);
-
     cardField.on('binChange', (event: any) => {
-      console.log('[InstallmentsManager] Evento binChange disparado:', event);
-
       if (event.bin && event.bin.length >= 6) {
         // Pegar apenas os primeiros 6 dígitos (BIN padrão)
         const bin = event.bin.substring(0, 6);
         const paymentMethodId = event.paymentMethodId || '';
-        console.log('[InstallmentsManager] BIN válido detectado:', bin, 'Payment Method:', paymentMethodId);
         onBinDetected(bin, paymentMethodId);
-      } else {
-        console.log('[InstallmentsManager] BIN ainda incompleto:', event.bin);
       }
     });
-
-    console.log('[InstallmentsManager] Listener binChange registrado com sucesso');
   }
 }
 

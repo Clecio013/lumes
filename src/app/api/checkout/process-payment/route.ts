@@ -18,6 +18,7 @@ interface PersonalData {
 interface CardPaymentRequest {
   paymentMethod: 'card';
   token: string; // Card token do Core Methods
+  paymentMethodId: string; // ID da bandeira (visa, master, elo, etc.)
   installments: number;
   amount: number;
   personalData: PersonalData;
@@ -99,6 +100,11 @@ export async function POST(req: NextRequest) {
     const firstName = nameParts[0];
     const lastName = nameParts.slice(1).join(' ') || nameParts[0];
 
+    // Extrair DDD e número do telefone
+    const phoneDigits = requestData.personalData.phone.replace(/\D/g, '');
+    const areaCode = phoneDigits.slice(0, 2);
+    const phoneNumber = phoneDigits.slice(2);
+
     // Preparar dados base do pagamento
     const paymentData: any = {
       transaction_amount: requestData.amount,
@@ -110,6 +116,10 @@ export async function POST(req: NextRequest) {
         identification: {
           type: 'CPF',
           number: requestData.personalData.cpf.replace(/\D/g, ''),
+        },
+        phone: {
+          area_code: areaCode,
+          number: phoneNumber,
         },
       },
       // Metadata com dados completos do cliente (para o webhook salvar)
@@ -126,13 +136,6 @@ export async function POST(req: NextRequest) {
       },
       // Notification URL (webhook)
       notification_url: `${process.env.NEXT_PUBLIC_URL}/api/webhook/mercadopago`,
-      // URLs de redirecionamento
-      back_urls: {
-        success: `${process.env.NEXT_PUBLIC_URL}/projeto45dias/obrigado`,
-        failure: `${process.env.NEXT_PUBLIC_URL}/projeto45dias/erro`,
-        pending: `${process.env.NEXT_PUBLIC_URL}/projeto45dias/obrigado`,
-      },
-      auto_return: 'approved',
       // External reference (email + timestamp)
       external_reference: `${requestData.personalData.email}_${Date.now()}`,
     };
@@ -147,16 +150,31 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      paymentData.payment_method_id = 'credit_card';
+      if (!requestData.paymentMethodId) {
+        return NextResponse.json(
+          { success: false, error: 'Payment method ID não informado' },
+          { status: 400 }
+        );
+      }
+
+      paymentData.payment_method_id = requestData.paymentMethodId; // visa, master, elo, etc.
       paymentData.token = requestData.token;
       paymentData.installments = requestData.installments || 1;
 
-      console.log('[Process Payment] Processando cartão com token');
+      console.log('[Process Payment] Processando cartão:', requestData.paymentMethodId);
     } else if (requestData.paymentMethod === 'pix') {
       // Pagamento com PIX
       paymentData.payment_method_id = 'pix';
 
-      console.log('[Process Payment] Gerando PIX');
+      // PIX não tem parcelas
+      delete paymentData.installments;
+
+      // Definir expiração de 30 minutos
+      const expirationDate = new Date();
+      expirationDate.setMinutes(expirationDate.getMinutes() + 30);
+      paymentData.date_of_expiration = expirationDate.toISOString();
+
+      console.log('[Process Payment] Gerando PIX (expira em 30min)');
     }
 
     // Criar pagamento
@@ -200,9 +218,14 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error('[Process Payment] Erro:', error);
 
-    // Extrair mensagem de erro do Mercado Pago se disponível
+    // Extrair mensagem de erro do Mercado Pago (múltiplos formatos possíveis)
     const errorMessage =
-      error?.cause?.[0]?.description || error?.message || 'Erro ao processar pagamento';
+      error?.cause?.[0]?.description ||
+      error?.cause?.[0]?.message ||
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+      error?.message ||
+      'Erro ao processar pagamento';
 
     return NextResponse.json(
       {
