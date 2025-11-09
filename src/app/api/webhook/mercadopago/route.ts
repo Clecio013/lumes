@@ -3,6 +3,7 @@ import { MercadoPagoClient } from '@/lib/@lumes/mercadopago';
 import { EmailClient } from '@/lib/@lumes/email';
 import { SheetsClient } from '@/lib/@lumes/sheets';
 import ConfirmacaoCompra from '@/lib/@lumes/email/templates/confirmacao-compra';
+import { formatPrice } from '@/app/projeto45dias/lib/batches-config';
 
 /**
  * POST /api/webhook/mercadopago
@@ -104,9 +105,7 @@ export async function POST(req: Request) {
             subject: '✅ Sua vaga está garantida no Projeto 45 Graus!',
             react: ConfirmacaoCompra({
               nome: firstName,
-              lote: '', // Não usamos mais lote
-              preco: `R$ ${precoTotal.toFixed(2)}`,
-              linkObrigado: `${process.env.NEXT_PUBLIC_URL}/projeto45dias/obrigado?payment_id=${payment.id}`,
+              preco: formatPrice(precoTotal),
               linkWhatsApp: process.env.NEXT_PUBLIC_WHATSAPP_GROUP_LINK!,
             }),
           });

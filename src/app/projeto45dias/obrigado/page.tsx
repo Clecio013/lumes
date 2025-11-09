@@ -25,7 +25,7 @@ interface PaymentData {
 
 function ThankYouContent() {
   const searchParams = useSearchParams();
-  const paymentId = searchParams.get('payment_id');
+  const paymentId = searchParams.get('payment_id') || searchParams.get('session_id'); // Aceitar payment_id (MP) ou session_id (Stripe)
   const status = searchParams.get('status');
   const paymentType = searchParams.get('payment_type');
 

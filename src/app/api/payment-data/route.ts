@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import Stripe from 'stripe';
 import { SheetsClient } from '@/lib/@lumes/sheets/client';
 
 /**
@@ -9,12 +10,56 @@ import { SheetsClient } from '@/lib/@lumes/sheets/client';
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const paymentId = searchParams.get('payment_id');
+    let paymentId = searchParams.get('payment_id');
+    const sessionId = searchParams.get('session_id');
+
+    console.log('[API /payment-data] Parâmetros recebidos:', { paymentId, sessionId });
+
+    // Se payment_id é na verdade um session_id do Stripe (começa com cs_)
+    if (paymentId && paymentId.startsWith('cs_')) {
+      console.log('[API /payment-data] payment_id é um session_id, convertendo...');
+      try {
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+        const session = await stripe.checkout.sessions.retrieve(paymentId);
+        const originalSessionId = paymentId;
+        paymentId = session.payment_intent as string;
+
+        console.log('[API /payment-data] Convertido session_id para payment_intent:', {
+          sessionId: originalSessionId,
+          paymentIntentId: paymentId,
+        });
+      } catch (error) {
+        console.error('[API /payment-data] Erro ao buscar session do Stripe:', error);
+      }
+    }
+    // Se não tem payment_id mas tem session_id (Stripe), buscar payment_intent
+    else if (!paymentId && sessionId) {
+      // Se session_id começa com "cs_", é do Stripe - buscar payment_intent
+      if (sessionId.startsWith('cs_')) {
+        try {
+          const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+          const session = await stripe.checkout.sessions.retrieve(sessionId);
+          paymentId = session.payment_intent as string;
+
+          console.log('[API /payment-data] Convertido session_id para payment_intent:', {
+            sessionId,
+            paymentIntentId: paymentId,
+          });
+        } catch (error) {
+          console.error('[API /payment-data] Erro ao buscar session do Stripe:', error);
+        }
+      } else {
+        // Caso seja outro formato, usar session_id diretamente
+        paymentId = sessionId;
+      }
+    }
+
+    console.log('[API /payment-data] Buscando pagamento com ID:', paymentId);
 
     // Validar payment_id
     if (!paymentId) {
       return NextResponse.json(
-        { success: false, error: 'Payment ID é obrigatório' },
+        { success: false, error: 'Payment ID ou Session ID é obrigatório' },
         { status: 400 }
       );
     }

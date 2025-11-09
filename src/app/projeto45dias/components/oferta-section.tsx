@@ -12,10 +12,32 @@ export const OfertaSection: React.FC = () => {
   const savings = calculateSavings();
   const campaignEnded = isCampaignEnded();
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     setIsLoading(true);
-    // Redirecionar para página de checkout com Payment Brick
-    window.location.href = '/projeto45dias/checkout';
+
+    try {
+      // Criar sessão de checkout no Stripe (sem metadata de formulário)
+      const response = await fetch('/api/stripe/create-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao criar checkout');
+      }
+
+      // Redirecionar para checkout do Stripe
+      window.location.href = data.url;
+    } catch (error) {
+      console.error('Erro ao criar checkout:', error);
+      alert('Erro ao processar checkout. Tente novamente.');
+      setIsLoading(false);
+    }
   };
 
   if (campaignEnded) {

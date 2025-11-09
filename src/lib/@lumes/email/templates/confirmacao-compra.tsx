@@ -12,18 +12,14 @@ import {
 
 interface ConfirmacaoCompraProps {
   nome: string;
-  lote: string;
   preco: string;
-  linkObrigado: string;
   linkWhatsApp: string;
 }
 
 export default function ConfirmacaoCompra({
   nome = 'Maria',
-  lote = '1° Lote',
   preco = 'R$ 347,00',
-  linkObrigado = 'https://seyune.com.br/projeto45dias/obrigado',
-  linkWhatsApp = 'https://chat.whatsapp.com/xxx',
+  linkWhatsApp = 'https://chat.whatsapp.com/HkOvWURXKMWGVZjmN2ex5M?mode=wwt',
 }: ConfirmacaoCompraProps) {
   return (
     <Html>
@@ -37,7 +33,7 @@ export default function ConfirmacaoCompra({
           <Text style={text}>Olá, {nome}! 👋</Text>
 
           <Text style={text}>
-            Sua vaga no <strong>{lote}</strong> está confirmada!
+            Sua vaga está confirmada!
             Você acabou de dar o primeiro passo para uma transformação real
             em apenas 45 dias.
           </Text>
@@ -52,40 +48,38 @@ export default function ConfirmacaoCompra({
           {/* Próximos Passos */}
           <Heading style={h2}>Próximos passos:</Heading>
 
-          {/* Passo 1 */}
+          {/* Passo 1 - Grupo WhatsApp */}
           <Section style={stepBox}>
-            <Text style={stepNumber}>1</Text>
-            <Text style={stepText}>
-              <strong>Complete seus dados</strong>
-              <br />
-              Precisamos de mais algumas informações para personalizar seu plano.
+            <Text style={stepTitle}>
+              <span style={stepNumber}>1.</span> Entre no grupo VIP do WhatsApp
             </Text>
-            <Button style={button} href={linkObrigado}>
-              Completar dados
-            </Button>
-          </Section>
-
-          {/* Passo 2 */}
-          <Section style={stepBox}>
-            <Text style={stepNumber}>2</Text>
             <Text style={stepText}>
-              <strong>Entre no grupo VIP</strong>
-              <br />
-              Acesso exclusivo com suporte direto da Seyune e do Amauri.
+              Acesso exclusivo com suporte direto da Seyune e do Amauri durante todo o programa.
             </Text>
             <Button style={buttonSecondary} href={linkWhatsApp}>
-              Entrar no WhatsApp
+              🚀 Entrar no Grupo VIP
             </Button>
           </Section>
 
-          {/* Passo 3 */}
+          {/* Passo 2 - Aguardar Instruções */}
           <Section style={stepBox}>
-            <Text style={stepNumber}>3</Text>
+            <Text style={stepTitle}>
+              <span style={stepNumber}>2.</span> Aguarde instruções para agendar suas consultas
+            </Text>
             <Text style={stepText}>
-              <strong>Aguarde instruções</strong>
-              <br />
               Em breve você receberá as orientações para agendar suas consultas
-              individuais com a Seyune (nutricionista) e o Amauri (personal trainer).
+              individuais de 30 minutos com a Seyune (nutricionista) e o Amauri (personal trainer).
+            </Text>
+          </Section>
+
+          {/* Passo 3 - Preparação */}
+          <Section style={stepBox}>
+            <Text style={stepTitle}>
+              <span style={stepNumber}>3.</span> Prepare-se para começar
+            </Text>
+            <Text style={stepText}>
+              O programa começa em <strong>15 de dezembro de 2025</strong>.
+              Até lá, fique de olho no grupo VIP para não perder nenhuma novidade!
             </Text>
           </Section>
 
@@ -105,11 +99,6 @@ export default function ConfirmacaoCompra({
               <br />• Acompanhamento durante todo o desafio
             </Text>
           </Section>
-
-          {/* Footer */}
-          <Text style={footer}>
-            Dúvidas? Responda este email ou entre em contato pelo WhatsApp.
-          </Text>
 
           <Text style={footer}>
             <strong>Seyune & Amauri</strong>
@@ -189,38 +178,26 @@ const stepBox = {
   margin: '16px 0',
 };
 
-const stepNumber = {
-  backgroundColor: '#d4af37',
-  color: '#1a1a1a',
-  width: '32px',
-  height: '32px',
-  borderRadius: '50%',
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontSize: '18px',
+const stepTitle = {
+  color: '#ffffff',
+  fontSize: '17px',
   fontWeight: 'bold' as const,
-  marginBottom: '12px',
-  padding: '6px',
-  textAlign: 'center' as const,
+  lineHeight: '24px',
+  margin: '0 0 8px 0',
+};
+
+const stepNumber = {
+  color: '#d4af37',
+  fontSize: '20px',
+  fontWeight: 'bold' as const,
+  marginRight: '8px',
 };
 
 const stepText = {
   color: '#e0e0e0',
   fontSize: '15px',
   lineHeight: '22px',
-  margin: '12px 0',
-};
-
-const button = {
-  backgroundColor: '#d4af37',
-  color: '#1a1a1a',
-  padding: '12px 24px',
-  borderRadius: '6px',
-  textDecoration: 'none',
-  fontWeight: 'bold' as const,
-  display: 'inline-block',
-  margin: '12px 0',
+  margin: '0 0 16px 0',
 };
 
 const buttonSecondary = {
