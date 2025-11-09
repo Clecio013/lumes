@@ -66,7 +66,7 @@ export const VSLSection: React.FC = () => {
             allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
             allowFullScreen
             title="Vídeo de Apresentação - Projeto 45 Graus"
-            fetchPriority="high"
+            loading="eager"
           />
         </motion.div>
 
