@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { XCircle, RefreshCw, MessageCircle, ArrowLeft, AlertCircle } from 'lucide-react';
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { BrandLogo } from '../components/brand-logo';
 
@@ -165,34 +164,24 @@ export default function ErrorPage() {
                   }
                 </p>
 
-                {isCancellation ? (
-                  <button
-                    onClick={handleRetryCheckout}
-                    disabled={isCreatingCheckout}
-                    className="cursor-pointer inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed text-black"
-                    style={{
-                      background: isCreatingCheckout
-                        ? 'linear-gradient(135deg, #aa8a2e 0%, #d4af37 100%)'
-                        : 'linear-gradient(135deg, #d4af37 0%, #f4d03f 100%)',
-                      boxShadow: '0 4px 20px rgba(212, 175, 55, 0.4)',
-                    }}
-                  >
-                    <RefreshCw className={`w-5 h-5 ${isCreatingCheckout ? 'animate-spin' : ''}`} />
-                    {isCreatingCheckout ? 'PROCESSANDO...' : 'FINALIZAR MINHA COMPRA'}
-                  </button>
-                ) : (
-                  <Link
-                    href="/projeto45dias"
-                    className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-bold transition-all text-black hover:scale-105"
-                    style={{
-                      background: 'linear-gradient(135deg, #d4af37 0%, #f4d03f 100%)',
-                      boxShadow: '0 4px 20px rgba(212, 175, 55, 0.4)',
-                    }}
-                  >
-                    <RefreshCw className="w-5 h-5" />
-                    TENTAR NOVAMENTE
-                  </Link>
-                )}
+                <button
+                  onClick={handleRetryCheckout}
+                  disabled={isCreatingCheckout}
+                  className="cursor-pointer inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed text-black hover:scale-105"
+                  style={{
+                    background: isCreatingCheckout
+                      ? 'linear-gradient(135deg, #aa8a2e 0%, #d4af37 100%)'
+                      : 'linear-gradient(135deg, #d4af37 0%, #f4d03f 100%)',
+                    boxShadow: '0 4px 20px rgba(212, 175, 55, 0.4)',
+                  }}
+                >
+                  <RefreshCw className={`w-5 h-5 ${isCreatingCheckout ? 'animate-spin' : ''}`} />
+                  {isCreatingCheckout
+                    ? 'PROCESSANDO...'
+                    : isCancellation
+                    ? 'FINALIZAR MINHA COMPRA'
+                    : 'TENTAR NOVAMENTE'}
+                </button>
               </div>
 
               {/* Opção 2 */}
@@ -247,13 +236,13 @@ export default function ErrorPage() {
             transition={{ duration: 0.6, delay: 1.2 }}
             className="text-center mt-8"
           >
-            <Link
+            <a
               href="/projeto45dias"
               className="inline-flex items-center gap-2 text-[var(--gold-primary)] hover:text-[var(--gold-light)] transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
               Voltar para a página do Projeto
-            </Link>
+            </a>
           </motion.div>
         </div>
       </div>
