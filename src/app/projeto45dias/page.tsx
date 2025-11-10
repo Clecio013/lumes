@@ -2,6 +2,7 @@ import { HeroSection } from './components/hero-section';
 import { VSLSection } from './components/vsl-section';
 import { BenefitsSection } from './components/benefits-section';
 import { EmotionalTransformationSection } from './components/emotional-transformation-section';
+import BonusSection from './components/bonus-section';
 import { HowItWorksSection } from './components/how-it-works-section';
 import { TestimonialsSection } from './components/testimonials-section';
 import { AboutSection } from './components/about-section';
@@ -23,6 +24,9 @@ export default function Projeto45DiasPage() {
 
       {/* Transformations Section - Estados Emocionais */}
       <EmotionalTransformationSection />
+
+      {/* Bonus Section - Materiais Exclusivos */}
+      <BonusSection />
 
       {/* How It Works Section */}
       <HowItWorksSection />
