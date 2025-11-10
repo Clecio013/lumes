@@ -109,6 +109,9 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
         <link rel="manifest" href="/favicon/site.webmanifest" />
         <meta name="theme-color" content="#874329" />
+
+        {/* Facebook Domain Verification */}
+        <meta name="facebook-domain-verification" content="wy3iq9fn6iiys6f014tlh9mpo2z5ss" />
       </head>
       <body
         className={`${cormorantGaramond.variable} ${manrope.variable} ${caveat.variable} font-body antialiased`}
