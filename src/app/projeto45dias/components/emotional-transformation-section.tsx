@@ -124,7 +124,7 @@ export function EmotionalTransformationSection() {
 
         {/* Carousel */}
         <div className="relative max-w-7xl mx-auto px-4">
-          <div className="relative min-h-[600px] md:min-h-[500px] lg:min-h-[400px]">
+          <div className="relative min-h-[750px] md:min-h-[500px] lg:min-h-[400px]">
             <AnimatePresence initial={false} custom={direction} mode="wait">
               <motion.div
                 key={currentIndex}
@@ -155,7 +155,7 @@ export function EmotionalTransformationSection() {
                   {/* Cards ANTES/DEPOIS - Lado Esquerdo */}
                   <div className="flex gap-4 flex-shrink-0">
                     {/* Card ANTES */}
-                    <div className="relative w-[140px] sm:w-[180px] md:w-[220px] lg:w-[250px] aspect-[3/4] rounded-xl overflow-hidden border-3 border-red-500">
+                    <div className="relative w-[160px] sm:w-[200px] md:w-[220px] lg:w-[250px] aspect-[3/4] rounded-xl overflow-hidden border-3 border-red-500">
                       <Image
                         src={current.before.image}
                         alt={current.before.alt}
@@ -171,7 +171,7 @@ export function EmotionalTransformationSection() {
                     </div>
 
                     {/* Card DEPOIS */}
-                    <div className="relative w-[140px] sm:w-[180px] md:w-[220px] lg:w-[250px] aspect-[3/4] rounded-xl overflow-hidden border-3 border-gold">
+                    <div className="relative w-[160px] sm:w-[200px] md:w-[220px] lg:w-[250px] aspect-[3/4] rounded-xl overflow-hidden border-3 border-gold">
                       <Image
                         src={current.after.image}
                         alt={current.after.alt}
@@ -190,34 +190,34 @@ export function EmotionalTransformationSection() {
                   {/* Info Card - Lado Direito */}
                   <div className="bg-dark-lighter/90 rounded-2xl border-2 border-gold/20 p-6 sm:p-8 w-full lg:max-w-lg shadow-[0_0_30px_rgba(212,175,55,0.25)]">
                     {/* Título da Transformação */}
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="bg-gold p-2.5 rounded-full">
-                        <TrendingUp className="w-5 h-5 text-dark" />
+                    <div className="flex items-center gap-4 mb-8">
+                      <div className="bg-gold p-3 rounded-full">
+                        <TrendingUp className="w-7 h-7 md:w-5 md:h-5 text-dark" />
                       </div>
                       <div>
-                        <p className="text-white font-bold text-base sm:text-lg tracking-wide">
+                        <p className="text-white font-bold text-xl md:text-lg tracking-wide leading-tight">
                           {current.title}
                         </p>
                       </div>
                     </div>
 
                     {/* Resultado Principal - DESTAQUE */}
-                    <div className="border-2 border-gold rounded-lg px-4 py-5 mb-6 bg-black/20">
-                      <p className="text-gold font-bold text-xl sm:text-2xl text-center">
+                    <div className="border-2 border-gold rounded-lg px-5 py-7 mb-8 bg-black/20">
+                      <p className="text-gold font-bold text-2xl md:text-2xl text-center leading-tight">
                         {current.mainResult}
                       </p>
                     </div>
 
                     {/* O que você vai conseguir */}
                     <div>
-                      <p className="text-gray-400 text-xs uppercase tracking-wider mb-3 font-semibold">
+                      <p className="text-gray-400 text-base md:text-xs uppercase tracking-wider mb-5 font-semibold">
                         O QUE VOCÊ VAI CONSEGUIR:
                       </p>
-                      <ul className="space-y-2.5">
+                      <ul className="space-y-4">
                         {current.achievements.map((achievement, idx) => (
-                          <li key={idx} className="flex items-start gap-2.5 bg-black/30 p-3 rounded-lg">
-                            <div className="bg-gold rounded-full w-1.5 h-1.5 flex-shrink-0 mt-1.5" />
-                            <span className="text-gray-200 text-sm leading-relaxed">
+                          <li key={idx} className="flex items-start gap-4 bg-black/30 p-5 rounded-lg">
+                            <div className="bg-gold rounded-full w-2.5 h-2.5 flex-shrink-0 mt-2" />
+                            <span className="text-gray-200 text-lg md:text-sm leading-relaxed">
                               {achievement}
                             </span>
                           </li>
@@ -231,7 +231,7 @@ export function EmotionalTransformationSection() {
           </div>
 
           {/* Navigation Arrows */}
-          <div className="flex justify-center items-center gap-4 mt-18">
+          <div className="flex justify-center items-center gap-4 mt-32 sm:42 md:mt-92 lg:mt-48">
             <button
               onClick={() => paginate(-1)}
               className="cursor-pointer bg-dark-lighter hover:bg-dark border-2 border-gold/50 hover:border-gold text-gold rounded-full p-3 transition-all duration-300 hover:scale-110"

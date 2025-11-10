@@ -131,7 +131,7 @@ export async function POST(req: NextRequest) {
               const emailClient = EmailClient.create({
                 provider: 'resend',
                 apiKey: process.env.RESEND_API_KEY!,
-                from: 'contato@seyune.com.br', // Email padrão do Resend (trocar depois por domínio verificado)
+                from: 'contato@seyune.com.br',
               });
 
               const firstName = customerName.split(' ')[0];
