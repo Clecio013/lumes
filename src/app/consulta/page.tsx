@@ -10,6 +10,7 @@ import {
   PainPointsSection,
   BenefitsSection,
   HowItWorksSection,
+  PresentialSection,
   TransformationSection,
   TestimonialsSection,
   AboutSection,
@@ -51,6 +52,7 @@ export default function ConsultaPage() {
         <PainPointsSection />
         <BenefitsSection />
         <HowItWorksSection />
+        <PresentialSection />
         <TransformationSection />
         <TestimonialsSection />
         <AboutSection />

@@ -11,5 +11,6 @@ export { AboutSection } from "./about-section";
 
 // Client Components
 export { HeroSection } from "./hero-section";
+export { PresentialSection } from "./presential-section";
 export { FAQSection } from "./faq-section";
 export { CTASection } from "./cta-section";

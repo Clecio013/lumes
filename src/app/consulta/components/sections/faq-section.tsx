@@ -43,7 +43,7 @@ export function FAQSection() {
     {
       question: "As consultas são presenciais ou online?",
       answer:
-        "As consultas podem ser online, então você pode estar em qualquer lugar do Brasil (ou do mundo) para ter acesso ao acompanhamento.",
+        "Ofereço as duas opções! Atendo online para todo o Brasil, com consultas por videochamada. E também atendo presencialmente em dois endereços em São Paulo: Vila Mariana e Indianópolis/Moema. Você escolhe a modalidade que melhor se encaixa na sua rotina.",
     },
   ];
 
