@@ -131,7 +131,7 @@ export async function POST(req: NextRequest) {
               const emailClient = EmailClient.create({
                 provider: 'resend',
                 apiKey: process.env.RESEND_API_KEY!,
-                from: 'Seyune - Black 45 <contato@seyune.com.br>',
+                from: 'Seyune - Black 45 <noreply@seyune.com.br>',
               });
 
               const firstName = customerName.split(' ')[0];
