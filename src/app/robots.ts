@@ -7,9 +7,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: ['/consulta', '/consulta/'],
+        allow: ['/', '/consulta', '/consulta/'],
         disallow: [
-          '/',  // Redireciona para /consulta, não indexar
           '/api/',
           '/_next/',
           '/private/',
@@ -18,33 +17,33 @@ export default function robots(): MetadataRoute.Robots {
       // Permitir AI Crawlers (AEO - Answer Engine Optimization)
       {
         userAgent: 'GPTBot',  // ChatGPT
-        allow: ['/consulta', '/consulta/'],
-        disallow: ['/', '/api/', '/_next/', '/private/'],
+        allow: ['/', '/consulta', '/consulta/'],
+        disallow: ['/api/', '/_next/', '/private/'],
       },
       {
         userAgent: 'ChatGPT-User',  // ChatGPT Web
-        allow: ['/consulta', '/consulta/'],
-        disallow: ['/', '/api/', '/_next/', '/private/'],
+        allow: ['/', '/consulta', '/consulta/'],
+        disallow: ['/api/', '/_next/', '/private/'],
       },
       {
         userAgent: 'Google-Extended',  // Bard/Gemini
-        allow: ['/consulta', '/consulta/'],
-        disallow: ['/', '/api/', '/_next/', '/private/'],
+        allow: ['/', '/consulta', '/consulta/'],
+        disallow: ['/api/', '/_next/', '/private/'],
       },
       {
         userAgent: 'anthropic-ai',  // Claude
-        allow: ['/consulta', '/consulta/'],
-        disallow: ['/', '/api/', '/_next/', '/private/'],
+        allow: ['/', '/consulta', '/consulta/'],
+        disallow: ['/api/', '/_next/', '/private/'],
       },
       {
         userAgent: 'PerplexityBot',  // Perplexity AI
-        allow: ['/consulta', '/consulta/'],
-        disallow: ['/', '/api/', '/_next/', '/private/'],
+        allow: ['/', '/consulta', '/consulta/'],
+        disallow: ['/api/', '/_next/', '/private/'],
       },
       {
         userAgent: 'CCBot',  // Common Crawl (usado por várias IAs)
-        allow: ['/consulta', '/consulta/'],
-        disallow: ['/', '/api/', '/_next/', '/private/'],
+        allow: ['/', '/consulta', '/consulta/'],
+        disallow: ['/api/', '/_next/', '/private/'],
       },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,

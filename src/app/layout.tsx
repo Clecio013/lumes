@@ -89,8 +89,7 @@ export const metadata: Metadata = {
     images: ['/images/hero/seyune-gradient.png'],
   },
   verification: {
-    // Adicionar após criar no Google Search Console
-    // google: 'seu-codigo-de-verificacao-aqui',
+    google: '1b4d196ff4724c93a5fd233527d1087f', // Google Search Console
     // Adicionar após criar no Bing Webmaster Tools
     // yandex: 'seu-codigo-bing-aqui',
   },
