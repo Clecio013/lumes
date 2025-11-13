@@ -12,6 +12,8 @@ export type EventName =
   // Conversão
   | "whatsapp_click"
   | "schedule_click"
+  | "initiate_checkout"
+  | "purchase"
   // Engajamento
   | "cta_click"
   | "faq_open"

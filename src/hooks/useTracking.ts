@@ -45,6 +45,35 @@ export function useTracking() {
     [trackEvent]
   );
 
+  const trackInitiateCheckout = useCallback(
+    (location: string, value?: number) => {
+      return trackEvent({
+        name: "initiate_checkout",
+        location,
+        value: value || 397, // Preço padrão Black 45 Graus
+      });
+    },
+    [trackEvent]
+  );
+
+  const trackPurchase = useCallback(
+    (params: {
+      location?: string;
+      value: number;
+      transaction_id: string;
+      email?: string;
+    }) => {
+      return trackEvent({
+        name: "purchase",
+        location: params.location || "checkout",
+        value: params.value,
+        transaction_id: params.transaction_id,
+        email: params.email,
+      });
+    },
+    [trackEvent]
+  );
+
   const trackCTAClick = useCallback(
     (
       location: string,
@@ -144,6 +173,8 @@ export function useTracking() {
     // Helpers (wrappers para facilitar)
     trackWhatsAppClick,
     trackScheduleClick,
+    trackInitiateCheckout,
+    trackPurchase,
     trackCTAClick,
     trackFAQInteraction,
     trackSocialClick,

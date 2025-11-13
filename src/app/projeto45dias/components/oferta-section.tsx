@@ -4,9 +4,11 @@ import React, { useState } from 'react';
 import { Check, TrendingUp } from 'lucide-react';
 import { UrgencyBadge } from './urgency-badge';
 import { uniqueBatch, formatPrice } from '../lib/batches-config';
+import { useTracking } from '@/hooks/useTracking';
 
 export const OfertaSection: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const { trackInitiateCheckout } = useTracking();
   const currentBatch = uniqueBatch();
   const nextBatch = null;
   const savings = 0;
@@ -16,6 +18,9 @@ export const OfertaSection: React.FC = () => {
     setIsLoading(true);
 
     try {
+      // Disparar evento InitiateCheckout (Meta Pixel + GA4)
+      trackInitiateCheckout('oferta-section', currentBatch.promotionalPrice);
+
       // Criar sessão de checkout no Stripe (sem metadata de formulário)
       const response = await fetch('/api/stripe/create-session', {
         method: 'POST',

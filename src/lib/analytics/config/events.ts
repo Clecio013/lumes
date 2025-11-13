@@ -67,6 +67,45 @@ export const EVENT_CONFIG: Record<EventName, EventConfig> = {
     },
   },
 
+  initiate_checkout: {
+    category: "conversion",
+    platforms: {
+      ga4: {
+        enabled: true,
+        eventName: "begin_checkout",
+      },
+      meta: {
+        enabled: true,
+        events: ["InitiateCheckout"], // Standard Meta event
+        params: {
+          currency: "BRL",
+          value: 397, // Preço do Black 45 Graus
+          content_name: "Black 45 Graus",
+          content_category: "programa",
+        },
+      },
+    },
+  },
+
+  purchase: {
+    category: "conversion",
+    platforms: {
+      ga4: {
+        enabled: true,
+        eventName: "purchase",
+      },
+      meta: {
+        enabled: true,
+        events: ["Purchase"], // Standard Meta event
+        params: {
+          currency: "BRL",
+          value: 397,
+          content_name: "Black 45 Graus",
+        },
+      },
+    },
+  },
+
   // ==========================================================================
   // ENGAJAMENTO - Interesse do usuário
   // ==========================================================================
