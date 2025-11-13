@@ -6,6 +6,7 @@
 
 import type { TrackedEvent, AdapterResult, AnalyticsAdapter } from "../core/types";
 import { getEventConfig } from "../config/events";
+import { getUTMs } from "@/lib/@lumes/analytics/utm";
 
 // Tipos do Google Analytics
 declare global {
@@ -46,11 +47,24 @@ export function sendToGA4(event: TrackedEvent): AdapterResult {
     const ga4Config = config.platforms.ga4;
     const eventName = ga4Config.eventName || event.name;
 
-    // Preparar parâmetros GA4
+    // Incluir UTMs automaticamente (se disponíveis)
+    const utms = getUTMs();
+    const utmParams = utms
+      ? {
+          campaign_source: utms.source,
+          campaign_medium: utms.medium,
+          campaign_name: utms.campaign,
+          campaign_content: utms.content,
+          campaign_term: utms.term,
+        }
+      : {};
+
+    // Preparar parâmetros GA4 (UTMs + config + event params)
     const params = {
       event_category: event.category,
       event_label: event.params.label || event.params.location,
       value: event.params.value,
+      ...utmParams,
       ...ga4Config.params,
       ...event.params,
     };

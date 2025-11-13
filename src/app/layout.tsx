@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Manrope, Caveat } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { AnalyticsProvider } from "@/lib/analytics";
+import { UTMTracker } from "@/lib/@lumes/analytics/utm";
 
 // Títulos - Cormorant Garamond (otimizado: 5 → 3 weights)
 const cormorantGaramond = Cormorant_Garamond({
@@ -118,6 +119,10 @@ export default function RootLayout({
       >
         {/* Analytics - GA4, Meta Pixel, Scroll Tracking */}
         <AnalyticsProvider />
+
+        {/* UTM Tracking - Captura automática de UTMs para atribuição */}
+        <UTMTracker />
+
         {children}
 
         {/* Mercado Pago SDK - Necessário para Payment Bricks */}

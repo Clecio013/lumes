@@ -6,6 +6,7 @@
 
 import type { TrackedEvent, AdapterResult, AnalyticsAdapter } from "../core/types";
 import { getEventConfig } from "../config/events";
+import { getUTMs } from "@/lib/@lumes/analytics/utm";
 
 // Tipos do Meta Pixel
 declare global {
@@ -53,8 +54,21 @@ export function sendToMetaPixel(event: TrackedEvent): AdapterResult {
       return result;
     }
 
-    // Preparar parâmetros
+    // Incluir UTMs automaticamente (se disponíveis)
+    const utms = getUTMs();
+    const utmParams = utms
+      ? {
+          utm_source: utms.source,
+          utm_medium: utms.medium,
+          utm_campaign: utms.campaign,
+          utm_content: utms.content,
+          utm_term: utms.term,
+        }
+      : {};
+
+    // Preparar parâmetros (UTMs + config + event params)
     const params = {
+      ...utmParams,
       ...metaConfig.params,
       ...event.params,
     };
