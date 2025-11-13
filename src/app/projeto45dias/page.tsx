@@ -4,7 +4,7 @@ import { BenefitsSection } from './components/benefits-section';
 import { EmotionalTransformationSection } from './components/emotional-transformation-section';
 import BonusSection from './components/bonus-section';
 import { HowItWorksSection } from './components/how-it-works-section';
-import { TestimonialsSection } from './components/testimonials-section';
+// import { TestimonialsSection } from './components/testimonials-section';
 import { AboutSection } from './components/about-section';
 import { FAQSection } from './components/faq-section';
 import { OfertaSection } from './components/oferta-section';
@@ -31,8 +31,8 @@ export default function Projeto45DiasPage() {
       {/* How It Works Section */}
       <HowItWorksSection />
 
-      {/* Testimonials Section */}
-      <TestimonialsSection />
+      {/* Testimonials Section - ESCONDIDO: aguardando depoimentos dos profissionais */}
+      {/* <TestimonialsSection /> */}
 
       {/* About Section */}
       <AboutSection />
