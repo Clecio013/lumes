@@ -3,6 +3,7 @@ import Stripe from 'stripe';
 import { StripeClient, WebhookHandler } from '@/lib/@lumes/stripe';
 import { EmailClient } from '@/lib/@lumes/email';
 import { SheetsClient } from '@/lib/@lumes/sheets';
+import { LoggerClient } from '@/lib/@lumes/logger';
 import ConfirmacaoCompra from '@/lib/@lumes/email/templates/confirmacao-compra';
 import { formatPrice } from '@/app/projeto45dias/lib/batches-config';
 
@@ -14,20 +15,23 @@ import { formatPrice } from '@/app/projeto45dias/lib/batches-config';
  * - payment_intent.succeeded: Log de confirmação de pagamento
  */
 export async function POST(req: NextRequest) {
+  // Create logger with request ID for tracing
+  const logger = LoggerClient.createForWebhook('stripe');
+
   try {
     // Ler body como texto (necessário para validação de assinatura)
     const body = await req.text();
     const signature = req.headers.get('stripe-signature');
 
     if (!signature) {
-      console.error('[Stripe Webhook] ❌ Assinatura não fornecida');
+      logger.error('Missing webhook signature');
       return NextResponse.json(
         { error: 'Assinatura não fornecida' },
         { status: 400 }
       );
     }
 
-    console.log('[Stripe Webhook] Recebido webhook');
+    logger.info({ signature: signature.substring(0, 20) + '...' }, 'Webhook received');
 
     // Validar variáveis de ambiente
     if (!process.env.STRIPE_SECRET_KEY) {
@@ -49,16 +53,16 @@ export async function POST(req: NextRequest) {
       'checkout.session.completed': async (event) => {
         const session = event.data as Stripe.Checkout.Session;
 
-        console.log('[Stripe Webhook] Checkout completo:', {
+        logger.info({
           sessionId: session.id,
           email: session.customer_email,
           amount: session.amount_total,
           paymentStatus: session.payment_status,
-        });
+        }, 'Checkout session completed');
 
         // Só processar se pagamento foi aprovado
         if (session.payment_status !== 'paid') {
-          console.log('[Stripe Webhook] ⚠️ Pagamento não aprovado ainda:', session.payment_status);
+          logger.warn({ paymentStatus: session.payment_status }, 'Payment not yet paid, skipping');
           return;
         }
 
@@ -80,7 +84,7 @@ export async function POST(req: NextRequest) {
           });
 
           if (existingRow) {
-            console.log('[Stripe Webhook] ⚠️ Pagamento já existe no Sheets (duplicata evitada):', paymentIntentId);
+            logger.warn({ paymentId: paymentIntentId }, 'Duplicate payment detected, skipping');
             return;
           }
 
@@ -102,12 +106,12 @@ export async function POST(req: NextRequest) {
             customerPhone = session.customer_details.phone || '-';
           }
 
-          console.log('[Stripe Webhook] Dados extraídos:', {
+          logger.info({
             customerName,
             customerEmail,
             customerPhone,
             amountTotal,
-          });
+          }, 'Customer data extracted');
 
           // 4. Salvar na planilha Google Sheets (mesma estrutura do Mercado Pago)
           await sheetsClient.addRow({
@@ -123,7 +127,7 @@ export async function POST(req: NextRequest) {
             'Payment ID': paymentIntentId, // Compatível com estrutura do MP
           });
 
-          console.log('[Stripe Webhook] ✅ Linha criada no Google Sheets');
+          logger.info({ paymentId: paymentIntentId, customerEmail }, 'Payment saved to Google Sheets');
 
           // 5. Enviar email de confirmação (apenas se tiver email válido)
           if (customerEmail && customerEmail.includes('@')) {
@@ -135,10 +139,13 @@ export async function POST(req: NextRequest) {
               });
 
               const firstName = customerName.split(' ')[0];
+              const subject = '✅ Sua vaga está garantida no Projeto 45 Graus!';
 
-              await emailClient.send({
+              logger.info({ to: customerEmail, subject }, 'Sending confirmation email');
+
+              const result = await emailClient.send({
                 to: customerEmail,
-                subject: '✅ Sua vaga está garantida no Projeto 45 Graus!',
+                subject,
                 react: ConfirmacaoCompra({
                   nome: firstName,
                   preco: formatPrice(amountTotal),
@@ -146,43 +153,49 @@ export async function POST(req: NextRequest) {
                 }),
               });
 
-              console.log('[Stripe Webhook] ✅ Email de confirmação enviado para:', customerEmail);
+              logger.info({ to: customerEmail, emailId: result.id }, 'Confirmation email sent successfully');
             } catch (emailError) {
-              console.error('[Stripe Webhook] ⚠️ Erro ao enviar email (mas pagamento foi salvo):', emailError);
+              logger.error({
+                err: emailError,
+                to: customerEmail,
+                subject: '✅ Sua vaga está garantida no Projeto 45 Graus!',
+                paymentId: paymentIntentId,
+              }, 'Failed to send confirmation email');
               // Não fazer throw - pagamento já foi salvo no Sheets
             }
           } else {
-            console.log('[Stripe Webhook] ⚠️ Email do cliente não disponível, pulando envio de email');
+            logger.warn({ email: customerEmail }, 'Invalid or missing customer email, skipping email send');
           }
         } catch (error) {
-          console.error('[Stripe Webhook] Erro ao processar checkout:', error);
+          logger.error({ err: error, sessionId: session.id }, 'Error processing checkout session');
           // Não fazer throw - Stripe vai retentar se retornarmos erro
         }
       },
 
       'payment_intent.succeeded': async (event) => {
         const paymentIntent = event.data as Stripe.PaymentIntent;
-        console.log('[Stripe Webhook] Payment Intent aprovado:', {
+        logger.info({
           id: paymentIntent.id,
           amount: paymentIntent.amount / 100,
           status: paymentIntent.status,
-        });
+        }, 'Payment intent succeeded');
       },
 
       'payment_intent.payment_failed': async (event) => {
         const paymentIntent = event.data as Stripe.PaymentIntent;
-        console.log('[Stripe Webhook] Payment Intent falhou:', {
+        logger.warn({
           id: paymentIntent.id,
           lastError: paymentIntent.last_payment_error?.message,
-        });
+        }, 'Payment intent failed');
       },
     });
 
     await handler.handle(body, signature);
 
+    logger.info('Webhook processed successfully');
     return NextResponse.json({ received: true });
   } catch (error) {
-    console.error('[Stripe Webhook] Erro geral:', error);
+    logger.error({ err: error }, 'Webhook processing failed');
 
     // Retornar erro 400 se for erro de assinatura
     if (error instanceof Error && error.name === 'StripeWebhookError') {

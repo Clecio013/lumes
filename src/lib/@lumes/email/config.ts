@@ -23,9 +23,10 @@ export const EmailConfigSchema = z.object({
 
   /**
    * Email padrão do remetente
-   * @example "Projeto 45 Graus <noreply@seyune.com>"
+   * Aceita tanto formato simples quanto RFC 5322 (com nome)
+   * @example "noreply@seyune.com" ou "Seyune <noreply@seyune.com>"
    */
-  from: z.string().email().optional(),
+  from: z.string().min(1).optional(),
 });
 
 export type EmailConfig = z.infer<typeof EmailConfigSchema>;

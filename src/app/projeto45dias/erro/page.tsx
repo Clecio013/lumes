@@ -21,11 +21,33 @@ function ErrorPageContent() {
   // Estado para loading do checkout
   const [isCreatingCheckout, setIsCreatingCheckout] = useState(false);
 
-  // Função para redirecionar ao checkout
-  const handleRetryCheckout = () => {
+  // Função para criar nova sessão Stripe e redirecionar
+  const handleRetryCheckout = async () => {
     setIsCreatingCheckout(true);
-    // Redirecionar para página de checkout com Payment Brick
-    window.location.href = '/projeto45dias/checkout';
+
+    try {
+      // Criar nova sessão de checkout no Stripe
+      const response = await fetch('/api/stripe/create-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao criar checkout');
+      }
+
+      // Redirecionar para checkout do Stripe
+      window.location.href = data.url;
+    } catch (error) {
+      console.error('Erro ao criar checkout:', error);
+      alert('Erro ao processar checkout. Por favor, tente novamente ou entre em contato pelo WhatsApp.');
+      setIsCreatingCheckout(false);
+    }
   };
 
   return (
