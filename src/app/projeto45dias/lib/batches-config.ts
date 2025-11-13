@@ -148,3 +148,17 @@ export function formatPrice(price: number): string {
     maximumFractionDigits: 2,
   }).format(price);
 }
+
+/**
+ * Get unique batch pricing (simplified version without date logic)
+ * @returns Fixed pricing configuration
+ */
+export function uniqueBatch() {
+  return {
+    id: 1,
+    name: 'Black Friday 45 Graus',
+    originalPrice: 697,
+    promotionalPrice: 397,
+    active: true,
+  };
+}

@@ -1,16 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Check, Zap, TrendingUp } from 'lucide-react';
+import { Check, TrendingUp } from 'lucide-react';
 import { UrgencyBadge } from './urgency-badge';
-import { getCurrentBatch, getNextBatch, calculateSavings, isCampaignEnded, formatPrice } from '../lib/batches-config';
+import { uniqueBatch, formatPrice } from '../lib/batches-config';
 
 export const OfertaSection: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const currentBatch = getCurrentBatch();
-  const nextBatch = getNextBatch();
-  const savings = calculateSavings();
-  const campaignEnded = isCampaignEnded();
+  const currentBatch = uniqueBatch();
+  const nextBatch = null;
+  const savings = 0;
+  const campaignEnded = false;
 
   const handleCheckout = async () => {
     setIsLoading(true);
@@ -39,35 +39,6 @@ export const OfertaSection: React.FC = () => {
       setIsLoading(false);
     }
   };
-
-  if (campaignEnded) {
-    return (
-      <section className="projeto45-section text-center">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold projeto45-title mb-6">
-            Campanha Encerrada
-          </h2>
-          <p className="text-xl text-[var(--text-muted)]">
-            As vagas para o Projeto 45 Graus se esgotaram.
-            <br />
-            Entre em contato para saber sobre a próxima turma.
-          </p>
-        </div>
-      </section>
-    );
-  }
-
-  if (!currentBatch) {
-    return (
-      <section className="projeto45-section text-center">
-        <div className="max-w-3xl mx-auto">
-          <p className="text-xl text-[var(--text-muted)]">
-            Carregando informações da oferta...
-          </p>
-        </div>
-      </section>
-    );
-  }
 
   const discount = currentBatch.originalPrice - currentBatch.promotionalPrice;
   const discountPercentage = Math.round((discount / currentBatch.originalPrice) * 100);
@@ -117,23 +88,6 @@ export const OfertaSection: React.FC = () => {
               <div className="text-[var(--text-muted)] mb-4">
                 ou até <span className="text-[var(--gold-primary)] font-bold">12x de R$ {formatPrice((currentBatch.promotionalPrice / 12))}</span>
               </div>
-
-              {/* Alerta de economia */}
-              {nextBatch && savings > 0 && (
-                <div className="bg-[var(--bg-dark)] border border-[var(--accent-red)] rounded-lg p-4 w-full">
-                  <div className="flex items-start gap-2">
-                    <Zap className="w-5 h-5 text-[var(--accent-red)] flex-shrink-0 mt-0.5" />
-                    <div className="text-sm">
-                      <p className="text-[var(--text-light)] font-semibold mb-1">
-                        Próximo lote: R$ {nextBatch.promotionalPrice}
-                      </p>
-                      <p className="text-[var(--text-muted)]">
-                        Economize R$ {savings} garantindo agora
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* Lado direito: O que está incluso */}
