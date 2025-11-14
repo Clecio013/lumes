@@ -4,6 +4,7 @@ import { StripeClient, WebhookHandler } from '@/lib/@lumes/stripe';
 import { EmailClient } from '@/lib/@lumes/email';
 import { SheetsClient } from '@/lib/@lumes/sheets';
 import { LoggerClient } from '@/lib/@lumes/logger';
+import { MetaConversionsClient } from '@/lib/@lumes/meta-conversions-api';
 import ConfirmacaoCompra from '@/lib/@lumes/email/templates/confirmacao-compra';
 import { formatPrice } from '@/app/projeto45dias/lib/batches-config';
 
@@ -129,7 +130,65 @@ export async function POST(req: NextRequest) {
 
           logger.info({ paymentId: paymentIntentId, customerEmail }, 'Payment saved to Google Sheets');
 
-          // 5. Enviar email de confirmação (apenas se tiver email válido)
+          // 5. Enviar evento Purchase para Meta Conversions API (server-side tracking)
+          if (process.env.NEXT_PUBLIC_META_PIXEL_ID && process.env.META_CONVERSIONS_API_TOKEN && customerEmail) {
+            try {
+              const metaClient = MetaConversionsClient.create({
+                pixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID,
+                accessToken: process.env.META_CONVERSIONS_API_TOKEN,
+                testEventCode: process.env.META_TEST_EVENT_CODE, // Optional, for testing
+              });
+
+              const eventTime = Math.floor(Date.now() / 1000);
+              const eventSourceUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://seyune.com.br'}/projeto45dias`;
+
+              logger.info({ paymentId: paymentIntentId, customerEmail }, 'Sending Purchase event to Meta Conversions API');
+
+              const metaResult = await metaClient.sendEvent({
+                event_name: 'Purchase',
+                event_time: eventTime,
+                event_source_url: eventSourceUrl,
+                action_source: 'website',
+                event_id: paymentIntentId, // For deduplication with client-side pixel
+                user_data: {
+                  email: customerEmail,
+                  phone: customerPhone !== '-' ? customerPhone : undefined,
+                  firstName: customerName.split(' ')[0],
+                  lastName: customerName.split(' ').slice(1).join(' ') || undefined,
+                  clientIpAddress: req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || undefined,
+                  clientUserAgent: req.headers.get('user-agent') || undefined,
+                  country: 'br',
+                },
+                custom_data: {
+                  currency: 'BRL',
+                  value: amountTotal,
+                  content_name: 'Black 45 Graus',
+                  content_category: 'programa',
+                  content_ids: ['black-45-graus'],
+                  order_id: paymentIntentId,
+                  num_items: 1,
+                },
+              });
+
+              logger.info({
+                paymentId: paymentIntentId,
+                customerEmail,
+                fbtrace_id: metaResult.fbtrace_id,
+                events_received: metaResult.response?.events_received,
+              }, 'Purchase event sent to Meta successfully');
+            } catch (metaError) {
+              logger.error({
+                err: metaError,
+                paymentId: paymentIntentId,
+                customerEmail,
+              }, 'Failed to send Purchase event to Meta Conversions API');
+              // Não fazer throw - pagamento já foi processado
+            }
+          } else {
+            logger.warn('Meta Conversions API not configured or missing customer email, skipping Purchase event');
+          }
+
+          // 6. Enviar email de confirmação (apenas se tiver email válido)
           if (customerEmail && customerEmail.includes('@')) {
             try {
               const emailClient = EmailClient.create({

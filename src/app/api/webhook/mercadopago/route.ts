@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { MercadoPagoClient } from '@/lib/@lumes/mercadopago';
 import { EmailClient } from '@/lib/@lumes/email';
 import { SheetsClient } from '@/lib/@lumes/sheets';
+import { MetaConversionsClient } from '@/lib/@lumes/meta-conversions-api';
 import ConfirmacaoCompra from '@/lib/@lumes/email/templates/confirmacao-compra';
 import { formatPrice } from '@/app/projeto45dias/lib/batches-config';
 
@@ -111,6 +112,57 @@ export async function POST(req: Request) {
           });
 
           console.log('[Webhook MP] ✅ Email de confirmação enviado para:', email);
+
+          // 5. Enviar evento Purchase para Meta Conversions API (server-side tracking)
+          if (process.env.NEXT_PUBLIC_META_PIXEL_ID && process.env.META_CONVERSIONS_API_TOKEN && email) {
+            try {
+              const metaClient = MetaConversionsClient.create({
+                pixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID,
+                accessToken: process.env.META_CONVERSIONS_API_TOKEN,
+                testEventCode: process.env.META_TEST_EVENT_CODE, // Optional, for testing
+              });
+
+              const eventTime = Math.floor(Date.now() / 1000);
+              const eventSourceUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://seyune.com.br'}/projeto45dias`;
+
+              console.log('[Webhook MP] Enviando evento Purchase para Meta Conversions API');
+
+              const metaResult = await metaClient.sendEvent({
+                event_name: 'Purchase',
+                event_time: eventTime,
+                event_source_url: eventSourceUrl,
+                action_source: 'website',
+                event_id: String(payment.id), // For deduplication with client-side pixel
+                user_data: {
+                  email: email,
+                  phone: telefone !== '-' ? telefone : undefined,
+                  firstName: nome.split(' ')[0],
+                  lastName: nome.split(' ').slice(1).join(' ') || undefined,
+                  country: 'br',
+                },
+                custom_data: {
+                  currency: 'BRL',
+                  value: precoTotal,
+                  content_name: 'Black 45 Graus',
+                  content_category: 'programa',
+                  content_ids: ['black-45-graus'],
+                  order_id: String(payment.id),
+                  num_items: 1,
+                },
+              });
+
+              console.log('[Webhook MP] ✅ Evento Purchase enviado para Meta:', {
+                paymentId: payment.id,
+                fbtrace_id: metaResult.fbtrace_id,
+                events_received: metaResult.response?.events_received,
+              });
+            } catch (metaError) {
+              console.error('[Webhook MP] ❌ Falha ao enviar evento Purchase para Meta:', metaError);
+              // Não fazer throw - pagamento já foi processado
+            }
+          } else {
+            console.warn('[Webhook MP] ⚠️ Meta Conversions API não configurada ou email ausente, pulando evento Purchase');
+          }
         } catch (error) {
           console.error('[Webhook MP] Erro ao processar pagamento aprovado:', error);
           // Não fazer throw aqui para não falhar o webhook
