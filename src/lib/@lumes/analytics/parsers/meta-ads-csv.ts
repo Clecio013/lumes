@@ -23,8 +23,6 @@ const COLUMN_MAPPINGS = {
     'Impressions',
     'Impressões',
     'impressions',
-    'Alcance',
-    'Reach',
   ],
   clicks: [
     'Link clicks',
@@ -44,6 +42,7 @@ const COLUMN_MAPPINGS = {
     'Leads',
     'Results',
     'Resultados',
+    'Venda', // Meta Ads PT-BR
     'Actions', // Fallback se não tiver conversão configurada
   ],
   amountSpent: [
@@ -55,6 +54,43 @@ const COLUMN_MAPPINGS = {
     'Gasto',
     'amount_spent',
     'Valor usado (BRL)',
+    'Valor Usado', // Meta Ads PT-BR sem (BRL)
+  ],
+  cpm: [
+    'CPM (cost per 1,000 impressions)',
+    'CPM',
+    'Cost per 1,000 impressions (BRL)',
+    'Custo por 1.000 impressões',
+    'CPM (custo por 1.000 impressões)', // Meta Ads PT-BR
+    'cpm',
+  ],
+  frequency: [
+    'Frequency',
+    'Frequência',
+    'frequency',
+  ],
+  reach: [
+    'Reach',
+    'Alcance',
+    'reach',
+  ],
+  startDate: [
+    'Reporting starts',
+    'Reporting Starts',
+    'Start date',
+    'Data de início',
+    'Início do relatório',
+    'reporting_starts',
+    'Data',
+    'Dia', // Meta Ads PT-BR formato simplificado
+  ],
+  endDate: [
+    'Reporting ends',
+    'Reporting Ends',
+    'End date',
+    'Data de término',
+    'Término do relatório',
+    'reporting_ends',
   ],
 };
 
@@ -88,6 +124,37 @@ function parseNumber(value: string): number {
 }
 
 /**
+ * Parse data do CSV (converte para ISO format)
+ * Aceita formatos: DD/MM/YYYY, YYYY-MM-DD, MM/DD/YYYY
+ */
+function parseDate(value: string): string | undefined {
+  if (!value || !value.trim()) return undefined;
+
+  const cleaned = value.trim();
+
+  // Formato ISO (YYYY-MM-DD)
+  if (/^\d{4}-\d{2}-\d{2}/.test(cleaned)) {
+    return cleaned.split(' ')[0]; // Remove horário se tiver
+  }
+
+  // Formato DD/MM/YYYY
+  const ddmmyyyyMatch = cleaned.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  if (ddmmyyyyMatch) {
+    const [, day, month, year] = ddmmyyyyMatch;
+    return `${year}-${month}-${day}`;
+  }
+
+  // Formato MM/DD/YYYY (US format)
+  const mmddyyyyMatch = cleaned.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  if (mmddyyyyMatch) {
+    const [, month, day, year] = mmddyyyyMatch;
+    return `${year}-${month}-${day}`;
+  }
+
+  return undefined;
+}
+
+/**
  * Parse uma linha do CSV
  */
 function parseRow(
@@ -98,13 +165,41 @@ function parseRow(
     const campaignName = row[columnIndexes.campaignName]?.trim();
     if (!campaignName) return null; // Pular linhas sem nome
 
-    return {
+    const parsed: ParsedCSVRow = {
       campaignName,
       impressions: parseNumber(row[columnIndexes.impressions] || '0'),
       clicks: parseNumber(row[columnIndexes.clicks] || '0'),
       conversions: parseNumber(row[columnIndexes.conversions] || '0'),
       amountSpent: parseNumber(row[columnIndexes.amountSpent] || '0'),
     };
+
+    // Campos opcionais
+    if (columnIndexes.cpm >= 0) {
+      const cpmValue = parseNumber(row[columnIndexes.cpm] || '');
+      if (cpmValue > 0) parsed.cpm = cpmValue;
+    }
+
+    if (columnIndexes.frequency >= 0) {
+      const freqValue = parseNumber(row[columnIndexes.frequency] || '');
+      if (freqValue > 0) parsed.frequency = freqValue;
+    }
+
+    if (columnIndexes.reach >= 0) {
+      const reachValue = parseNumber(row[columnIndexes.reach] || '');
+      if (reachValue > 0) parsed.reach = reachValue;
+    }
+
+    if (columnIndexes.startDate >= 0) {
+      const dateValue = parseDate(row[columnIndexes.startDate] || '');
+      if (dateValue) parsed.startDate = dateValue;
+    }
+
+    if (columnIndexes.endDate >= 0) {
+      const dateValue = parseDate(row[columnIndexes.endDate] || '');
+      if (dateValue) parsed.endDate = dateValue;
+    }
+
+    return parsed;
   } catch (error) {
     console.warn('Erro ao parsear linha CSV:', error);
     return null;
@@ -115,7 +210,7 @@ function parseRow(
  * Calcula métricas derivadas
  */
 function calculateMetrics(row: ParsedCSVRow, index: number): Campaign {
-  const { campaignName, impressions, clicks, conversions, amountSpent } = row;
+  const { campaignName, impressions, clicks, conversions, amountSpent, cpm, frequency, reach, startDate, endDate } = row;
 
   // CTR (Click-Through Rate): (clicks / impressions) * 100
   const ctr = impressions > 0 ? (clicks / impressions) * 100 : 0;
@@ -129,11 +224,14 @@ function calculateMetrics(row: ParsedCSVRow, index: number): Campaign {
   // Conversion Rate: (conversions / clicks) * 100
   const conversionRate = clicks > 0 ? (conversions / clicks) * 100 : 0;
 
+  // CPM (Cost Per Mille): calcular se não vier no CSV
+  const calculatedCPM = cpm ?? (impressions > 0 ? (amountSpent / impressions) * 1000 : 0);
+
   // ID único: nome + índice para evitar duplicatas
   const baseId = campaignName.toLowerCase().replace(/\s+/g, '-');
   const uniqueId = `${baseId}-${index}`;
 
-  return {
+  const campaign: Campaign = {
     id: uniqueId,
     name: campaignName,
     impressions,
@@ -144,7 +242,16 @@ function calculateMetrics(row: ParsedCSVRow, index: number): Campaign {
     cpc: Math.round(cpc * 100) / 100,
     cpl: Math.round(cpl * 100) / 100,
     conversionRate: Math.round(conversionRate * 100) / 100,
+    cpm: Math.round(calculatedCPM * 100) / 100, // 2 decimais
   };
+
+  // Adicionar campos opcionais se presentes
+  if (frequency !== undefined) campaign.frequency = Math.round(frequency * 100) / 100;
+  if (reach !== undefined) campaign.reach = reach;
+  if (startDate) campaign.startDate = startDate;
+  if (endDate) campaign.endDate = endDate;
+
+  return campaign;
 }
 
 /**
@@ -171,13 +278,19 @@ export function parseMetaAdsCSV(csvData: string): CSVParseResult {
     const headerLine = lines[0];
     const headers = headerLine.split(',').map((h) => h.trim().replace(/"/g, ''));
 
-    // Encontrar índices das colunas
+    // Encontrar índices das colunas (obrigatórias)
     const columnIndexes = {
       campaignName: headers.indexOf(findColumn(headers, COLUMN_MAPPINGS.campaignName) || ''),
       impressions: headers.indexOf(findColumn(headers, COLUMN_MAPPINGS.impressions) || ''),
       clicks: headers.indexOf(findColumn(headers, COLUMN_MAPPINGS.clicks) || ''),
       conversions: headers.indexOf(findColumn(headers, COLUMN_MAPPINGS.conversions) || ''),
       amountSpent: headers.indexOf(findColumn(headers, COLUMN_MAPPINGS.amountSpent) || ''),
+      // Opcionais (retorna -1 se não encontrado)
+      cpm: headers.indexOf(findColumn(headers, COLUMN_MAPPINGS.cpm) || ''),
+      frequency: headers.indexOf(findColumn(headers, COLUMN_MAPPINGS.frequency) || ''),
+      reach: headers.indexOf(findColumn(headers, COLUMN_MAPPINGS.reach) || ''),
+      startDate: headers.indexOf(findColumn(headers, COLUMN_MAPPINGS.startDate) || ''),
+      endDate: headers.indexOf(findColumn(headers, COLUMN_MAPPINGS.endDate) || ''),
     };
 
     // Validar colunas obrigatórias

@@ -44,6 +44,12 @@ export class InsightsEngine {
 
       // Análise Conversion Rate
       insights.push(...this.analyzeConversionRate(campaign));
+
+      // Análise CPM
+      insights.push(...this.analyzeCPM(campaign));
+
+      // Análise Frequência
+      insights.push(...this.analyzeFrequency(campaign));
     }
 
     // Ordenar por prioridade: error > warning > success
@@ -297,6 +303,128 @@ export class InsightsEngine {
         message: `🚨 Taxa de conversão muito baixa: ${conversionRate.toFixed(2)}%`,
         action: 'Problema sério na landing page ou match oferta/público',
         },
+    ];
+  }
+
+  private analyzeCPM(campaign: Campaign): Insight[] {
+    const { cpm, name, impressions } = campaign;
+
+    // Poucas impressões, não analisar
+    if (impressions < 1000) return [];
+
+    // Excelente: < R$15 (Meta Ads BR benchmark: R$15-25 para saúde/wellness)
+    if (cpm < 15) {
+      return [
+        {
+          type: 'success',
+          campaign: name,
+          metric: 'cpm',
+          value: cpm,
+          message: `🎯 CPM excelente: R$${cpm.toFixed(2)} (benchmark: R$15-25)`,
+          action: 'Custo por mil impressões muito competitivo',
+        },
+      ];
+    }
+
+    // Bom: R$15-25
+    if (cpm <= 25) {
+      return [
+        {
+          type: 'success',
+          campaign: name,
+          metric: 'cpm',
+          value: cpm,
+          message: `✅ CPM dentro do benchmark: R$${cpm.toFixed(2)}`,
+          action: 'Custo de impressões normal para o setor',
+        },
+      ];
+    }
+
+    // Atenção: R$25-35
+    if (cpm <= 35) {
+      return [
+        {
+          type: 'warning',
+          campaign: name,
+          metric: 'cpm',
+          value: cpm,
+          message: `⚠️ CPM acima do ideal: R$${cpm.toFixed(2)} (benchmark: R$15-25)`,
+          action: 'Revisar segmentação ou horários de veiculação',
+        },
+      ];
+    }
+
+    // Crítico: > R$35
+    return [
+      {
+        type: 'error',
+        campaign: name,
+        metric: 'cpm',
+        value: cpm,
+        message: `🚨 CPM muito alto: R$${cpm.toFixed(2)} (benchmark: R$15-25)`,
+        action: 'Público pode estar saturado ou competição muito alta',
+      },
+    ];
+  }
+
+  private analyzeFrequency(campaign: Campaign): Insight[] {
+    const { frequency, name, impressions } = campaign;
+
+    // Sem frequência ou poucas impressões, não analisar
+    if (!frequency || impressions < 1000) return [];
+
+    // Ideal: 1.5-2.5 (sweet spot de frequência)
+    if (frequency >= 1.5 && frequency <= 2.5) {
+      return [
+        {
+          type: 'success',
+          campaign: name,
+          metric: 'frequency',
+          value: frequency,
+          message: `✅ Frequência ideal: ${frequency.toFixed(2)}x`,
+          action: 'Anúncio está chegando nas pessoas certas na quantidade certa',
+        },
+      ];
+    }
+
+    // Baixa: < 1.5 (pode estar subutilizando o público)
+    if (frequency < 1.5) {
+      return [
+        {
+          type: 'warning',
+          campaign: name,
+          metric: 'frequency',
+          value: frequency,
+          message: `⚠️ Frequência baixa: ${frequency.toFixed(2)}x`,
+          action: 'Considere aumentar budget ou reduzir tamanho do público',
+        },
+      ];
+    }
+
+    // Atenção: 2.5-3.5 (começando a saturar)
+    if (frequency <= 3.5) {
+      return [
+        {
+          type: 'warning',
+          campaign: name,
+          metric: 'frequency',
+          value: frequency,
+          message: `⚠️ Frequência elevada: ${frequency.toFixed(2)}x`,
+          action: 'Público começando a saturar, considere expandir audiência',
+        },
+      ];
+    }
+
+    // Crítico: > 3.5 (saturação, burnout do criativo)
+    return [
+      {
+        type: 'error',
+        campaign: name,
+        metric: 'frequency',
+        value: frequency,
+        message: `🚨 Frequência muito alta: ${frequency.toFixed(2)}x`,
+        action: 'Público saturado! Expandir audiência ou trocar criativo urgente',
+      },
     ];
   }
 }

@@ -120,6 +120,25 @@ export default function AnalyticsPage() {
       result = result.filter((c) => c.conversions >= filters.minConversions);
     }
 
+    // Filtro por data
+    if (filters.dateRange) {
+      const { start, end } = filters.dateRange;
+      result = result.filter((c) => {
+        // Se campanha não tem datas, incluir
+        if (!c.startDate && !c.endDate) return true;
+
+        // Usar startDate ou endDate da campanha para comparação
+        const campaignDate = c.startDate || c.endDate;
+        if (!campaignDate) return true;
+
+        // Filtrar se está no range
+        const matchesStart = !start || campaignDate >= start;
+        const matchesEnd = !end || campaignDate <= end;
+
+        return matchesStart && matchesEnd;
+      });
+    }
+
     // Ordenação
     switch (filters.sortBy) {
       case 'cpl-asc':
@@ -154,20 +173,30 @@ export default function AnalyticsPage() {
         impressions: acc.impressions + campaign.impressions,
         clicks: acc.clicks + campaign.clicks,
         conversions: acc.conversions + campaign.conversions,
+        reach: acc.reach + (campaign.reach || 0),
         ctr: acc.ctr + campaign.ctr,
         cpc: acc.cpc + campaign.cpc,
         cpl: acc.cpl + campaign.cpl,
+        cpm: acc.cpm + campaign.cpm,
+        frequency: acc.frequency + (campaign.frequency || 0),
         conversionRate: acc.conversionRate + campaign.conversionRate,
+        campaignsWithFrequency: acc.campaignsWithFrequency + (campaign.frequency ? 1 : 0),
+        campaignsWithReach: acc.campaignsWithReach + (campaign.reach ? 1 : 0),
       }),
       {
         spent: 0,
         impressions: 0,
         clicks: 0,
         conversions: 0,
+        reach: 0,
         ctr: 0,
         cpc: 0,
         cpl: 0,
+        cpm: 0,
+        frequency: 0,
         conversionRate: 0,
+        campaignsWithFrequency: 0,
+        campaignsWithReach: 0,
       }
     );
 
@@ -182,6 +211,11 @@ export default function AnalyticsPage() {
       avgCPC: Math.round((totals.cpc / count) * 100) / 100,
       avgCPL: Math.round((totals.cpl / count) * 100) / 100,
       avgConversionRate: Math.round((totals.conversionRate / count) * 100) / 100,
+      avgCPM: Math.round((totals.cpm / count) * 100) / 100,
+      avgFrequency: totals.campaignsWithFrequency > 0
+        ? Math.round((totals.frequency / totals.campaignsWithFrequency) * 100) / 100
+        : undefined,
+      totalReach: totals.campaignsWithReach > 0 ? totals.reach : undefined,
     };
   }, [filteredCampaigns, originalMetrics]);
 
@@ -228,13 +262,27 @@ export default function AnalyticsPage() {
                   <p className="text-xs font-semibold text-amber-900 mb-2">
                     📊 Colunas necessárias no relatório:
                   </p>
-                  <ul className="text-xs text-amber-800 space-y-1 ml-4 list-disc">
-                    <li><strong>Nome da campanha</strong> (obrigatório)</li>
-                    <li><strong>Impressões</strong> ou Alcance</li>
-                    <li><strong>Cliques no link</strong> ou Cliques (todos)</li>
-                    <li><strong>Conversões</strong> (Leads, Compras ou Resultados)</li>
-                    <li><strong>Valor gasto</strong> (em BRL)</li>
-                  </ul>
+                  <div className="space-y-2">
+                    <div>
+                      <p className="text-xs font-semibold text-amber-900 mb-1">Obrigatórias:</p>
+                      <ul className="text-xs text-amber-800 space-y-1 ml-4 list-disc">
+                        <li><strong>Nome da campanha</strong></li>
+                        <li><strong>Impressões</strong></li>
+                        <li><strong>Cliques no link</strong> ou Cliques (todos)</li>
+                        <li><strong>Conversões</strong> (Leads, Compras ou Resultados)</li>
+                        <li><strong>Valor gasto</strong> (em BRL)</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-amber-900 mb-1">Opcionais (recomendado):</p>
+                      <ul className="text-xs text-amber-700 space-y-1 ml-4 list-disc">
+                        <li><strong>CPM</strong> - Custo por mil impressões</li>
+                        <li><strong>Frequência</strong> - Detectar saturação de público</li>
+                        <li><strong>Alcance</strong> - Pessoas únicas alcançadas</li>
+                        <li><strong>Data de início/término</strong> - Para filtro por período</li>
+                      </ul>
+                    </div>
+                  </div>
                   <p className="text-xs text-amber-700 mt-2 italic">
                     💡 Dica: Use &quot;Colunas: Performance&quot; ou personalize as colunas no Meta Ads Manager
                   </p>

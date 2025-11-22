@@ -8,6 +8,11 @@ export interface ParsedCSVRow {
   clicks: number;
   conversions: number;
   amountSpent: number;
+  cpm?: number;
+  frequency?: number;
+  reach?: number;
+  startDate?: string;
+  endDate?: string;
 }
 
 export interface CSVParseResult {

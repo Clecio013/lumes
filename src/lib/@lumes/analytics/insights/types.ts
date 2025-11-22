@@ -7,7 +7,7 @@ export type InsightType = 'success' | 'warning' | 'error';
 export interface Insight {
   type: InsightType;
   campaign: string;
-  metric: 'cpl' | 'ctr' | 'cpc' | 'conversion_rate';
+  metric: 'cpl' | 'ctr' | 'cpc' | 'conversion_rate' | 'cpm' | 'frequency';
   value: number;
   message: string;
   action: string;

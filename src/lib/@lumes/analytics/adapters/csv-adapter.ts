@@ -88,6 +88,7 @@ export class CSVAdapter implements IAnalyticsAdapter {
         avgCPC: 0,
         avgCPL: 0,
         avgConversionRate: 0,
+        avgCPM: 0,
       };
     }
 
@@ -98,20 +99,30 @@ export class CSVAdapter implements IAnalyticsAdapter {
         impressions: acc.impressions + campaign.impressions,
         clicks: acc.clicks + campaign.clicks,
         conversions: acc.conversions + campaign.conversions,
+        reach: acc.reach + (campaign.reach || 0),
         ctr: acc.ctr + campaign.ctr,
         cpc: acc.cpc + campaign.cpc,
         cpl: acc.cpl + campaign.cpl,
+        cpm: acc.cpm + campaign.cpm,
+        frequency: acc.frequency + (campaign.frequency || 0),
         conversionRate: acc.conversionRate + campaign.conversionRate,
+        campaignsWithFrequency: acc.campaignsWithFrequency + (campaign.frequency ? 1 : 0),
+        campaignsWithReach: acc.campaignsWithReach + (campaign.reach ? 1 : 0),
       }),
       {
         spent: 0,
         impressions: 0,
         clicks: 0,
         conversions: 0,
+        reach: 0,
         ctr: 0,
         cpc: 0,
         cpl: 0,
+        cpm: 0,
+        frequency: 0,
         conversionRate: 0,
+        campaignsWithFrequency: 0,
+        campaignsWithReach: 0,
       }
     );
 
@@ -126,6 +137,11 @@ export class CSVAdapter implements IAnalyticsAdapter {
       avgCPC: Math.round((totals.cpc / count) * 100) / 100,
       avgCPL: Math.round((totals.cpl / count) * 100) / 100,
       avgConversionRate: Math.round((totals.conversionRate / count) * 100) / 100,
+      avgCPM: Math.round((totals.cpm / count) * 100) / 100,
+      avgFrequency: totals.campaignsWithFrequency > 0
+        ? Math.round((totals.frequency / totals.campaignsWithFrequency) * 100) / 100
+        : undefined,
+      totalReach: totals.campaignsWithReach > 0 ? totals.reach : undefined,
     };
   }
 

@@ -5,7 +5,7 @@
 'use client';
 
 import type { CampaignMetrics } from '@/lib/@lumes/analytics';
-import { DollarSign, Eye, MousePointerClick, Target, TrendingUp, TrendingDown } from 'lucide-react';
+import { DollarSign, Eye, MousePointerClick, Target, TrendingUp, TrendingDown, Gauge, Users, Repeat } from 'lucide-react';
 
 interface MetricsCardsProps {
   metrics: CampaignMetrics;
@@ -121,6 +121,51 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
             : 'neutral'
         }
       />
+
+      {/* CPM Médio */}
+      <MetricCard
+        title="CPM Médio"
+        value={formatCurrency(metrics.avgCPM)}
+        subtitle="Custo por mil impressões"
+        icon={<Gauge className="w-6 h-6" />}
+        color="verde"
+        trend={
+          metrics.avgCPM < 20
+            ? 'up'
+            : metrics.avgCPM > 30
+            ? 'down'
+            : 'neutral'
+        }
+      />
+
+      {/* Frequência Média (se disponível) */}
+      {metrics.avgFrequency !== undefined && (
+        <MetricCard
+          title="Frequência Média"
+          value={metrics.avgFrequency.toFixed(2)}
+          subtitle="Vezes que anúncio é visto"
+          icon={<Repeat className="w-6 h-6" />}
+          color="marrom"
+          trend={
+            metrics.avgFrequency < 2
+              ? 'neutral'
+              : metrics.avgFrequency > 3
+              ? 'down'
+              : 'neutral'
+          }
+        />
+      )}
+
+      {/* Alcance Total (se disponível) */}
+      {metrics.totalReach !== undefined && (
+        <MetricCard
+          title="Alcance Total"
+          value={formatNumber(metrics.totalReach)}
+          subtitle="Pessoas únicas alcançadas"
+          icon={<Users className="w-6 h-6" />}
+          color="verde"
+        />
+      )}
     </div>
   );
 }

@@ -58,6 +58,7 @@ export function calculateAggregatedMetrics(
     const cpc = clicks > 0 ? amountSpent / clicks : 0;
     const cpl = conversions > 0 ? amountSpent / conversions : 0;
     const conversionRate = clicks > 0 ? (conversions / clicks) * 100 : 0;
+    const cpm = impressions > 0 ? (amountSpent / impressions) * 1000 : 0;
 
     campaigns.push({
       id: `${name.toLowerCase().replace(/\s+/g, '-')}-${index}`,
@@ -70,6 +71,7 @@ export function calculateAggregatedMetrics(
       cpc: Math.round(cpc * 100) / 100,
       cpl: Math.round(cpl * 100) / 100,
       conversionRate: Math.round(conversionRate * 100) / 100,
+      cpm: Math.round(cpm * 100) / 100,
     });
 
     index++;

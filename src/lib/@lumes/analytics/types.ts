@@ -17,6 +17,11 @@ export interface Campaign {
   cpc: number;      // Cost Per Click (R$)
   cpl: number;      // Cost Per Lead (R$)
   conversionRate: number; // Conversion Rate (%)
+  cpm: number;      // Cost Per Mille/Thousand Impressions (R$)
+  frequency?: number; // Average times ad shown to same person
+  reach?: number;    // Unique people reached
+  startDate?: string; // Campaign start date (ISO format)
+  endDate?: string;   // Campaign end date (ISO format)
 }
 
 export interface CampaignMetrics {
@@ -28,6 +33,9 @@ export interface CampaignMetrics {
   avgCPC: number;
   avgCPL: number;
   avgConversionRate: number;
+  avgCPM: number;
+  avgFrequency?: number;
+  totalReach?: number;
 }
 
 export interface UTMParams {
@@ -43,7 +51,7 @@ export type InsightType = 'success' | 'warning' | 'error';
 export interface Insight {
   type: InsightType;
   campaign: string;
-  metric: 'cpl' | 'ctr' | 'cpc' | 'conversion_rate';
+  metric: 'cpl' | 'ctr' | 'cpc' | 'conversion_rate' | 'cpm' | 'frequency';
   value: number;
   message: string;
   action: string;

@@ -5,9 +5,9 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import type { Campaign } from '@/lib/@lumes/analytics';
-import { Filter, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { Filter, X, ChevronDown, ChevronUp, Calendar } from 'lucide-react';
 
 export type PerformanceFilter = 'all' | 'excellent' | 'good' | 'warning' | 'critical';
 export type SortBy = 'cpl-asc' | 'cpl-desc' | 'conversions-desc' | 'spent-desc' | 'name-asc';
@@ -17,6 +17,10 @@ export interface FilterState {
   selectedCampaigns: string[]; // IDs das campanhas selecionadas
   minConversions: number;
   sortBy: SortBy;
+  dateRange?: {
+    start: string | null;  // ISO date format (YYYY-MM-DD)
+    end: string | null;    // ISO date format (YYYY-MM-DD)
+  };
 }
 
 interface FiltersPanelProps {
@@ -79,12 +83,60 @@ export function FiltersPanel({ campaigns, filters, onFiltersChange }: FiltersPan
     onFiltersChange({ ...filters, sortBy });
   };
 
+  const handleDatePreset = (preset: 'last7' | 'last30' | 'all') => {
+    const today = new Date();
+    const toISO = (date: Date) => date.toISOString().split('T')[0];
+
+    if (preset === 'all') {
+      onFiltersChange({ ...filters, dateRange: undefined });
+      return;
+    }
+
+    const daysAgo = preset === 'last7' ? 7 : 30;
+    const startDate = new Date(today);
+    startDate.setDate(startDate.getDate() - daysAgo);
+
+    onFiltersChange({
+      ...filters,
+      dateRange: {
+        start: toISO(startDate),
+        end: toISO(today),
+      },
+    });
+  };
+
+  const handleDateRangeChange = (type: 'start' | 'end', value: string) => {
+    onFiltersChange({
+      ...filters,
+      dateRange: {
+        start: type === 'start' ? value : filters.dateRange?.start || null,
+        end: type === 'end' ? value : filters.dateRange?.end || null,
+      },
+    });
+  };
+
+  // Calcular range de datas disponíveis nas campanhas
+  const dateRangeInfo = useMemo(() => {
+    const datesWithData = campaigns
+      .flatMap((c) => [c.startDate, c.endDate])
+      .filter((d): d is string => Boolean(d))
+      .sort();
+
+    if (datesWithData.length === 0) return null;
+
+    return {
+      minDate: datesWithData[0],
+      maxDate: datesWithData[datesWithData.length - 1],
+    };
+  }, [campaigns]);
+
   const handleReset = () => {
     onFiltersChange({
       performance: 'all',
       selectedCampaigns: campaigns.map((c) => c.id),
       minConversions: 0,
       sortBy: 'cpl-asc',
+      dateRange: undefined,
     });
   };
 
@@ -92,7 +144,8 @@ export function FiltersPanel({ campaigns, filters, onFiltersChange }: FiltersPan
     filters.performance !== 'all' ||
     filters.selectedCampaigns.length !== campaigns.length ||
     filters.minConversions > 0 ||
-    filters.sortBy !== 'cpl-asc';
+    filters.sortBy !== 'cpl-asc' ||
+    filters.dateRange !== undefined;
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200">
@@ -220,6 +273,80 @@ export function FiltersPanel({ campaigns, filters, onFiltersChange }: FiltersPan
               Filtrar apenas campanhas com {filters.minConversions} ou mais conversões
             </p>
           </div>
+
+          {/* Date Range Filter (only if dates available) */}
+          {dateRangeInfo && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                <Calendar className="w-4 h-4 inline mr-1" />
+                Período
+              </label>
+
+              {/* Presets */}
+              <div className="grid grid-cols-3 gap-2 mb-3">
+                <button
+                  onClick={() => handleDatePreset('last7')}
+                  className={`px-3 py-2 text-xs font-medium rounded-lg border transition-colors ${
+                    filters.dateRange?.start && filters.dateRange?.end
+                      ? 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
+                  }`}
+                >
+                  Últimos 7 dias
+                </button>
+                <button
+                  onClick={() => handleDatePreset('last30')}
+                  className={`px-3 py-2 text-xs font-medium rounded-lg border transition-colors ${
+                    filters.dateRange?.start && filters.dateRange?.end
+                      ? 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
+                  }`}
+                >
+                  Últimos 30 dias
+                </button>
+                <button
+                  onClick={() => handleDatePreset('all')}
+                  className={`px-3 py-2 text-xs font-medium rounded-lg border transition-colors ${
+                    !filters.dateRange
+                      ? 'bg-[#874329] text-white border-[#874329]'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
+                  }`}
+                >
+                  Todo período
+                </button>
+              </div>
+
+              {/* Custom Date Range */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs text-gray-600 mb-1">De</label>
+                  <input
+                    type="date"
+                    value={filters.dateRange?.start || ''}
+                    onChange={(e) => handleDateRangeChange('start', e.target.value)}
+                    min={dateRangeInfo.minDate}
+                    max={dateRangeInfo.maxDate}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#874329] focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-600 mb-1">Até</label>
+                  <input
+                    type="date"
+                    value={filters.dateRange?.end || ''}
+                    onChange={(e) => handleDateRangeChange('end', e.target.value)}
+                    min={dateRangeInfo.minDate}
+                    max={dateRangeInfo.maxDate}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#874329] focus:border-transparent"
+                  />
+                </div>
+              </div>
+
+              <p className="text-xs text-gray-500 mt-2">
+                Dados disponíveis: {dateRangeInfo.minDate} até {dateRangeInfo.maxDate}
+              </p>
+            </div>
+          )}
 
           {/* Campaign Selection */}
           <div>
