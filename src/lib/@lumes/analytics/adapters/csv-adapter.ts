@@ -128,16 +128,33 @@ export class CSVAdapter implements IAnalyticsAdapter {
 
     const count = campaigns.length;
 
+    // Calcular métricas globais baseadas nos totais (não média das médias)
+    const globalCTR = totals.impressions > 0
+      ? (totals.clicks / totals.impressions) * 100
+      : 0;
+    const globalCPC = totals.clicks > 0
+      ? totals.spent / totals.clicks
+      : 0;
+    const globalCPL = totals.conversions > 0
+      ? totals.spent / totals.conversions
+      : 0;
+    const globalConversionRate = totals.clicks > 0
+      ? (totals.conversions / totals.clicks) * 100
+      : 0;
+    const globalCPM = totals.impressions > 0
+      ? (totals.spent / totals.impressions) * 1000
+      : 0;
+
     return {
       totalSpent: Math.round(totals.spent * 100) / 100,
       totalImpressions: totals.impressions,
       totalClicks: totals.clicks,
       totalConversions: totals.conversions,
-      avgCTR: Math.round((totals.ctr / count) * 100) / 100,
-      avgCPC: Math.round((totals.cpc / count) * 100) / 100,
-      avgCPL: Math.round((totals.cpl / count) * 100) / 100,
-      avgConversionRate: Math.round((totals.conversionRate / count) * 100) / 100,
-      avgCPM: Math.round((totals.cpm / count) * 100) / 100,
+      avgCTR: Math.round(globalCTR * 100) / 100,
+      avgCPC: Math.round(globalCPC * 100) / 100,
+      avgCPL: Math.round(globalCPL * 100) / 100,
+      avgConversionRate: Math.round(globalConversionRate * 100) / 100,
+      avgCPM: Math.round(globalCPM * 100) / 100,
       avgFrequency: totals.campaignsWithFrequency > 0
         ? Math.round((totals.frequency / totals.campaignsWithFrequency) * 100) / 100
         : undefined,
