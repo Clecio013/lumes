@@ -133,12 +133,12 @@ export const OfertaSection: React.FC = () => {
               disabled={isLoading}
               className="projeto45-cta-green w-full disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? 'PROCESSANDO...' : '✅ GARANTIR MINHA VAGA AGORA'}
+              {isLoading ? 'PROCESSANDO...' : '✅ GARANTIR VAGA POR R$ 397'}
             </button>
 
             {/* Urgência */}
             <p className="text-center text-[var(--text-muted)] text-sm mt-4">
-              🔥 <span className="text-[var(--accent-red)] font-bold">Vagas limitadas</span> • Preço aumenta em breve
+              ⏰ Black Friday termina <span className="text-[var(--accent-red)] font-bold">sexta-feira</span> • Depois volta pra R$ 697
             </p>
           </div>
         </div>

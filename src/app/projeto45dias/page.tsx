@@ -1,5 +1,6 @@
 import { HeroSection } from './components/hero-section';
 import { VSLSection } from './components/vsl-section';
+import { CountdownTimer } from './components/countdown-timer';
 import { BenefitsSection } from './components/benefits-section';
 import { EmotionalTransformationSection } from './components/emotional-transformation-section';
 import BonusSection from './components/bonus-section';
@@ -19,13 +20,16 @@ export default function Projeto45DiasPage() {
       {/* VSL Section */}
       <VSLSection />
 
+      {/* Countdown Timer - Black Friday Urgência */}
+      <CountdownTimer />
+
       {/* Benefits Section */}
       <BenefitsSection />
 
       {/* Transformations Section - Estados Emocionais */}
       <EmotionalTransformationSection />
 
-      {/* Bonus Section - Materiais Exclusivos */}
+      {/* Bonus Section - Materiais Exclusivos - REMOVIDO TEMPORARIAMENTE */}
       <BonusSection />
 
       {/* How It Works Section */}

@@ -2,8 +2,10 @@
 
 import { motion } from 'framer-motion';
 import { Zap } from 'lucide-react';
+import { getVagasRestantes } from '../lib/vagas-dinamicas';
 
 export const UrgencyBadge: React.FC = () => {
+  const vagasRestantes = getVagasRestantes();
   return (
     <div className="flex justify-center">
       <motion.div
@@ -37,7 +39,7 @@ export const UrgencyBadge: React.FC = () => {
 
         {/* Texto */}
         <span className="text-gray-300 text-xs md:text-sm tracking-wide">
-          Vagas Limitadas • Preço aumenta em breve
+          Black Friday • Restam {vagasRestantes} vagas • Termina sexta-feira
         </span>
       </motion.div>
     </div>

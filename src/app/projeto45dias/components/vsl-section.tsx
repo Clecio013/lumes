@@ -82,7 +82,7 @@ export const VSLSection: React.FC = () => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            Quero meu projeto de 45 dias
+            GARANTIR VAGA POR R$ 397
           </motion.button>
 
           <motion.div
