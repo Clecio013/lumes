@@ -6,16 +6,16 @@ interface BonusCoverProps {
   title: string;
   subtitle?: string;
   icon?: React.ReactNode;
-  gradient?: 'gold' | 'green' | 'blue' | 'purple' | 'orange';
+  gradient?: 'gold' | 'terracota' | 'warm' | 'elegant' | 'vibrant';
   pattern?: 'dots' | 'lines' | 'grid' | 'waves';
 }
 
 const gradients = {
-  gold: 'from-amber-600 via-yellow-500 to-amber-600',
-  green: 'from-emerald-600 via-green-500 to-emerald-600',
-  blue: 'from-blue-600 via-cyan-500 to-blue-600',
-  purple: 'from-purple-600 via-pink-500 to-purple-600',
-  orange: 'from-orange-600 via-amber-500 to-orange-600',
+  gold: 'from-[#d4af37] via-[#f4d03f] to-[#d4af37]',
+  terracota: 'from-[#874329] via-[#a85835] to-[#874329]',
+  warm: 'from-[#602514] via-[#874329] to-[#d4af37]',
+  elegant: 'from-[#454c31] via-[#874329] to-[#602514]',
+  vibrant: 'from-[#d4af37] via-[#874329] to-[#602514]',
 };
 
 export function BonusCover({
@@ -26,46 +26,46 @@ export function BonusCover({
   pattern = 'dots',
 }: BonusCoverProps) {
   return (
-    <div className="relative w-full h-full bg-gradient-to-br from-zinc-950 via-zinc-900 to-black overflow-hidden">
-      {/* Pattern Background */}
+    <div className="relative w-full h-full bg-gradient-to-br from-[#0d0d0d] via-[#1a1410] to-[#0d0d0d] overflow-hidden">
+      {/* Sophisticated Pattern Background */}
       {pattern === 'dots' && (
         <div
-          className="absolute inset-0 opacity-10"
+          className="absolute inset-0 opacity-[0.07]"
           style={{
-            backgroundImage: `radial-gradient(circle, currentColor 1px, transparent 1px)`,
-            backgroundSize: '24px 24px',
+            backgroundImage: `radial-gradient(circle, rgba(212,175,55,0.4) 1px, transparent 1px)`,
+            backgroundSize: '32px 32px',
           }}
         />
       )}
       {pattern === 'lines' && (
         <div
-          className="absolute inset-0 opacity-10"
+          className="absolute inset-0 opacity-[0.06]"
           style={{
             backgroundImage: `repeating-linear-gradient(
               45deg,
-              currentColor,
-              currentColor 1px,
+              rgba(212,175,55,0.3),
+              rgba(212,175,55,0.3) 1px,
               transparent 1px,
-              transparent 12px
+              transparent 16px
             )`,
           }}
         />
       )}
       {pattern === 'grid' && (
         <div
-          className="absolute inset-0 opacity-10"
+          className="absolute inset-0 opacity-[0.05]"
           style={{
             backgroundImage: `
-              linear-gradient(currentColor 1px, transparent 1px),
-              linear-gradient(90deg, currentColor 1px, transparent 1px)
+              linear-gradient(rgba(212,175,55,0.2) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(212,175,55,0.2) 1px, transparent 1px)
             `,
-            backgroundSize: '30px 30px',
+            backgroundSize: '40px 40px',
           }}
         />
       )}
       {pattern === 'waves' && (
         <svg
-          className="absolute inset-0 w-full h-full opacity-10"
+          className="absolute inset-0 w-full h-full opacity-[0.06]"
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
@@ -73,15 +73,15 @@ export function BonusCover({
               id="wave"
               x="0"
               y="0"
-              width="100"
-              height="100"
+              width="120"
+              height="120"
               patternUnits="userSpaceOnUse"
             >
               <path
-                d="M0 50 Q 25 30, 50 50 T 100 50"
-                stroke="currentColor"
+                d="M0 60 Q 30 40, 60 60 T 120 60"
+                stroke="rgba(212,175,55,0.3)"
                 fill="none"
-                strokeWidth="2"
+                strokeWidth="1.5"
               />
             </pattern>
           </defs>
@@ -89,37 +89,37 @@ export function BonusCover({
         </svg>
       )}
 
-      {/* Gradient Accent Top */}
+      {/* Top Gradient Bar - More Elegant */}
       <div
-        className={`absolute top-0 left-0 right-0 h-2 bg-gradient-to-r ${gradients[gradient]}`}
+        className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${gradients[gradient]} opacity-80`}
       />
 
       {/* Content Container */}
       <div className="relative h-full flex flex-col justify-between p-8">
-        {/* Top Section */}
-        <div className="space-y-6">
-          {/* Logo/Brand */}
-          <div className="flex items-center gap-3">
+        {/* Top Section - Branding */}
+        <div className="space-y-8">
+          {/* Minimal Brand Badge */}
+          <div className="inline-flex items-center gap-2.5">
             <div
-              className={`w-12 h-12 rounded-lg bg-gradient-to-br ${gradients[gradient]} flex items-center justify-center shadow-lg`}
+              className={`w-10 h-10 rounded-md bg-gradient-to-br ${gradients[gradient]} flex items-center justify-center shadow-xl`}
             >
-              <span className="text-black font-black text-xl">45</span>
+              <span className="text-[#0d0d0d] font-black text-lg tracking-tight">45</span>
             </div>
             <div>
-              <div className="text-amber-400 text-xs font-bold tracking-wider uppercase">
+              <div className={`text-[#d4af37] text-[10px] font-black tracking-[0.15em] uppercase`}>
                 Projeto 45 Dias
               </div>
-              <div className="text-zinc-400 text-xs uppercase tracking-wide">
+              <div className="text-zinc-500 text-[9px] uppercase tracking-[0.1em] font-medium">
                 {subtitle}
               </div>
             </div>
           </div>
 
-          {/* Icon (if provided) */}
+          {/* Icon - Larger and More Prominent */}
           {icon && (
-            <div className="flex justify-center py-8">
+            <div className="flex justify-center py-12">
               <div
-                className={`w-24 h-24 rounded-2xl bg-gradient-to-br ${gradients[gradient]} flex items-center justify-center shadow-2xl`}
+                className={`w-28 h-28 rounded-2xl bg-gradient-to-br ${gradients[gradient]} flex items-center justify-center shadow-2xl transform transition-transform hover:scale-105`}
               >
                 {icon}
               </div>
@@ -127,31 +127,30 @@ export function BonusCover({
           )}
         </div>
 
-        {/* Title */}
-        <div className="space-y-4">
-          <h3 className="text-2xl md:text-3xl font-black text-white leading-tight tracking-tight min-h-[3.5rem] flex items-end">
+        {/* Bottom Section - Title */}
+        <div className="space-y-5">
+          {/* Title - Elegant Typography */}
+          <h3 className="text-[1.75rem] md:text-[2rem] font-black text-white leading-[1.15] tracking-tight min-h-[4rem] flex items-end">
             {title}
           </h3>
 
-          {/* Bottom Accent Line */}
-          <div className="flex items-center gap-3">
-            <div
-              className={`h-1 flex-grow bg-gradient-to-r ${gradients[gradient]} rounded-full`}
-            />
-            <div className="text-zinc-500 text-xs font-bold whitespace-nowrap">
-              BY SEYUNE
-            </div>
-          </div>
+          {/* Bottom Accent - Sophisticated */}
+          <div
+            className={`h-[3px] w-full bg-gradient-to-r ${gradients[gradient]} rounded-full shadow-lg`}
+          />
         </div>
       </div>
 
-      {/* Decorative corner elements */}
+      {/* Ambient Light Effects - Subtle and Elegant */}
       <div
-        className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${gradients[gradient]} opacity-20 blur-3xl`}
+        className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-br ${gradients[gradient]} opacity-10 blur-[80px] pointer-events-none`}
       />
       <div
-        className={`absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr ${gradients[gradient]} opacity-20 blur-3xl`}
+        className={`absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr ${gradients[gradient]} opacity-10 blur-[80px] pointer-events-none`}
       />
+
+      {/* Vignette Effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/30 pointer-events-none" />
     </div>
   );
 }

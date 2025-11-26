@@ -8,9 +8,9 @@ export function EmagrecimentoSustentavelCover() {
     <BonusCover
       title="Emagrecimento Sustentável"
       subtitle="GUIA NUTRICIONAL"
-      gradient="green"
+      gradient="warm"
       pattern="dots"
-      icon={<Scale className="w-12 h-12 text-black" strokeWidth={2.5} />}
+      icon={<Scale className="w-14 h-14 text-[#0d0d0d]" strokeWidth={3} />}
     />
   );
 }
@@ -20,9 +20,9 @@ export function NaoSabotarProcessoCover() {
     <BonusCover
       title="Não Sabotar Seu Processo"
       subtitle="GUIA COMPORTAMENTAL"
-      gradient="blue"
+      gradient="elegant"
       pattern="lines"
-      icon={<Shield className="w-12 h-12 text-black" strokeWidth={2.5} />}
+      icon={<Shield className="w-14 h-14 text-[#0d0d0d]" strokeWidth={3} />}
     />
   );
 }
@@ -32,9 +32,9 @@ export function GanhoMassaCover() {
     <BonusCover
       title="Ganho de Massa Muscular"
       subtitle="GUIA HIPERTROFIA"
-      gradient="purple"
+      gradient="vibrant"
       pattern="grid"
-      icon={<TrendingUp className="w-12 h-12 text-black" strokeWidth={2.5} />}
+      icon={<TrendingUp className="w-14 h-14 text-[#0d0d0d]" strokeWidth={3} />}
     />
   );
 }
@@ -44,9 +44,9 @@ export function FestasFimAnoCover() {
     <BonusCover
       title="Sobrevivência nas Festas"
       subtitle="GUIA ESPECIAL"
-      gradient="orange"
+      gradient="terracota"
       pattern="waves"
-      icon={<PartyPopper className="w-12 h-12 text-black" strokeWidth={2.5} />}
+      icon={<PartyPopper className="w-14 h-14 text-[#0d0d0d]" strokeWidth={3} />}
     />
   );
 }
@@ -58,7 +58,7 @@ export function ReceitasImpressionar() {
       subtitle="GUIA DE RECEITAS"
       gradient="gold"
       pattern="dots"
-      icon={<ChefHat className="w-12 h-12 text-black" strokeWidth={2.5} />}
+      icon={<ChefHat className="w-14 h-14 text-[#0d0d0d]" strokeWidth={3} />}
     />
   );
 }
