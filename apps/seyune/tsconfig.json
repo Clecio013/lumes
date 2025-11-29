@@ -1,0 +1,56 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@lumes/analytics": ["../../packages/analytics/index.ts"],
+      "@lumes/analytics/*": ["../../packages/analytics/*"],
+      "@lumes/email": ["../../packages/email/index.ts"],
+      "@lumes/email/*": ["../../packages/email/*"],
+      "@lumes/logger": ["../../packages/logger/index.ts"],
+      "@lumes/logger/*": ["../../packages/logger/*"],
+      "@lumes/mercadopago": ["../../packages/mercadopago/index.ts"],
+      "@lumes/mercadopago/*": ["../../packages/mercadopago/*"],
+      "@lumes/meta-conversions-api": ["../../packages/meta-conversions-api/index.ts"],
+      "@lumes/meta-conversions-api/*": ["../../packages/meta-conversions-api/*"],
+      "@lumes/sheets": ["../../packages/sheets/index.ts"],
+      "@lumes/sheets/*": ["../../packages/sheets/*"],
+      "@lumes/storage": ["../../packages/storage/index.ts"],
+      "@lumes/storage/*": ["../../packages/storage/*"],
+      "@lumes/stripe": ["../../packages/stripe/index.ts"],
+      "@lumes/stripe/*": ["../../packages/stripe/*"],
+      "@lumes/tracking": ["../../packages/tracking/index.ts"],
+      "@lumes/tracking/*": ["../../packages/tracking/*"],
+      "@lumes/ui": ["../../packages/ui/index.ts"],
+      "@lumes/ui/*": ["../../packages/ui/*"],
+      "@lumes/validators": ["../../packages/validators/index.ts"],
+      "@lumes/validators/*": ["../../packages/validators/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
+  ],
+  "exclude": ["node_modules"]
+}

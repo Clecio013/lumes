@@ -12,7 +12,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "incremental": true
+    "declaration": true,
+    "declarationMap": true,
+    "paths": {
+      "@lumes/analytics": ["../analytics/index.ts"],
+      "@lumes/analytics/*": ["../analytics/*"]
+    }
   },
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
