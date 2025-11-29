@@ -59,6 +59,12 @@ importers:
       framer-motion:
         specifier: ^12.23.24
         version: 12.23.24(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      lucide-react:
+        specifier: ^0.552.0
+        version: 0.552.0(react@19.2.0)
+      mercadopago:
+        specifier: ^2.10.0
+        version: 2.11.0
       next:
         specifier: 16.0.1
         version: 16.0.1(@babel/core@7.28.5)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -71,6 +77,12 @@ importers:
       recharts:
         specifier: ^3.4.1
         version: 3.5.1(@types/react@19.2.7)(react-dom@19.2.0(react@19.2.0))(react-is@18.3.1)(react@19.2.0)(redux@5.0.1)
+      stripe:
+        specifier: ^19.3.0
+        version: 19.3.1(@types/node@20.19.25)
+      zod:
+        specifier: ^4.1.12
+        version: 4.1.13
     devDependencies:
       '@react-email/preview-server':
         specifier: 5.0.1
@@ -11560,6 +11572,12 @@ snapshots:
   strip-json-comments@3.1.1: {}
 
   strip-json-comments@5.0.3: {}
+
+  stripe@19.3.1(@types/node@20.19.25):
+    dependencies:
+      qs: 6.14.0
+    optionalDependencies:
+      '@types/node': 20.19.25
 
   stripe@19.3.1(@types/node@22.19.1):
     dependencies:
