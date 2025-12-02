@@ -1,14 +1,29 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
-import { LazyMotion, domAnimation, m } from "framer-motion";
+import { LazyMotion, domAnimation, m, useScroll, useTransform } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { siteConfig, formatPrice } from "@/config/site";
 
 export function HeroSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Track scroll progress within the hero section
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"], // Start tracking when section enters, end when it leaves
+  });
+
+  // Zoom out effect: starts at 1.1, goes to 1.0 as you scroll
+  const scale = useTransform(scrollYProgress, [0, 1], [1.1, 1]);
+
+  // Fade effect: starts at 1, fades to 0.6 as you scroll
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.6]);
+
   return (
     <LazyMotion features={domAnimation}>
-      <section data-section="hero" className="relative min-h-screen bg-[var(--sacramento)]">
+      <section ref={sectionRef} data-section="hero" className="relative min-h-screen bg-[var(--sacramento)]">
         {/* Layout grid para desktop */}
         <div className="min-h-screen lg:grid lg:grid-cols-2">
           {/* Coluna esquerda - Conteúdo */}
@@ -33,26 +48,14 @@ export function HeroSection() {
             </header>
 
             {/* Main Content */}
-            <div className="flex-1 flex items-center px-6 lg:px-12 pb-24 lg:pb-12">
+            <div className="flex-1 flex items-end lg:items-center px-6 lg:px-12 pb-24 lg:pb-12">
               <div className="max-w-xl">
-                {/* Tag */}
-                <m.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  className="mb-6"
-                >
-                  <span className="inline-block px-4 py-2 bg-[var(--tangerine)] text-white text-sm font-medium tracking-wide uppercase">
-                    Curso Online
-                  </span>
-                </m.div>
-
                 {/* Headline */}
                 <m.h1
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.3 }}
-                  className="font-display text-4xl sm:text-5xl lg:text-5xl xl:text-6xl text-white leading-[1.1] mb-6"
+                  className="font-display text-4xl sm:text-5xl lg:text-5xl xl:text-6xl text-white leading-[1.1] mb-4 lg:mb-6"
                 >
                   Avaliação de Pele
                   <span className="block text-[var(--salmon)]">
@@ -60,23 +63,28 @@ export function HeroSection() {
                   </span>
                 </m.h1>
 
-                {/* Descrição */}
+                {/* Descrição - versão curta no mobile, completa no desktop */}
                 <m.p
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.4 }}
-                  className="text-lg lg:text-xl text-white/80 leading-relaxed mb-8"
+                  className="text-base sm:text-lg lg:text-xl text-white/80 leading-relaxed mb-6 sm:mb-8"
                 >
-                  O método que transforma profissionais de estética em especialistas
-                  capazes de criar protocolos personalizados com autonomia e segurança.
+                  <span className="sm:hidden">
+                    Crie protocolos personalizados com autonomia e segurança.
+                  </span>
+                  <span className="hidden sm:inline">
+                    O método que transforma profissionais de estética em especialistas
+                    capazes de criar protocolos personalizados com autonomia e segurança.
+                  </span>
                 </m.p>
 
-                {/* Stats */}
+                {/* Stats - escondidos no mobile para dar mais espaço à imagem */}
                 <m.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.5 }}
-                  className="flex flex-wrap gap-6 lg:gap-8 mb-10"
+                  className="hidden sm:flex flex-wrap gap-6 lg:gap-8 mb-10"
                 >
                   <div className="border-l-2 border-[var(--tangerine)] pl-4">
                     <p className="font-display text-3xl lg:text-4xl text-white">49</p>
@@ -97,7 +105,7 @@ export function HeroSection() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.6 }}
-                  className="flex flex-col sm:flex-row items-start sm:items-center gap-6"
+                  className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mt-6 sm:mt-0"
                 >
                   <button
                     onClick={() => window.open(siteConfig.course.checkoutUrl, "_blank")}
@@ -142,9 +150,12 @@ export function HeroSection() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="hidden lg:block relative"
+            className="hidden lg:block relative overflow-hidden bg-black"
           >
-            <div className="absolute inset-0">
+            <m.div
+              className="absolute inset-0"
+              style={{ scale, opacity }}
+            >
               <Image
                 src="/images/hero/elizete.jpg"
                 alt="Elizete Garcia"
@@ -153,22 +164,27 @@ export function HeroSection() {
                 priority
                 sizes="50vw"
               />
-            </div>
+            </m.div>
           </m.div>
         </div>
 
         {/* Background mobile com imagem */}
-        <div className="absolute inset-0 lg:hidden">
-          <Image
-            src="/images/hero/elizete.jpg"
-            alt="Elizete Garcia"
-            fill
-            className="object-cover object-top"
-            priority
-            sizes="100vw"
-          />
-          {/* Gradiente apenas na área do texto para legibilidade */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
+        <div className="absolute inset-0 lg:hidden overflow-hidden">
+          <m.div
+            className="absolute inset-0"
+            style={{ scale, opacity }}
+          >
+            <Image
+              src="/images/hero/elizete.jpg"
+              alt="Elizete Garcia"
+              fill
+              className="object-cover object-top"
+              priority
+              sizes="100vw"
+            />
+          </m.div>
+          {/* Gradiente mais forte na parte inferior onde está o texto */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 via-40% to-transparent" />
         </div>
       </section>
     </LazyMotion>
