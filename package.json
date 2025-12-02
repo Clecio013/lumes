@@ -9,6 +9,8 @@
     "test": "turbo test",
     "dev:seyune": "turbo dev --filter=seyune",
     "build:seyune": "turbo build --filter=seyune",
+    "dev:elizete": "turbo dev --filter=elizete",
+    "build:elizete": "turbo build --filter=elizete",
     "create-app": "./scripts/create-app.sh"
   },
   "devDependencies": {
