@@ -1,0 +1,12 @@
+export { VideoHero } from "./video-hero";
+export { ProblemSection } from "./problem-section";
+export { EmpathyBridge } from "./empathy-bridge";
+export { Authority } from "./authority";
+export { Method } from "./method";
+export { CourseModules } from "./course-modules";
+export { BonusSection } from "./bonus-section";
+export { SocialProof } from "./social-proof";
+export { Pricing } from "./pricing";
+export { FinalCTA } from "./final-cta";
+export { FAQ } from "./faq";
+export { Footer } from "./footer";

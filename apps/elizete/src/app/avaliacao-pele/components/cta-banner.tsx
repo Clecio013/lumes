@@ -24,7 +24,7 @@ export function CTABanner({
             onClick={() => window.open(siteConfig.course.checkoutUrl, "_blank")}
             className="group inline-flex items-center gap-2 bg-[var(--tangerine)] text-white px-8 py-4 text-lg font-medium hover:bg-[var(--tangerine)]/90 transition-colors"
           >
-            Quero me inscrever
+            Quero Dominar a Avaliação de Pele
             <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
@@ -65,7 +65,7 @@ export function CTABanner({
                 onClick={() => window.open(siteConfig.course.checkoutUrl, "_blank")}
                 className="group flex items-center gap-2 bg-[var(--tangerine)] text-white px-8 py-4 text-lg font-medium hover:bg-[var(--tangerine)]/90 transition-colors whitespace-nowrap"
               >
-                Inscreva-se agora
+                Quero Aprender Agora
                 <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
@@ -93,7 +93,7 @@ export function CTABanner({
             onClick={() => window.open(siteConfig.course.checkoutUrl, "_blank")}
             className="group flex items-center gap-2 bg-white text-[var(--tangerine)] px-8 py-4 text-lg font-medium hover:bg-white/90 transition-colors"
           >
-            Quero aprender agora
+            Quero Dominar a Avaliação de Pele
             <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>

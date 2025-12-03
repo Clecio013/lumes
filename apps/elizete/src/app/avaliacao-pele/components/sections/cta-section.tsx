@@ -20,13 +20,13 @@ export function CTASection() {
                 Inscreva-se
               </p>
               <h2 className="font-display text-3xl lg:text-5xl text-foreground leading-tight mb-6">
-                Comece sua transformação
-                <span className="block text-[var(--tangerine)]">hoje mesmo</span>
+                Pare de copiar.
+                <span className="block text-[var(--tangerine)]">Comece a dominar.</span>
               </h2>
 
               <p className="text-lg text-muted-foreground mb-8">
                 Você está a um passo de dominar a avaliação de pele com raciocínio clínico.
-                Pare de copiar e comece a pensar.
+                Entenda o porquê, crie o como.
               </p>
 
               {/* Benefits list */}
@@ -81,7 +81,7 @@ export function CTASection() {
                   onClick={() => window.open(siteConfig.course.checkoutUrl, "_blank")}
                   className="w-full bg-[var(--tangerine)] text-white py-5 px-8 text-lg font-medium hover:bg-[var(--tangerine)]/90 transition-colors group flex items-center justify-center gap-3"
                 >
-                  Quero me inscrever
+                  Quero Dominar a Avaliação de Pele
                   <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>

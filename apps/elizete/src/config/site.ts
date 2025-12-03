@@ -9,14 +9,38 @@ export const siteConfig = {
   description: "Curso de Avaliação de Pele e Consulta Estética Profissional. Aprenda o método de Raciocínio Clínico com 49 anos de experiência em estética.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://elizetegarcia.com.br",
 
-  // Dados do Curso
+  // Dados dos Cursos
+  courses: {
+    avaliacaoPele: {
+      name: "Avaliação de Pele e Consulta Estética Profissional",
+      slug: "avaliacao-pele",
+      price: 97,
+      originalPrice: 197,
+      currency: "BRL",
+      checkoutUrl: "https://pay.hotmart.com/S93861162D?off=zg4m3br3&hotfeature=51&_hi=eyJjaWQiOiIxNzQ2Mzc0MDg0MjA3MjQwMjIxODM2NTExNTg2OTAwIiwiYmlkIjoiMTc0NjM3NDA4NDIwNzI0MDIyMTgzNjUxMTU4NjkwMCIsInNpZCI6ImRhNDk3NmFlMTdkYzQyMmRiZTZjOTk5NmZmYjQ3Y2NhIn0=.1764682992438&bid=1764682993126",
+      guarantee: 7,
+      access: "infinite",
+    },
+    clareamentoIntimo: {
+      name: "Clareamento Íntimo com Raciocínio Clínico",
+      slug: "clareamento-intimo",
+      price: 97,
+      originalPrice: 397,
+      currency: "BRL",
+      checkoutUrl: "https://pay.hotmart.com/X101182641X?off=a2fwo7ms&hotfeature=51",
+      guarantee: 7,
+      access: "1year",
+    },
+  },
+
+  // Alias para manter compatibilidade
   course: {
     name: "Avaliação de Pele e Consulta Estética Profissional",
     price: 97,
-    originalPrice: 197, // Preço "de" para ancoragem (opcional)
+    originalPrice: 197,
     currency: "BRL",
     checkoutUrl: "https://pay.hotmart.com/S93861162D?off=zg4m3br3&hotfeature=51&_hi=eyJjaWQiOiIxNzQ2Mzc0MDg0MjA3MjQwMjIxODM2NTExNTg2OTAwIiwiYmlkIjoiMTc0NjM3NDA4NDIwNzI0MDIyMTgzNjUxMTU4NjkwMCIsInNpZCI6ImRhNDk3NmFlMTdkYzQyMmRiZTZjOTk5NmZmYjQ3Y2NhIn0=.1764682992438&bid=1764682993126",
-    guarantee: 7, // dias
+    guarantee: 7,
   },
 
   // Redes Sociais
@@ -35,6 +59,7 @@ export const siteConfig = {
   // Links úteis
   links: {
     avaliacaoPele: "/avaliacao-pele",
+    clareamentoIntimo: "/clareamento-intimo",
     homepage: "/",
   },
 } as const;

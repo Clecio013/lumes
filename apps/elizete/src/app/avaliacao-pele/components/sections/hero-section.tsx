@@ -4,7 +4,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import { LazyMotion, domAnimation, m, useScroll, useTransform } from "framer-motion";
 import { ArrowDown } from "lucide-react";
-import { siteConfig, formatPrice } from "@/config/site";
+import { siteConfig } from "@/config/site";
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -112,17 +112,12 @@ export function HeroSection() {
                     className="group relative overflow-hidden bg-[var(--tangerine)] text-white px-8 py-4 text-lg font-medium transition-all duration-300 hover:bg-[var(--tangerine)]/90"
                   >
                     <span className="relative z-10 flex items-center gap-2">
-                      Inscreva-se agora
+                      Quero Dominar a Avaliação de Pele
                       <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
                     </span>
                   </button>
-
-                  <div className="text-white/80">
-                    <span className="text-sm line-through text-white/50 block">De R$ 197</span>
-                    <span className="text-2xl font-display">{formatPrice(siteConfig.course.price)}</span>
-                  </div>
                 </m.div>
               </div>
             </div>
