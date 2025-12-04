@@ -3,25 +3,33 @@
 import React, { useState } from 'react';
 import { Check, TrendingUp } from 'lucide-react';
 import { UrgencyBadge } from './urgency-badge';
-import { uniqueBatch, formatPrice } from '../lib/batches-config';
+import { formatPrice } from '../lib/batches-config';
 import { useTracking } from '@lumes/tracking';
+import {
+  getCopy,
+  getCurrentPrice,
+  getDiscountPercentage,
+  isBlackFriday,
+  PRICES,
+} from '../lib/campaign-config';
 
 export const OfertaSection: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { trackInitiateCheckout } = useTracking();
-  const currentBatch = uniqueBatch();
-  const nextBatch = null;
-  const savings = 0;
-  const campaignEnded = false;
+
+  const copy = getCopy();
+  const currentPrice = getCurrentPrice();
+  const discountPercentage = getDiscountPercentage();
+  const showDiscount = isBlackFriday();
 
   const handleCheckout = async () => {
     setIsLoading(true);
 
     try {
-      // Disparar evento InitiateCheckout (Meta Pixel + GA4)
-      trackInitiateCheckout('oferta-section', currentBatch.promotionalPrice);
+      // Track InitiateCheckout event (Meta Pixel + GA4)
+      trackInitiateCheckout('oferta-section', currentPrice);
 
-      // Criar sessão de checkout no Stripe (sem metadata de formulário)
+      // Create Stripe checkout session
       const response = await fetch('/api/stripe/create-session', {
         method: 'POST',
         headers: {
@@ -36,7 +44,7 @@ export const OfertaSection: React.FC = () => {
         throw new Error(data.error || 'Erro ao criar checkout');
       }
 
-      // Redirecionar para checkout do Stripe
+      // Redirect to Stripe checkout
       window.location.href = data.url;
     } catch (error) {
       console.error('Erro ao criar checkout:', error);
@@ -45,13 +53,10 @@ export const OfertaSection: React.FC = () => {
     }
   };
 
-  const discount = currentBatch.originalPrice - currentBatch.promotionalPrice;
-  const discountPercentage = Math.round((discount / currentBatch.originalPrice) * 100);
-
   return (
     <section id="oferta-section" className="projeto45-section">
       <div className="max-w-6xl mx-auto">
-        {/* Título */}
+        {/* Title */}
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-6xl font-bold projeto45-title mb-4">
             GARANTA SUA VAGA
@@ -61,41 +66,50 @@ export const OfertaSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Card de Oferta */}
+        {/* Offer Card */}
         <div className="projeto45-card max-w-4xl mx-auto relative overflow-hidden">
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 p-8 md:p-12">
-            {/* Lado esquerdo: Preço */}
+            {/* Left side: Price */}
             <div className="flex flex-col justify-center items-center md:items-start text-center md:text-left border-b md:border-b-0 md:border-r border-[var(--gold-dark)] pb-8 md:pb-0 md:pr-8">
-              {/* Preço original */}
-              <div className="mb-4">
-                <span className="text-[var(--text-muted)] text-lg line-through">
-                  De R$ {formatPrice(currentBatch.originalPrice)}
-                </span>
-              </div>
+              {/* Original price - only show during promo */}
+              {showDiscount && (
+                <div className="mb-4">
+                  <span className="text-[var(--text-muted)] text-lg line-through">
+                    De R$ {formatPrice(PRICES.regular)}
+                  </span>
+                </div>
+              )}
 
-              {/* Preço promocional */}
+              {/* Current price */}
               <div className="mb-2">
-                <span className="text-[var(--text-muted)] text-xl">Por apenas</span>
+                <span className="text-[var(--text-muted)] text-xl">
+                  {showDiscount ? 'Por apenas' : 'Investimento'}
+                </span>
               </div>
               <div className="mb-4">
                 <span className="text-6xl md:text-7xl font-bold projeto45-gold-gradient">
-                  R$ {currentBatch.promotionalPrice}
+                  R$ {currentPrice}
                 </span>
               </div>
 
-              {/* Badge de desconto */}
-              <div className="inline-flex items-center gap-2 bg-[var(--gold-primary)] text-black font-bold px-4 py-2 rounded-full mb-6">
-                <TrendingUp className="w-5 h-5" />
-                <span>{discountPercentage}% OFF</span>
-              </div>
+              {/* Discount badge - only show during promo */}
+              {showDiscount && (
+                <div className="inline-flex items-center gap-2 bg-[var(--gold-primary)] text-black font-bold px-4 py-2 rounded-full mb-6">
+                  <TrendingUp className="w-5 h-5" />
+                  <span>{discountPercentage}% OFF</span>
+                </div>
+              )}
 
-              {/* Parcelamento */}
+              {/* Installments */}
               <div className="text-[var(--text-muted)] mb-4">
-                ou até <span className="text-[var(--gold-primary)] font-bold">12x de R$ {formatPrice((currentBatch.promotionalPrice / 12))}</span>
+                ou até{' '}
+                <span className="text-[var(--gold-primary)] font-bold">
+                  12x de R$ {formatPrice(currentPrice / 12)}
+                </span>
               </div>
             </div>
 
-            {/* Lado direito: O que está incluso */}
+            {/* Right side: What's included */}
             <div className="flex flex-col justify-center">
               <h3 className="text-2xl font-bold mb-6 text-[var(--gold-primary)]">
                 O que você recebe:
@@ -121,7 +135,7 @@ export const OfertaSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Badge de urgência */}
+          {/* Urgency badge */}
           <div className="border-t border-[var(--gold-dark)] pt-8 pb-4 px-8">
             <UrgencyBadge />
           </div>
@@ -133,16 +147,15 @@ export const OfertaSection: React.FC = () => {
               disabled={isLoading}
               className="projeto45-cta-green w-full disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? 'PROCESSANDO...' : '✅ GARANTIR VAGA POR R$ 397'}
+              {isLoading ? 'PROCESSANDO...' : copy.ctaPrice(currentPrice)}
             </button>
 
-            {/* Urgência */}
+            {/* Urgency text */}
             <p className="text-center text-[var(--text-muted)] text-sm mt-4">
-              ⏰ Black Friday termina <span className="text-[var(--accent-red)] font-bold">sexta-feira</span> • Depois volta pra R$ 697
+              {copy.urgencyText}
             </p>
           </div>
         </div>
-
       </div>
     </section>
   );

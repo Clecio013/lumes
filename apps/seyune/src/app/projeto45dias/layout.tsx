@@ -33,8 +33,8 @@ const playfairDisplay = Playfair_Display({
 
 export const metadata: Metadata = {
   title: 'Projeto 45 Graus | Transformação em 45 Dias',
-  description: 'O único programa que une nutrição comportamental + treino personalizado para resultados que duram. Black Friday - Vagas Limitadas.',
-  keywords: ['nutrição', 'treino personalizado', 'emagrecimento', 'ganho de massa', 'black friday', 'seyune', 'personal trainer'],
+  description: 'O único programa que une nutrição comportamental + treino personalizado para resultados que duram. Vagas Limitadas.',
+  keywords: ['nutrição', 'treino personalizado', 'emagrecimento', 'ganho de massa', 'transformação', 'seyune', 'personal trainer'],
   openGraph: {
     title: 'Projeto 45 Graus | Transformação em 45 Dias',
     description: 'Nutrição + Treino Personalizado. 45 dias para transformar corpo e mente.',

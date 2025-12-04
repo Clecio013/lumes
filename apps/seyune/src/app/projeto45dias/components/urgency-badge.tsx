@@ -2,10 +2,13 @@
 
 import { motion } from 'framer-motion';
 import { Zap } from 'lucide-react';
-import { getVagasRestantes } from '../lib/vagas-dinamicas';
+import { getRemainingSlots } from '../lib/dynamic-slots';
+import { getCopy } from '../lib/campaign-config';
 
 export const UrgencyBadge: React.FC = () => {
-  const vagasRestantes = getVagasRestantes();
+  const remainingSlots = getRemainingSlots();
+  const copy = getCopy();
+
   return (
     <div className="flex justify-center">
       <motion.div
@@ -23,7 +26,7 @@ export const UrgencyBadge: React.FC = () => {
           ease: 'easeInOut',
         }}
       >
-        {/* Ícone sutil */}
+        {/* Icon */}
         <motion.div
           animate={{
             opacity: [0.7, 1, 0.7],
@@ -37,9 +40,9 @@ export const UrgencyBadge: React.FC = () => {
           <Zap className="w-3 h-3 md:w-4 md:h-4 text-gold" />
         </motion.div>
 
-        {/* Texto */}
+        {/* Text */}
         <span className="text-gray-300 text-xs md:text-sm tracking-wide">
-          Black Friday • Restam {vagasRestantes} vagas • Termina sexta-feira
+          {copy.urgencyBadge(remainingSlots)}
         </span>
       </motion.div>
     </div>

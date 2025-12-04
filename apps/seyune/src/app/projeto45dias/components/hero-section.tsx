@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
 import { BrandLogo } from './brand-logo';
 import Image from 'next/image';
+import { getCopy } from '../lib/campaign-config';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -33,6 +34,8 @@ const staggerContainer = {
 };
 
 export const HeroSection: React.FC = () => {
+  const copy = getCopy();
+
   const scrollToOferta = () => {
     const ofertaSection = document.getElementById('oferta-section');
     ofertaSection?.scrollIntoView({ behavior: 'smooth' });
@@ -138,7 +141,7 @@ export const HeroSection: React.FC = () => {
                   }}
                 />
                 <span className="text-[var(--accent-red)] font-semibold text-sm md:text-base uppercase tracking-wider">
-                  Vagas Limitadas • Black Friday
+                  {copy.heroBadge}
                 </span>
               </div>
             </motion.div>

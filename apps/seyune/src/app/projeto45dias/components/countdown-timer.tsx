@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
-import { getVagasRestantes } from '../lib/vagas-dinamicas';
+import { getRemainingSlots } from '../lib/dynamic-slots';
+import { isBlackFriday, getCopy, getDiscountPercentage } from '../lib/campaign-config';
 
 interface TimeLeft {
   days: number;
@@ -19,8 +20,8 @@ const fadeIn = {
 };
 
 export const CountdownTimer: React.FC = () => {
-  // Deadline: 28/11/2025 às 23:59:59
-  const deadline = new Date('2025-11-28T23:59:59');
+  // Deadline: 14/12/2025 às 23:59:59
+  const deadline = new Date('2025-12-14T23:59:59');
 
   const scrollToOferta = () => {
     const ofertaSection = document.getElementById('oferta-section');
@@ -55,10 +56,10 @@ export const CountdownTimer: React.FC = () => {
       };
     };
 
-    // Atualizar imediatamente
+    // Update immediately
     setTimeLeft(calculateTimeLeft());
 
-    // Atualizar a cada segundo
+    // Update every second
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
@@ -66,14 +67,21 @@ export const CountdownTimer: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Evitar hidratação incorreta (SSR)
+  // Avoid SSR hydration mismatch
   if (!isClient) {
+    return null;
+  }
+
+  // Hide countdown section in evergreen mode
+  if (!isBlackFriday()) {
     return null;
   }
 
   const { days, hours, minutes, seconds } = timeLeft;
   const isEnded = days === 0 && hours === 0 && minutes === 0 && seconds === 0;
-  const vagasRestantes = getVagasRestantes();
+  const remainingSlots = getRemainingSlots();
+  const copy = getCopy();
+  const discountPercentage = getDiscountPercentage();
 
   return (
     <motion.section
@@ -84,11 +92,11 @@ export const CountdownTimer: React.FC = () => {
       <div className="max-w-5xl mx-auto">
         {/* Card de Contador */}
         <div className="projeto45-card relative overflow-hidden">
-          {/* Background com gradiente sutil */}
+          {/* Background gradient */}
           <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent-red)]/10 via-transparent to-transparent pointer-events-none" />
 
           <div className="relative p-8 md:p-12">
-            {/* Título */}
+            {/* Title */}
             <div className="text-center mb-8">
               <motion.div
                 className="flex items-center justify-center gap-3 mb-4"
@@ -107,15 +115,15 @@ export const CountdownTimer: React.FC = () => {
                 </p>
               ) : (
                 <p className="text-lg md:text-xl text-[var(--text-muted)]">
-                  Garanta sua vaga com <span className="text-[var(--gold-primary)] font-bold">65% OFF</span> antes que acabe
+                  {copy.countdownSubtitle?.(discountPercentage)}
                 </p>
               )}
             </div>
 
-            {/* Contador */}
+            {/* Countdown */}
             {!isEnded && (
               <div className="projeto45-countdown">
-                {/* Dias */}
+                {/* Days */}
                 <motion.div
                   className="projeto45-countdown-item"
                   whileHover={{ scale: 1.05 }}
@@ -129,10 +137,10 @@ export const CountdownTimer: React.FC = () => {
                   </span>
                 </motion.div>
 
-                {/* Separador */}
+                {/* Separator */}
                 <span className="text-[var(--gold-primary)] text-4xl md:text-5xl font-bold">:</span>
 
-                {/* Horas */}
+                {/* Hours */}
                 <motion.div
                   className="projeto45-countdown-item"
                   whileHover={{ scale: 1.05 }}
@@ -146,10 +154,10 @@ export const CountdownTimer: React.FC = () => {
                   </span>
                 </motion.div>
 
-                {/* Separador */}
+                {/* Separator */}
                 <span className="text-[var(--gold-primary)] text-4xl md:text-5xl font-bold">:</span>
 
-                {/* Minutos */}
+                {/* Minutes */}
                 <motion.div
                   className="projeto45-countdown-item"
                   whileHover={{ scale: 1.05 }}
@@ -159,14 +167,14 @@ export const CountdownTimer: React.FC = () => {
                     {String(minutes).padStart(2, '0')}
                   </span>
                   <span className="projeto45-countdown-label">
-                    {minutes === 1 ? 'Min' : 'Min'}
+                    Min
                   </span>
                 </motion.div>
 
-                {/* Separador */}
+                {/* Separator */}
                 <span className="text-[var(--gold-primary)] text-4xl md:text-5xl font-bold">:</span>
 
-                {/* Segundos */}
+                {/* Seconds */}
                 <motion.div
                   className="projeto45-countdown-item"
                   whileHover={{ scale: 1.05 }}
@@ -176,7 +184,7 @@ export const CountdownTimer: React.FC = () => {
                     {String(seconds).padStart(2, '0')}
                   </span>
                   <span className="projeto45-countdown-label">
-                    {seconds === 1 ? 'Seg' : 'Seg'}
+                    Seg
                   </span>
                 </motion.div>
               </div>
@@ -202,7 +210,7 @@ export const CountdownTimer: React.FC = () => {
               </motion.div>
             )}
 
-            {/* Urgência */}
+            {/* Urgency badge */}
             {!isEnded && (
               <motion.div
                 className="text-center mt-6"
@@ -221,7 +229,7 @@ export const CountdownTimer: React.FC = () => {
                     }}
                   />
                   <span className="text-[var(--accent-red)] font-semibold text-sm md:text-base uppercase tracking-wider">
-                    ⚠️ Restam apenas {vagasRestantes} vagas • Após sexta-feira volta pra R$ 697
+                    ⚠️ Restam apenas {remainingSlots} vagas • Após 14/12 volta pra R$ 697
                   </span>
                 </div>
               </motion.div>

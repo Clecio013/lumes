@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { StripeClient, CheckoutBuilder } from '@lumes/stripe';
 import { getCurrentBatch } from '@/app/projeto45dias/lib/batches-config';
+import { isCampaignEnded, getCurrentPrice, isBlackFriday } from '@/app/projeto45dias/lib/campaign-config';
 
 /**
- * Interface para requisição de criação de sessão
+ * Interface for session creation request
  */
 interface CreateSessionRequest {
   email?: string;
@@ -12,7 +13,8 @@ interface CreateSessionRequest {
 /**
  * POST /api/stripe/create-session
  *
- * Cria uma sessão de checkout do Stripe para o Projeto 45 Graus
+ * Creates a Stripe checkout session for Projeto 45 Graus
+ * Dynamically selects price based on campaign status (Black Friday vs Evergreen)
  *
  * @example
  * ```typescript
@@ -23,61 +25,76 @@ interface CreateSessionRequest {
  * });
  *
  * const { sessionId, url } = await response.json();
- * window.location.href = url; // Redirecionar para checkout
+ * window.location.href = url; // Redirect to checkout
  * ```
  */
 export async function POST(req: NextRequest) {
   try {
     const { email }: CreateSessionRequest = await req.json();
 
-    console.log('[Stripe Create Session] Iniciando criação de sessão:', { email });
+    console.log('[Stripe Create Session] Starting session creation:', { email });
 
-    // Validar variáveis de ambiente
+    // Validate environment variables
     if (!process.env.STRIPE_SECRET_KEY) {
-      throw new Error('STRIPE_SECRET_KEY não configurada');
+      throw new Error('STRIPE_SECRET_KEY not configured');
     }
 
-    if (!process.env.STRIPE_PRICE_ID) {
-      throw new Error('STRIPE_PRICE_ID não configurada');
+    // Select price ID based on campaign status
+    const isPromo = isBlackFriday();
+    const priceId = isPromo
+      ? (process.env.STRIPE_PRICE_ID_PROMO || process.env.STRIPE_PRICE_ID)
+      : process.env.STRIPE_PRICE_ID_REGULAR;
+
+    if (!priceId) {
+      throw new Error(
+        isPromo
+          ? 'STRIPE_PRICE_ID_PROMO or STRIPE_PRICE_ID not configured'
+          : 'STRIPE_PRICE_ID_REGULAR not configured'
+      );
     }
 
     const baseUrl = process.env.NEXT_PUBLIC_URL || 'http://localhost:3000';
 
-    // Obter lote atual para metadata
+    // Get current batch for metadata
     const currentBatch = getCurrentBatch();
+    const currentPrice = getCurrentPrice();
 
-    // Criar cliente Stripe
+    // Create Stripe client
     const stripeClient = StripeClient.create({
       secretKey: process.env.STRIPE_SECRET_KEY,
       webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
     });
 
-    // Criar sessão de checkout
+    // Create checkout session
     const builder = CheckoutBuilder.create(stripeClient)
-      .withPrice(process.env.STRIPE_PRICE_ID)
+      .withPrice(priceId)
       .withQuantity(1)
       .withSuccessUrl(`${baseUrl}/projeto45dias/obrigado?session_id={CHECKOUT_SESSION_ID}`)
       .withCancelUrl(`${baseUrl}/projeto45dias/erro`)
-      .withPaymentMethods(['card']) // Apenas Cartão (PIX será habilitado depois)
+      .withPaymentMethods(['card']) // Card only (PIX will be enabled later)
       .withMetadata({
         product: 'projeto_45_graus',
-        lote: currentBatch?.name || 'unknown',
-        preco_original: String(currentBatch?.originalPrice || 0),
-        preco_promocional: String(currentBatch?.promotionalPrice || 0),
+        lote: currentBatch?.name || (isPromo ? 'black_friday' : 'evergreen'),
+        preco_original: String(currentBatch?.originalPrice || 697),
+        preco_promocional: String(currentPrice),
+        is_promo: String(isPromo),
         split_lumes: '20',
         split_seyune: '40',
         split_amauri: '40',
       });
 
-    // Adicionar email se fornecido
+    // Add email if provided
     if (email) {
       builder.withCustomerEmail(email);
     }
 
     const checkout = await builder.build();
 
-    console.log('[Stripe Create Session] Sessão criada:', {
+    console.log('[Stripe Create Session] Session created:', {
       sessionId: checkout.sessionId,
+      priceId,
+      isPromo,
+      currentPrice,
       expiresAt: new Date(checkout.expiresAt * 1000).toISOString(),
     });
 
@@ -88,9 +105,9 @@ export async function POST(req: NextRequest) {
       expiresAt: checkout.expiresAt,
     });
   } catch (error) {
-    console.error('[Stripe Create Session] Erro:', error);
+    console.error('[Stripe Create Session] Error:', error);
 
-    const errorMessage = error instanceof Error ? error.message : 'Erro ao criar sessão de checkout';
+    const errorMessage = error instanceof Error ? error.message : 'Error creating checkout session';
 
     return NextResponse.json(
       {

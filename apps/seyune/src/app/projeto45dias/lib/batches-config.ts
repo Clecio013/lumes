@@ -1,6 +1,6 @@
 /**
  * Batch Pricing Configuration for Projeto 45 Graus
- * Black Friday Campaign: November 10-28, 2025
+ * Black Friday Extended Campaign: November 10 - December 14, 2025
  * 4 batches with incremental pricing to create urgency
  */
 
@@ -54,7 +54,7 @@ export const BATCHES: Batch[] = [
     originalPrice: 697,
     promotionalPrice: 497,
     startDate: '2025-11-22',
-    endDate: '2025-11-28',
+    endDate: '2025-12-14',
     active: false,
   },
 ];
@@ -156,7 +156,7 @@ export function formatPrice(price: number): string {
 export function uniqueBatch() {
   return {
     id: 1,
-    name: 'Black Friday 45 Graus',
+    name: 'Projeto 45 Graus',
     originalPrice: 697,
     promotionalPrice: 397,
     active: true,
