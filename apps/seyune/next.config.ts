@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // External packages for server-side (pino and thread-stream have files that break Turbopack bundling)
+  serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream', 'sonic-boom'],
+
   // Otimização de imagens - conversão automática para AVIF/WebP
   images: {
     formats: ['image/avif', 'image/webp'],
