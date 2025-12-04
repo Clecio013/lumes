@@ -5,6 +5,7 @@ import { EmailClient } from '@lumes/email';
 import { SheetsClient } from '@lumes/sheets';
 import { LoggerClient } from '@lumes/logger';
 import { MetaConversionsClient } from '@lumes/meta-conversions-api';
+import { TelegramClient } from '@lumes/telegram';
 import ConfirmacaoCompra from '@lumes/email/templates/confirmacao-compra';
 import { formatPrice } from '@/app/projeto45dias/lib/batches-config';
 
@@ -224,6 +225,31 @@ export async function POST(req: NextRequest) {
             }
           } else {
             logger.warn({ email: customerEmail }, 'Invalid or missing customer email, skipping email send');
+          }
+
+          // 7. Enviar notificação no Telegram
+          if (process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID) {
+            try {
+              const telegramClient = TelegramClient.create({
+                botToken: process.env.TELEGRAM_BOT_TOKEN,
+              });
+
+              await telegramClient.sendPurchaseNotification(
+                process.env.TELEGRAM_CHAT_ID,
+                {
+                  nome: customerName,
+                  valor: formatPrice(amountTotal),
+                }
+              );
+
+              logger.info({ paymentId: paymentIntentId, customerName }, 'Telegram notification sent');
+            } catch (telegramError) {
+              logger.error({
+                err: telegramError,
+                paymentId: paymentIntentId,
+              }, 'Failed to send Telegram notification');
+              // Não fazer throw - pagamento já foi processado
+            }
           }
         } catch (error) {
           logger.error({ err: error, sessionId: session.id }, 'Error processing checkout session');

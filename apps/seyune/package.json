@@ -22,6 +22,7 @@
     "@lumes/sheets": "workspace:*",
     "@lumes/storage": "workspace:*",
     "@lumes/stripe": "workspace:*",
+    "@lumes/telegram": "workspace:*",
     "@lumes/tracking": "workspace:*",
     "@lumes/ui": "workspace:*",
     "@lumes/validators": "workspace:*",
